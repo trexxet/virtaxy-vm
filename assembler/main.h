@@ -5,4 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "asm.h"
+
+void finalization();
+#define INCLUDE_IN_MAIN
 #include "errors.h"
+#undef INCLUDE_IN_MAIN

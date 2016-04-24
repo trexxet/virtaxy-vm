@@ -1,5 +1,5 @@
 clean:
-	rm -rf *.o vmm-asm 
+	rm -rf *.o vmm-asm generated/ 
 all:
 	python3 gen_command_opcodes.py
 	python3 gen_command_assembly.py
