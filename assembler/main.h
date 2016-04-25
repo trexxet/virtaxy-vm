@@ -10,6 +10,11 @@ typedef struct {
 	uint8_t num;
 } inputFileList_t;
 
+struct {
+	char *fileListNames[];
+	FILE *openedFileHandle;
+} dynAllocMem; //Dynamically allocated memory and other stuff to be cleared in finalization()
+
 void parseCommandLineArguments(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
 void finalization();
 #define INCLUDE_IN_MAIN

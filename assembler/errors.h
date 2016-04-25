@@ -1,4 +1,4 @@
-typedef enum _ERRNO { //TODO: check if word _ERRNO could be removed
+typedef enum { 
 	SUCCESS,
 	INCORRECT_COMMAND_LINE,
 	NO_INPUT_FILES,
