@@ -1,5 +1,6 @@
-typedef enum _ERRNO {
+typedef enum _ERRNO { //TODO: check if word _ERRNO could be removed
 	SUCCESS,
+	INCORRECT_COMMAND_LINE,
 	NO_INPUT_FILES,
 	CANNOT_OPEN_FILE,
 	CANNOT_CLOSE_FILE,
@@ -13,6 +14,7 @@ typedef enum _ERRNO {
 
 const char* errmsg[] = {
 	"Assembly successful",
+	"Usage: vmm-asm file1 file2 ... -o outputFile"
 	"Error: no input files",
 	"Error: cannot open file",
 	"Error: cannot close file",
