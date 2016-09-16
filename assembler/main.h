@@ -15,8 +15,6 @@ struct {
 	FILE *openedFileHandle;
 } dynAllocMem; //Dynamically allocated memory and other stuff to be cleared in finalization()
 
-void parseCommandLineArguments(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
+void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
+void parseError(ERRNO_T _errno, char *file, size_t line);
 void finalization();
-#define INCLUDE_IN_MAIN
-#include "errors.h"
-#undef INCLUDE_IN_MAIN

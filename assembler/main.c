@@ -2,10 +2,10 @@
 
 void main(int argc, char *argv[])
 {
-	ERRNO_T errno = asmInit(INIT_PROGRAM_SIZE);
-	inputFileList_t inputFileList = {NULL, 0};
+	ERRNO_T _errno = asmInit(INIT_PROGRAM_SIZE);
+	inputFileList_t inputFileList = {};
 	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
-	parseCommandLineArguments(argc, argv, &inputFileList, outputFilename);
+	parseCmdLineArgs(argc, argv, &inputFileList, outputFilename);
 
 	for (uint16_t fileCounter = 0; fileCounter < inputFileList.num; fileCounter++)
 	{
@@ -29,7 +29,7 @@ void main(int argc, char *argv[])
 	finalization(SUCCESS);
 }
 
-void parseCommandLineArguments(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
+void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
 {
 	int opt;
 	opterr = 0;
@@ -50,7 +50,25 @@ void parseCommandLineArguments(int argc, char *argv[], inputFileList_t *inputFil
 	for (int i = 0; i < inputFileList -> num; i++)
 		inputFileList -> name[i] = argv[i + optind];
 }
-	
+
+void parseError(ERRNO_T _errno, char *file, size_t line)
+{
+	const static char* errmsg[] = {
+		"Assembly successful",
+		"Usage: vmm-asm file1 file2 ... -o outputFile"
+		"Error: no input files",
+		"Error: cannot open file",
+		"Error: cannot close file",
+		"Error: input file is empty",
+		"Error: cannot allocate memory for program",
+		"Error: unknown command",
+		"Error: invalid combination of command and arguments"
+	}
+	fprintf(stderr, "%s:%d: %s\n", file, line, errmsg[_errno]);
+	if (_errno != SUCCESS)
+		finalization(_errno);
+}
+
 void finalization(ERRNO_T errno)
 {
 #define FREE(_FUNC_, _POINTER_)				 \
