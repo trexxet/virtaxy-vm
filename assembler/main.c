@@ -1,8 +1,29 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <unistd.h>
+
+#include "errors.h"
+#include "config.h"
+
+typedef struct {
+	char *name[];
+	uint8_t num;
+} inputFileList_t;
+
+struct {
+	char *fileListNames[];
+	FILE *openedFileHandle;
+} dynAllocMem; //Dynamically allocated memory and other stuff to be cleared in finalization()
+
+void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
+void parseError(_ERRNO_T _errno, char *file, size_t line);
+void finalization();
 
 void main(int argc, char *argv[])
 {
-	ERRNO_T _errno = asmInit(INIT_PROGRAM_SIZE);
+	_ERRNO_T _errno = asmInit(INIT_PROGRAM_SIZE);
 	inputFileList_t inputFileList = {};
 	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
 	parseCmdLineArgs(argc, argv, &inputFileList, outputFilename);
@@ -17,19 +38,19 @@ void main(int argc, char *argv[])
 			parseError(INPUT_IS_EMPTY, fileName, 0);
 		char sourceString[SOURCE_STRING_LENGTH];
 		size_t lineCounter = 0;
-		while (fgets(sourceString, SOURCE_STRING_LENGTH, dynAllocMem.openedFileHandle) && (errno == 0))
+		while (fgets(sourceString, SOURCE_STRING_LENGTH, dynAllocMem.openedFileHandle) && (_errno == 0))
 		{
-			errno = assembleString(sourceString);
+			_errno = assembleString(sourceString);
 			lineCounter++;
 		}
 		fclose(dynAllocMem.openedFileHandle);
 		dynAllocMem.openedFileHandle = NULL;
-		parseError(errno, fileName, lineCounter);
+		parseError(_errno, fileName, lineCounter);
 	}
 	finalization(SUCCESS);
 }
 
-void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename);
+void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, char *outputFilename)
 {
 	int opt;
 	opterr = 0;
@@ -40,7 +61,7 @@ void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, ch
 				outputFilename = optarg;
 				break;
 			case '?':
-				parseError(INCORRECT_COMMAND_LINE);
+				parseError(INCORRECT_COMMAND_LINE, NULL, 0);
 				break;
 		}
 	inputFileList -> num = argc - optind;
@@ -51,33 +72,23 @@ void parseCmdLineArgs(int argc, char *argv[], inputFileList_t *inputFileList, ch
 		inputFileList -> name[i] = argv[i + optind];
 }
 
-void parseError(ERRNO_T _errno, char *file, size_t line)
+void parseError(_ERRNO_T _errno, char *file, size_t line)
 {
-	const static char* errmsg[] = {
-		"Assembly successful",
-		"Usage: vmm-asm file1 file2 ... -o outputFile"
-		"Error: no input files",
-		"Error: cannot open file",
-		"Error: cannot close file",
-		"Error: input file is empty",
-		"Error: cannot allocate memory for program",
-		"Error: unknown command",
-		"Error: invalid combination of command and arguments"
-	}
 	fprintf(stderr, "%s:%d: %s\n", file, line, errmsg[_errno]);
 	if (_errno != SUCCESS)
 		finalization(_errno);
 }
 
-void finalization(ERRNO_T errno)
+_Noreturn void finalization(_ERRNO_T _errno)
 {
-#define FREE(_FUNC_, _POINTER_)				 \
-	if (dynAllocMem._POINTER_) {		 \
-		_FUNC_(dynAllocMem._POINTER_);	 \
-		dynAllocMem._POINTER_ = NULL;	 \
+	//Some stuff need fclose(), other need free(), so let's unite them with macro
+	#define FREE(_FUNC_, _POINTER_)		\
+	if (dynAllocMem._POINTER_) {		\
+		_FUNC_(dynAllocMem._POINTER_);	\
+		dynAllocMem._POINTER_ = NULL;	\
 	}
 	FREE(fclose, openedFileHandle);
 	FREE(free, fileListNames);
-#undef FREE
-	exit(errno);
+	exit(_errno);
+	#undef FREE
 }

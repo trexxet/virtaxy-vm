@@ -4,7 +4,7 @@ TARGET = vmm-asm
 
 CSRC = main.c asm.c
 PYSRC = gen_command_opcodes.py gen_command_assembly.py
-CFLAGS =  
+CFLAGS = -g -std=gnu11
 LDLIBS =  
 
 all:
