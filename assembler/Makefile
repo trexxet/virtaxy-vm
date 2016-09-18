@@ -3,7 +3,7 @@ PYTHON = python3
 TARGET = vmm-asm
 
 CSRC = main.c asm.c
-PYSRC = gen_command_opcodes.py gen_command_assembly.py
+PYSRC = py/gen_command_opcodes.py py/gen_command_assembly.py
 CFLAGS = -g -std=gnu11
 LDLIBS =  
 
