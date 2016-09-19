@@ -16,7 +16,7 @@ typedef enum {
 
 const static char* errmsg[] = {
 	"Assembly successful",
-	"Usage: vmm-asm file1 file2 ... -o outputFile"
+	"Usage: vmm-asm file1 file2 ... -o outputFile",
 	"Error: no input files",
 	"Error: cannot open file",
 	"Error: cannot close file",

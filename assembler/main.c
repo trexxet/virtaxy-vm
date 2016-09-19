@@ -26,7 +26,12 @@ void finalization();
 
 void main(int argc, string argv[])
 {
-	_ERRNO_T _errno =0;//= asmInit(INIT_PROGRAM_SIZE);
+	extern _ERRNO_T asmInit();
+	extern _ERRNO_T assembleString(string sourceStr);
+
+	_ERRNO_T _errno = asmInit();
+	if (_errno)
+		parseError(_errno, NULL, 0);
 	inputFilenames_t inputFilenames = {};
 	string outputFilename = DEFAULT_OUTPUT_FILENAME;
 	parseCmdLineArgs(argc, argv, &inputFilenames, outputFilename);
@@ -43,10 +48,11 @@ void main(int argc, string argv[])
 		uint32_t lineCounter = 0;
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
 		{
-			//_errno = assembleString(sourceString);
+			_errno = assembleString(sourceString);
 			lineCounter++;
 		}
-		fclose(openedFileHandle);
+		if (fclose(openedFileHandle) == EOF)
+			parseError(CANNOT_CLOSE_FILE, filename, lineCounter);
 		openedFileHandle = NULL;
 		parseError(_errno, filename, lineCounter);
 	}
