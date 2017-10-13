@@ -7,33 +7,27 @@
 
 #include "errors.h"
 #include "config.h"
+#include "include/asm.h"
 
-typedef char* string;
 
 typedef struct {
 	uint16_t num;
-	char name[MAX_INPUT_FILES][INPUT_FILE_NAME_MAX_LEN + 1];
+	char name[MAX_INPUT_FILES][INPUT_FILENAME_MAX_LEN + 1];
 } inputFilenames_t;
 
-/*struct {
 
-} dynAllocMem; //Dynamically allocated memory and other stuff to be cleared in finalization()
-*/
-
-void parseCmdLineArgs(int argc, string argv[], inputFilenames_t *inputFilenames, string outputFilename);
-void parseError(_ERRNO_T _errno, string file, uint32_t line);
+void parseCmdLineArgs(int argc, char *argv[], inputFilenames_t *inputFilenames, char *outputFilename);
+void parseError(_ERRNO_T _errno, char *file, uint32_t line);
 void finalization();
 
-void main(int argc, string argv[])
-{
-	extern _ERRNO_T asmInit();
-	extern _ERRNO_T assembleString(string sourceStr);
 
+void main(int argc, char *argv[])
+{
 	_ERRNO_T _errno = asmInit();
 	if (_errno)
 		parseError(_errno, NULL, 0);
 	inputFilenames_t inputFilenames = {};
-	string outputFilename = DEFAULT_OUTPUT_FILENAME;
+	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
 	parseCmdLineArgs(argc, argv, &inputFilenames, outputFilename);
 
 	for (uint16_t fileCounter = 0; fileCounter < inputFilenames.num; fileCounter++)
@@ -55,11 +49,13 @@ void main(int argc, string argv[])
 			parseError(CANNOT_CLOSE_FILE, filename, lineCounter);
 		openedFileHandle = NULL;
 		parseError(_errno, filename, lineCounter);
+		#undef filename
 	}
 	finalization(SUCCESS);
 }
 
-void parseCmdLineArgs(int argc, string argv[], inputFilenames_t *inputFilenames, string outputFilename)
+
+void parseCmdLineArgs(int argc, char *argv[], inputFilenames_t *inputFilenames, char *outputFilename)
 {
 	int opt;
 	opterr = 0;
@@ -80,17 +76,18 @@ void parseCmdLineArgs(int argc, string argv[], inputFilenames_t *inputFilenames,
 		strcpy(inputFilenames -> name[i], argv[optind + i]);
 }
 
-void parseError(_ERRNO_T _errno, string file, uint32_t line)
+
+void parseError(_ERRNO_T _errno, char *file, uint32_t line)
 {
 	fprintf(stderr, "%s:%zu: %s\n", file, line, errmsg[_errno]);
 	if (_errno != SUCCESS)
 		finalization(_errno);
 }
 
+
 _Noreturn void finalization(_ERRNO_T _errno)
 //Here we free all dynamically allocated memory, pray the Valgrind
-#define FREE(_PTR_) free(dynAllocMem._PTR_)
 {
 	exit(_errno);
 }
-#undef FREE
+
