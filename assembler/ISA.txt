@@ -1,0 +1,59 @@
+01: inc reg 		- increase register
+02: dec reg 		- decrease register
+03: mov reg, num 	- put num to register
+04: mov reg1, reg2 	- copy reg2 to reg1
+05: add reg, num 	- add num to register
+06: add reg1, reg2 	- add reg2 to reg1
+07: sub reg, num 	- subtract num from register
+08: sub reg1, reg2 	- subtract reg2 from reg1
+09: mul reg, num 	- multiply register by num
+10: mul reg1, reg2 	- multiply reg1 by reg2
+11: div reg, num 	- integerly divide register by num
+12: div reg1, reg2 	- integerly divide reg1 by reg2
+13: mod reg, num 	- modulo register by num
+14: mod reg1, reg2 	- modulo reg1 by reg2
+15: and reg, num 	- apply bitwise AND to register and num
+16: and reg1, reg2 	- apply bitwise AND to reg1 and reg2
+17: nand reg, num 	- apply bitwise NAND to register and num
+18: nand reg1, reg2 	- apply bitwise NAND to reg1 and reg2
+19: or reg, num 	- apply bitwise OR to register and num
+20: or reg1, reg2 	- apply bitwise OR to reg1 and reg2
+21: nor reg, num 	- apply bitwise NOR to register and num
+22: nor reg1, reg2 	- apply bitwise NOR to reg1 and reg2
+23: xor reg, num 	- apply bitwise XOR to register and num
+24: xor reg1, reg2 	- apply bitwise XOR to reg1 and reg2
+25: xnor reg, num 	- apply bitwise XNOR to register and num
+26: xnor reg1, reg2 	- apply bitwise XNOR to reg1 and reg2
+27: not reg		- apply bitwise NOT to register
+28: shl reg, num 	- shift register left by num
+29: shl reg1, reg2	- shift reg1 left by reg2
+30: shr reg, num	- shift register right by num
+31: shr reg1, reg2	- shift reg1 right by reg2
+32: rtl reg, num	- rotate register left by num
+33: rtl reg1, reg2	- rotate reg1 left by reg2
+34: rtr reg, num 	- rotate register right by num
+35: rtr reg1, reg2	- rotate reg1 right by reg2
+36: push num 		- push num to stack
+37: push reg 		- push register to stack
+38: pop 		- delete last stack item
+39: pop reg 		- put last stack item to register and delete it
+40: sinc		- increase top stack value
+41: sdec 		- decrease top stack value
+42: smov reg		- copy top stack value to register
+43: sadd 		- pop two top stack values and push their sum
+44: ssub		- pop two top stack values and push their substraction
+45: smul		- pop two top stack values and push their multiplication
+46: sdiv		- pop two top stack values and push their integer division
+47: smod		- pop two top stack values and push their modulo
+48: sand		- pop two top stack values and push the result of applying bitwise AND to them
+49: snand		- pop two top stack values and push the result of applying bitwise NAND to them
+50: sor			- pop two top stack values and push the result of applying bitwise OR to two them
+51: snor		- pop two top stack values and push the result of applying bitwise NOR to them
+52: sxor		- pop two top stack values and push the result of applying bitwise XOR to them
+53: sxnor		- pop two top stack values and push the result of applying bitwise XNOR to them
+54: snot		- apply bitwise NOT to top stack value
+55: sshl		- pop two top stack values and push the result of shifting pre-top stack value left by top
+56: sshr		- pop two top stack values and push the result of shifting pre-top stack value right by top
+57: srtl		- pop two top stack values and push the result of rotating pre-top stack value left by top
+58: srtr		- pop two top stack values and push the result of rotating pre-top stack value right by top
+
