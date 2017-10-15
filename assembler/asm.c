@@ -4,48 +4,19 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "asm.h"
 #include "errors.h"
 #include "config.h"
 
 #include "generated/opcodes.h"
 
 
-uint8_t* program = NULL;
-size_t maxProgramSize = INIT_PROGRAM_SIZE;
-size_t programSize = 0;
-
-
-_ERRNO_T asmInit()
+_ERRNO_T asmInit(program *P)
 {
-	return (program = calloc(INIT_PROGRAM_SIZE, 1)) ? SUCCESS : CANNOT_ALLOCATE_MEMORY;
+	P->size = 0;
+	P->maxSize = INIT_PROGRAM_SIZE;
+	return (P->ops = calloc(INIT_PROGRAM_SIZE, 1)) ? SUCCESS : CANNOT_ALLOCATE_MEMORY;
 }
-
-
-// Macros for assembling
-
-#define CHECK_PROGRAM_SIZE(incsize)                                  \
-	if (maxProgramSize - programSize < incsize)                  \
-		program = (uint8_t *) realloc(program,               \
-		           (maxProgramSize += maxProgramSize * 2) * sizeof(uint8_t))
-
-#define IF_INSTR(instr) if (strcmp(instruction, #instr) == 0)
-
-#define NEXT_COMMAND program[programSize++]
-
-#define IS_REG2(arg) (arg && strlen(arg) == 2 &&          \
-	              strchr(REGISTER_POSTFIX, arg[1]) && \
-	              strchr(REGISTER_LETTER, arg[0]))
-
-#define IS_REG3(arg) (arg && strlen(arg) == 3 &&         \
-	              arg[2] == REGISTER_POSTFIX[0] &&   \
-	              strchr(REGISTER_PREFIX, arg[0]) && \
-	              strchr(REGISTER_LETTER, arg[1]))
-
-#define IS_REG(arg) (IS_REG2(arg) || IS_REG3(arg))
-
-#define REG_NUM(arg) registerNumber(arg)
-
-#define IS_NUM(arg) (arg && strspn(arg, "012456789") == strlen(arg))
 
 
 // Argument types
@@ -60,6 +31,33 @@ typedef struct {
 	char *str;
 	argType type;
 } arg_t;
+
+
+// Macros for assembling
+
+#define CHECK_PROGRAM_SIZE(incsize)                          \
+	if (P->maxSize - P->size < incsize)                  \
+		P->ops = (uint8_t *) realloc(P->ops,         \
+			   (P->maxSize += P->maxSize * 2) * sizeof(uint8_t))
+
+#define IF_INSTR(instr) if (strcmp(instruction, #instr) == 0)
+
+#define NEXT_COMMAND P->ops[P->size++]
+
+#define IS_REG2(arg) (arg && strlen(arg) == 2 &&          \
+		      strchr(REGISTER_POSTFIX, arg[1]) && \
+		      strchr(REGISTER_LETTER, arg[0]))
+
+#define IS_REG3(arg) (arg && strlen(arg) == 3 &&         \
+		      arg[2] == REGISTER_POSTFIX[0] &&   \
+		      strchr(REGISTER_PREFIX, arg[0]) && \
+		      strchr(REGISTER_LETTER, arg[1]))
+
+#define IS_REG(arg) (IS_REG2(arg) || IS_REG3(arg))
+
+#define REG_NUM(arg) registerNumber(arg)
+
+#define IS_NUM(arg) (arg && strspn(arg, "012456789") == strlen(arg))
 
 
 // Functions for assembling
@@ -85,9 +83,9 @@ int registerNumber(char* arg)  // Returns number of register arg,
 
 
 __attribute__((hot))
-_ERRNO_T assembleString(char *sourceStr)
+_ERRNO_T assembleString(char *sourceStr, program *P)
 {
-	char **saveptr = NULL;
+	//char **saveptr = NULL;
 	//char *instruction = strtok_r(sourceStr, DELIM, saveptr);
 	char *instruction = strtok(sourceStr, DELIM);
 	

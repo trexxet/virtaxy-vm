@@ -1,6 +1,14 @@
 #pragma once
+#include "errors.h"
 
-_ERRNO_T asmInit();
+typedef struct {
+	uint8_t* ops;
+	size_t size;
+	size_t maxSize;
+} program;
+
+
+_ERRNO_T asmInit(program *P);
 int registerNumber(char* arg);
-_ERRNO_T assembleString(char *sourceStr);
+_ERRNO_T assembleString(char *sourceStr, program *P);
 

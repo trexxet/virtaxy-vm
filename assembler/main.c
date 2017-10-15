@@ -11,30 +11,31 @@
 
 
 _ERRNO_T _errno = SUCCESS;
-
+program P;
 
 void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char *outputFilename);
-void assemblyFile(char* filename);
+void assembleFile(char* filename);
 void parseError(_ERRNO_T _errno, char *file, uint32_t line);
 void finalization();
 
 
 void main(int argc, char *argv[])
 {
-	_errno = asmInit();
+	_errno = asmInit(&P);
 	if (_errno)
 		parseError(_errno, NULL, 0);
+
 	char *inputFilename = NULL;
 	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
 	parseCmdLineArgs(argc, argv, &inputFilename, outputFilename);
 
-	assemblyFile(inputFilename);
+	assembleFile(inputFilename);
 
-	finalization(SUCCESS);
+	finalization();
 }
 
 
-void assemblyFile(char *filename)
+void assembleFile(char *filename)
 {
 	FILE* openedFileHandle = fopen(filename, "r");
 	if (!openedFileHandle)
@@ -45,7 +46,7 @@ void assemblyFile(char *filename)
 	uint32_t lineCounter = 0;
 	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
 	{
-		_errno = assembleString(sourceString);
+		_errno = assembleString(sourceString, &P);
 		lineCounter++;
 	}
 	if (fclose(openedFileHandle) == EOF)
@@ -80,15 +81,14 @@ void parseError(_ERRNO_T _errno, char *file, uint32_t line)
 {
 	fprintf(stderr, "%s:%zu: %s\n", file, line, errmsg[_errno]);
 	if (_errno != SUCCESS)
-		finalization(_errno);
+		finalization();
 }
 
 
-_Noreturn void finalization(_ERRNO_T _errno)
+_Noreturn void finalization()
 //Here we free all dynamically allocated memory, pray the Valgrind
 {
-	extern uint8_t* program;
-	free(program);
+	free(P.ops);
 	exit(_errno);
 }
 
