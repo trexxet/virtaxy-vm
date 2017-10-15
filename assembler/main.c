@@ -10,52 +10,52 @@
 #include "include/asm.h"
 
 
-typedef struct {
-	uint16_t num;
-	char name[MAX_INPUT_FILES][INPUT_FILENAME_MAX_LEN + 1];
-} inputFilenames_t;
+_ERRNO_T _errno = SUCCESS;
 
 
-void parseCmdLineArgs(int argc, char *argv[], inputFilenames_t *inputFilenames, char *outputFilename);
+void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char *outputFilename);
+void assemblyFile(char* filename);
 void parseError(_ERRNO_T _errno, char *file, uint32_t line);
 void finalization();
 
 
 void main(int argc, char *argv[])
 {
-	_ERRNO_T _errno = asmInit();
+	_errno = asmInit();
 	if (_errno)
 		parseError(_errno, NULL, 0);
-	inputFilenames_t inputFilenames = {};
+	char *inputFilename = NULL;
 	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
-	parseCmdLineArgs(argc, argv, &inputFilenames, outputFilename);
+	parseCmdLineArgs(argc, argv, &inputFilename, outputFilename);
 
-	for (uint16_t fileCounter = 0; fileCounter < inputFilenames.num; fileCounter++)
-	{
-		#define filename inputFilenames.name[fileCounter]
-		FILE* openedFileHandle = fopen(filename, "r");
-		if (!openedFileHandle)
-			parseError(CANNOT_OPEN_FILE, filename, 0);
-		if (feof(openedFileHandle))
-			parseError(INPUT_IS_EMPTY, filename, 0);
-		char sourceString[SOURCE_STRING_LENGTH];
-		uint32_t lineCounter = 0;
-		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
-		{
-			_errno = assembleString(sourceString);
-			lineCounter++;
-		}
-		if (fclose(openedFileHandle) == EOF)
-			parseError(CANNOT_CLOSE_FILE, filename, lineCounter);
-		openedFileHandle = NULL;
-		parseError(_errno, filename, lineCounter);
-		#undef filename
-	}
+	assemblyFile(inputFilename);
+
 	finalization(SUCCESS);
 }
 
 
-void parseCmdLineArgs(int argc, char *argv[], inputFilenames_t *inputFilenames, char *outputFilename)
+void assemblyFile(char *filename)
+{
+	FILE* openedFileHandle = fopen(filename, "r");
+	if (!openedFileHandle)
+		parseError(CANNOT_OPEN_FILE, filename, 0);
+	if (feof(openedFileHandle))
+		parseError(INPUT_IS_EMPTY, filename, 0);
+	char sourceString[SOURCE_STRING_LENGTH];
+	uint32_t lineCounter = 0;
+	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
+	{
+		_errno = assembleString(sourceString);
+		lineCounter++;
+	}
+	if (fclose(openedFileHandle) == EOF)
+		parseError(CANNOT_CLOSE_FILE, filename, lineCounter);
+	openedFileHandle = NULL;
+	parseError(_errno, filename, lineCounter);
+}
+
+
+void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char *outputFilename)
 {
 	int opt;
 	opterr = 0;
@@ -65,15 +65,14 @@ void parseCmdLineArgs(int argc, char *argv[], inputFilenames_t *inputFilenames, 
 			case 'o':
 				outputFilename = optarg;
 				break;
+			default:
 			case '?':
 				parseError(INCORRECT_COMMAND_LINE, NULL, 0);
 				break;
 		}
-	inputFilenames -> num = argc - optind;
-	if (inputFilenames -> num == 0)
+	if (argc - optind == 0)
 		parseError(NO_INPUT_FILES, NULL, 0);
-	for (int i = 0; i < inputFilenames -> num; i++)
-		strcpy(inputFilenames -> name[i], argv[optind + i]);
+	*inputFilename = argv[optind];
 }
 
 
@@ -88,6 +87,8 @@ void parseError(_ERRNO_T _errno, char *file, uint32_t line)
 _Noreturn void finalization(_ERRNO_T _errno)
 //Here we free all dynamically allocated memory, pray the Valgrind
 {
+	extern uint8_t* program;
+	free(program);
 	exit(_errno);
 }
 

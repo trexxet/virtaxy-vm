@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -85,12 +87,15 @@ int registerNumber(char* arg)  // Returns number of register arg,
 __attribute__((hot))
 _ERRNO_T assembleString(char *sourceStr)
 {
-	char **saveptr;
-	char *instruction = strtok_r(sourceStr, DELIM, saveptr);
+	char **saveptr = NULL;
+	//char *instruction = strtok_r(sourceStr, DELIM, saveptr);
+	char *instruction = strtok(sourceStr, DELIM);
 	
 	arg_t arg1, arg2;
-	arg1.str = strtok_r(NULL, DELIM, saveptr);
-	arg2.str = strtok_r(NULL, DELIM, saveptr);
+	//arg1.str = strtok_r(NULL, DELIM, saveptr);
+	//arg2.str = strtok_r(NULL, DELIM, saveptr);
+	arg1.str = strtok(NULL, DELIM);
+	arg2.str = strtok(NULL, DELIM);
 	arg1.type = IS_NUM(arg1.str) + IS_REG(arg1.str) * 2;
 	arg2.type = IS_NUM(arg2.str) + IS_REG(arg2.str) * 2;
 	if ((arg1.str && arg1.type == NONE) ||

@@ -22,7 +22,7 @@ const static char* errmsg[] = {
 	[SUCCESS] = 
 		"Assembly successful",
 	[INCORRECT_COMMAND_LINE] = 
-		C_BOLD_BLUE"Usage:"C_RESET" vmm-asm file1 file2 ... -o outputFile",
+		C_BOLD_BLUE"Usage:"C_RESET" vmm-asm <source> -o <output>",
 	[NO_INPUT_FILES] = 
 		C_BOLD_RED"error:"C_RESET" no input files",
 	[CANNOT_OPEN_FILE] = 
