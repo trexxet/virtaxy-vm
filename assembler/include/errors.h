@@ -38,3 +38,4 @@ const static char* errmsg[] = {
 	[INVALID_ARGS] = 
 		C_BOLD_RED"error:"C_RESET" invalid combination of command and arguments"
 };
+
