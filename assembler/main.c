@@ -59,7 +59,7 @@ void assembleFile(char *filename)
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);
 	openedFileHandle = NULL;
-	parseError(_errno, filename, lineCounter, errStr);
+	parseError(_errno, filename, lineCounter, _errno ? errStr : NULL);
 }
 
 

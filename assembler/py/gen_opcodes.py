@@ -10,10 +10,14 @@ for line in instr:
             string += '_REG'
         elif words[2] == 'num':
             string += '_NUM'
+        else:
+            string += '_NONE'
         if words[3] == 'reg2':
             string += '_REG'
         elif words[3] == 'num':
             string += '_NUM'
+        else:
+            string += '_NONE'
         opcodes.write(string + ' ' + words[0].lstrip('0') + '\n')
 opcodes.close()
 instr.close()

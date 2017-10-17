@@ -1,52 +1,55 @@
 import re
 
+
+# Create opcodes tree
 opcodes = open('generated/opcodes.h')
-asm = open('generated/asm_generated.c', 'w')
-prevWord = ''
+OPtree = {}
+
 for line in opcodes:
-    words = re.split('[\s_+]', line)
-    if prevWord != words[1]:
-        if prevWord != '':
-            asm.write('\tasm_err = INVALID_ARGS; goto assemblied;\n')
-            asm.write('}\n\n')
-        asm.write('IF_INSTR(' + words[1].lower() + ')\n{\n')
-        prevWord = words[1]
-    if words[2] == 'NUM':
-        asm.write('\tif (arg1.type == NUM)\n\t{\n\t\t')
-        asm.write('CHECK_PROGRAM_SIZE(2);\n\t\t')
-        asm.write('NEXT_COMMAND = ' + words[1] + '_NUM;\n\t\t')
-        asm.write('NEXT_COMMAND = strtol(arg1.str, NULL, 0);\n\t\t')
-        asm.write('asm_err = 0; goto assemblied;\n\t}\n')
-    elif words[2] == 'REG':
-        asm.write('\tif (arg1.type == REG)\n\t{\n')
-        if words[3] == 'NUM':
-            asm.write('\t\tif (arg2.type == NUM)\n\t\t{\n\t\t\t')
-            asm.write('CHECK_PROGRAM_SIZE(3);\n\t\t\t')
-            asm.write('NEXT_COMMAND = ' + words[1] + '_REG_NUM;\n\t\t\t')
-            asm.write('NEXT_COMMAND = REG_NUM(arg1.str);\n\t\t\t')
-            asm.write('NEXT_COMMAND = strtol(arg2.str, NULL, 0);\n\t\t\t')
-            asm.write('asm_err = 0; goto assemblied;\n\t\t}\n')
-        elif words[3] == 'REG':
-            asm.write('\t\tif (arg2.type == REG)\n\t\t{\n\t\t\t')
-            asm.write('CHECK_PROGRAM_SIZE(3);\n\t\t\t')
-            asm.write('NEXT_COMMAND = ' + words[1] + '_REG_REG;\n\t\t\t')
-            asm.write('NEXT_COMMAND = REG_NUM(arg1.str);\n\t\t\t')
-            asm.write('NEXT_COMMAND = REG_NUM(arg2.str);\n\t\t\t')
-            asm.write('asm_err = 0; goto assemblied;\n\t\t}\n')
-        else:
-            asm.write('\t\tif (arg2.type == NONE)\n\t\t{\n\t\t\t')
-            asm.write('CHECK_PROGRAM_SIZE(3);\n\t\t\t')
-            asm.write('NEXT_COMMAND = ' + words[1] + '_REG;\n\t\t\t')
-            asm.write('NEXT_COMMAND = REG_NUM(arg1.str);\n\t\t\t')
-            asm.write('asm_err = 0; goto assemblied;\n\t\t}\n')
-        asm.write('\t}\n')
-    else:
-        asm.write('\tif (arg1.type == NONE)\n\t{\n\t\t')
-        asm.write('CHECK_PROGRAM_SIZE(1);\n\t\t')
-        asm.write('NEXT_COMMAND = ' + words[1] + ';\n\t\t')
-        asm.write('asm_err= 0; goto assemblied;\n\t}\n')
-asm.write('\tasm_err = INVALID_ARGS; goto assemblied;\n')
-asm.write('}')
+    OPdef = re.split('[\s_+]', line)
+    instr = OPdef[1]
+    arg1 = OPdef[2]
+    arg2 = OPdef[3]
+    if not OPtree.get(instr):
+        OPtree[instr] = {}
+    if not OPtree[instr].get(arg1):
+        OPtree[instr][arg1] = []
+    OPtree[instr][arg1].append(arg2)
+
+
+# Generate code
+asm = open('generated/asm_generated.c', 'w')
+
+for instr, args in OPtree.items():
+    code = 'IF_INSTR(' + instr.lower() + ')\n{\n'
+    for arg1, args2 in args.items():
+        code += '\tif (arg1.type == ' + arg1 + ')\n\t{\n'
+        for arg2 in args2:
+            code += '\t\tif (arg2.type == ' + arg2 + ')\n\t\t{\n'
+            code += '\t\t\tCHECK_PROGRAM_SIZE(3);\n'
+            code += '\t\t\tNEXT_COMMAND = ' + instr + '_' + arg1 + '_' + arg2 + ';\n'
+            if arg1 == 'REG':
+                code += '\t\t\tNEXT_COMMAND = REG_NUM(arg1.str);\n'
+            if arg1 == 'NUM':
+                code += '\t\t\tNEXT_COMMAND = strtol(arg1.str, NULL, 0);\n'
+            if arg1 == 'NONE':
+                code += '\t\t\tNEXT_COMMAND = 0;\n'
+            if arg2 == 'REG':
+                code += '\t\t\tNEXT_COMMAND = REG_NUM(arg2.str);\n'
+            if arg2 == 'NUM':
+                code += '\t\t\tNEXT_COMMAND = strtol(arg2.str, NULL, 0);\n'
+            if arg2 == 'NONE':
+                code += '\t\t\tNEXT_COMMAND = 0;\n'
+            code += '\t\t\tasm_err = 0; goto assembled;\n'
+            code += '\t\t}\n'
+        code += '\t\tasm_err = INVALID_ARGS; invalArg = 2; goto assembled;\n'
+        code += '\t}\n'
+    code += '\tasm_err = INVALID_ARGS; invalArg = 1; goto assembled;\n'
+    code += '}\n\n'
+    asm.write(code)
+
+    
+# Finish
 opcodes.close()
 asm.close()
 

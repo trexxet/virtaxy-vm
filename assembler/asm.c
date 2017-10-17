@@ -38,34 +38,7 @@ typedef struct {
 
 
 // Macros for assembling
-
-#define LOAD_ARG(arg)                   \
-	arg.str = strtok(NULL, DELIM);  \
-	arg.type = IS_NUM(arg.str) + IS_REG(arg.str) * 2;
-
-#define CHECK_PROGRAM_SIZE(incsize)                          \
-	if (P->maxSize - P->size < incsize)                  \
-		P->ops = (int64_t *) realloc(P->ops,         \
-			   (P->maxSize += P->maxSize * 2) * sizeof(int64_t))
-
-#define IF_INSTR(instr) if (strcmp(instruction, #instr) == 0)
-
-#define NEXT_COMMAND P->ops[P->size++]
-
-#define IS_REG2(arg) (arg && strlen(arg) == 2 &&          \
-		      strchr(REGISTER_POSTFIX, arg[1]) && \
-		      strchr(REGISTER_LETTER, arg[0]))
-
-#define IS_REG3(arg) (arg && strlen(arg) == 3 &&         \
-		      arg[2] == REGISTER_POSTFIX[0] &&   \
-		      strchr(REGISTER_PREFIX, arg[0]) && \
-		      strchr(REGISTER_LETTER, arg[1]))
-
-#define IS_REG(arg) (IS_REG2(arg) || IS_REG3(arg))
-
-#define REG_NUM(arg) registerNumber(arg)
-
-#define IS_NUM(arg) (arg && strspn(arg, "0123456789") == strlen(arg))
+#include "asm_macros.h"
 
 
 // Functions for assembling
@@ -101,21 +74,23 @@ _ERRNO_T assembleString(char *sourceStr, program *P, char *errStr)
 	LOAD_ARG(arg2);
 
 	_ERRNO_T asm_err = UNKNOWN_COMMAND;
+	int invalArg = 0;
 	#include "generated/asm_generated.c"
-assemblied:
-	if (asm_err)
+assembled:
+	if (asm_err == UNKNOWN_COMMAND)
+		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instruction, 
+								arg1.str, arg2.str);
+	if (asm_err == INVALID_ARGS)
 	{
-		if (asm_err == UNKNOWN_COMMAND)
-			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instruction, 
-			                                                arg1.str, arg2.str);
-		if (asm_err == INVALID_ARGS)
-			sprintf(errStr, "%s %s, %s\n arg1: %s\n arg2: %s", instruction,
-			                                                   arg1.str, arg2.str,
-			                                                   argTypeStr[arg1.type],
-			                                                   argTypeStr[arg2.type]);		
-		return asm_err;
+		if (invalArg == 1)
+			sprintf(errStr, "%s "C_BOLD_RED"%s"C_RESET
+			        ", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 
+			        instruction, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
+		if (invalArg == 2)
+			sprintf(errStr, "%s %s, "C_BOLD_RED"%s"C_RESET
+			        "\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
+			        instruction, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
 	}
-
-	return 0;
+	return asm_err;
 }
 
