@@ -1,8 +1,15 @@
 #pragma once
 #include "errors.h"
 
+
 typedef struct {
-	int64_t* ops;
+	int64_t opcode;
+	int64_t arg1;
+	int64_t arg2;
+} instruction;
+
+typedef struct {
+	instruction* ops;
 	uint64_t size;
 	uint64_t maxSize;
 } program;

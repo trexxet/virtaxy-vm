@@ -6,12 +6,14 @@
 
 #define CHECK_PROGRAM_SIZE(incsize)                          \
 	if (P->maxSize - P->size < incsize)                  \
-		P->ops = (int64_t *) realloc(P->ops,         \
-			   (P->maxSize += P->maxSize * 2) * sizeof(int64_t))
+		P->ops = (instruction *) realloc(P->ops,     \
+			  (P->maxSize += P->maxSize * 2) * sizeof(instruction))
 
-#define IF_INSTR(instr) if (strcmp(instruction, #instr) == 0)
+#define IF_INSTR(instr) if (strcmp(instrStr, #instr) == 0)
 
-#define NEXT_COMMAND P->ops[P->size++]
+#define OPCODE P->ops[P->size].opcode
+#define ARG1   P->ops[P->size].arg1
+#define ARG2   P->ops[P->size].arg2
 
 #define IS_REG2(arg) (arg && strlen(arg) == 2 &&          \
 		      strchr(REGISTER_POSTFIX, arg[1]) && \

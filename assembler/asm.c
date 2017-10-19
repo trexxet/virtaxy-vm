@@ -16,8 +16,8 @@ _ERRNO_T asmInit(program *P)
 {
 	P->size = 0;
 	P->maxSize = INIT_PROGRAM_SIZE;
-	return (P->ops = calloc(INIT_PROGRAM_SIZE, sizeof(int64_t))) ? SUCCESS 
-	                                                             : CANNOT_ALLOCATE_MEMORY;
+	return (P->ops = calloc(INIT_PROGRAM_SIZE, sizeof(instruction))) ? SUCCESS 
+	                                                                 : CANNOT_ALLOCATE_MEMORY;
 }
 
 
@@ -90,7 +90,7 @@ int registerNumber(char* arg)  // Returns number of register arg,
 __attribute__((hot))
 _ERRNO_T assembleString(char *sourceStr, program *P, char *errStr)
 {
-	char *instruction = strtok(sourceStr, DELIM);
+	char *instrStr = strtok(sourceStr, DELIM);
 	
 	arg_t arg1, arg2;
 	LOAD_ARG(arg1);
@@ -101,18 +101,19 @@ _ERRNO_T assembleString(char *sourceStr, program *P, char *errStr)
 	#include "generated/asm_generated.c"
 
 assembled:
+	P->size++;
 	if (asm_err == UNKNOWN_COMMAND)
-		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instruction, arg1.str, arg2.str);
+		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
 	if (asm_err == INVALID_ARGS)
 	{
 		if (invalArg == 1)
 			sprintf(errStr, "%s "C_BOLD_RED"%s"C_RESET
 			        ", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 
-			        instruction, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
+			        instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
 		if (invalArg == 2)
 			sprintf(errStr, "%s %s, "C_BOLD_RED"%s"C_RESET
 			        "\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
-			        instruction, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
+			        instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]);
 	}
 	return asm_err;
 }

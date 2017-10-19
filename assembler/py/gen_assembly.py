@@ -1,5 +1,5 @@
 import re
-
+from collections import OrderedDict
 
 # Create opcodes tree
 opcodes = open('generated/opcodes.h')
@@ -15,6 +15,8 @@ for line in opcodes:
     if not OPtree[instr].get(arg1):
         OPtree[instr][arg1] = []
     OPtree[instr][arg1].append(arg2)
+OPtree = OrderedDict(sorted(OPtree.items()))
+opcodes.close()
 
 
 # Generate code
@@ -27,19 +29,19 @@ for instr, args in OPtree.items():
         for arg2 in args2:
             code += '\t\tif (arg2.type == ' + arg2 + ')\n\t\t{\n'
             code += '\t\t\tCHECK_PROGRAM_SIZE(3);\n'
-            code += '\t\t\tNEXT_COMMAND = ' + instr + '_' + arg1 + '_' + arg2 + ';\n'
+            code += '\t\t\tOPCODE = ' + instr + '_' + arg1 + '_' + arg2 + ';\n'
             if arg1 == 'REG':
-                code += '\t\t\tNEXT_COMMAND = REG_NUM(arg1.str);\n'
+                code += '\t\t\tARG1 = REG_NUM(arg1.str);\n'
             if arg1 == 'NUM':
-                code += '\t\t\tNEXT_COMMAND = strtol(arg1.str, NULL, 0);\n'
+                code += '\t\t\tARG1 = strtol(arg1.str, NULL, 0);\n'
             if arg1 == 'NONE':
-                code += '\t\t\tNEXT_COMMAND = 0;\n'
+                code += '\t\t\tARG1 = 0;\n'
             if arg2 == 'REG':
-                code += '\t\t\tNEXT_COMMAND = REG_NUM(arg2.str);\n'
+                code += '\t\t\tARG2 = REG_NUM(arg2.str);\n'
             if arg2 == 'NUM':
-                code += '\t\t\tNEXT_COMMAND = strtol(arg2.str, NULL, 0);\n'
+                code += '\t\t\tARG2 = strtol(arg2.str, NULL, 0);\n'
             if arg2 == 'NONE':
-                code += '\t\t\tNEXT_COMMAND = 0;\n'
+                code += '\t\t\tARG2 = 0;\n'
             code += '\t\t\tasm_err = 0; goto assembled;\n'
             code += '\t\t}\n'
         code += '\t\tasm_err = INVALID_ARGS; invalArg = 2; goto assembled;\n'
@@ -47,9 +49,5 @@ for instr, args in OPtree.items():
     code += '\tasm_err = INVALID_ARGS; invalArg = 1; goto assembled;\n'
     code += '}\n\n'
     asm.write(code)
-
-    
-# Finish
-opcodes.close()
 asm.close()
 
