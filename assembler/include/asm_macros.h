@@ -26,5 +26,5 @@
 
 #define REG_NUM(arg) registerNumber(arg)
 
-#define IS_NUM(arg) (arg && strspn(arg, "0123456789") == strlen(arg))
+#define IS_NUM(arg) isNum(arg)
 

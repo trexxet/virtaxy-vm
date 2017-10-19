@@ -29,7 +29,7 @@ typedef enum {
 	REG
 } argType;
 
-const char* argTypeStr[] = {"NONE", "NUM", "REG"};
+const char* argTypeStr[] = {"NONE", "NUM", "REG", "UNDEF"};
 
 typedef struct {
 	char *str;
@@ -42,6 +42,29 @@ typedef struct {
 
 
 // Functions for assembling
+
+
+__attribute__((hot))
+int isNum(char *arg)
+{
+	if (!arg)
+		return 0;
+	char *endptr = arg;
+	strtoll(arg, &endptr, 0);
+	if (*endptr == 0)
+		return 1;
+	char argStrBuf[SOURCE_STRING_LENGTH] = {0};
+	strcpy(argStrBuf, arg);
+	int argStrBufLen = strlen(argStrBuf) - 1;
+	if (argStrBuf[argStrBufLen] != 'h')
+		return 0;
+	argStrBuf[argStrBufLen] = 0;
+	endptr = argStrBuf;
+	strtoll(argStrBuf, &endptr, 16);
+	if (*endptr == 0)
+		return 1;
+	return 0;
+}
 
 
 __attribute__((hot))
@@ -76,10 +99,10 @@ _ERRNO_T assembleString(char *sourceStr, program *P, char *errStr)
 	_ERRNO_T asm_err = UNKNOWN_COMMAND;
 	int invalArg = 0;
 	#include "generated/asm_generated.c"
+
 assembled:
 	if (asm_err == UNKNOWN_COMMAND)
-		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instruction, 
-								arg1.str, arg2.str);
+		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instruction, arg1.str, arg2.str);
 	if (asm_err == INVALID_ARGS)
 	{
 		if (invalArg == 1)

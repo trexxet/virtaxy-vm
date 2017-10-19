@@ -9,6 +9,5 @@ typedef struct {
 
 
 _ERRNO_T asmInit(program *P);
-int registerNumber(char* arg);
 _ERRNO_T assembleString(char *sourceStr, program *P, char *errStr);
 
