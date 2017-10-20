@@ -1,4 +1,4 @@
-//This file contains error codes.
+// Error codes & explaining strings
 
 #pragma once
 
@@ -13,6 +13,7 @@ typedef enum {
 	UNKNOWN_COMMAND,
 	INVALID_ARGS
 } _ERRNO_T;
+
 
 #define C_BOLD_RED "\033[1m\033[31m"
 #define C_BOLD_BLUE "\033[1m\033[34m"

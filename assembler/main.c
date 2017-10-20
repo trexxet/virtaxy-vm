@@ -11,7 +11,6 @@
 
 
 _ERRNO_T _errno = SUCCESS;
-program P;
 
 
 void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char **outputFilename);
@@ -24,7 +23,7 @@ void finalization();
 
 void main(int argc, char *argv[])
 {
-	_errno = asmInit(&P);
+	_errno = asmInit();
 	if (_errno)
 		parseError(_errno, NULL, 0, NULL);
 
@@ -52,7 +51,7 @@ void assembleFile(char *filename)
 	char errStr[2 * SOURCE_STRING_LENGTH] = {0};
 	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
 	{
-		_errno = assembleString(sourceString, &P, errStr);
+		_errno = assembleString(sourceString, errStr);
 		lineCounter++;
 	}
 	
@@ -65,6 +64,7 @@ void assembleFile(char *filename)
 
 void writeProgram(char *filename)
 {
+	extern program P;
 	FILE* openedFileHandle = fopen(filename, "wb");
 	if (!openedFileHandle)
 		parseError(CANNOT_OPEN_FILE, filename, 0, NULL);
@@ -116,7 +116,7 @@ void parseError(_ERRNO_T _errno, char *file, size_t line, char *errStr)
 //Here we free all dynamically allocated memory, pray the Valgrind
 _Noreturn void finalization()
 {
-	free(P.ops);
+	asmFinal();
 	exit(_errno);
 }
 
