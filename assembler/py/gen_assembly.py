@@ -33,13 +33,13 @@ for instr, args in OPtree.items():
             if arg1 == 'REG':
                 code += '\t\t\tARG1 = REG_NUM(arg1.str);\n'
             if arg1 == 'NUM':
-                code += '\t\t\tIS_NUM(arg1.str, &ARG1);\n'
+                code += '\t\t\tARG_TO_NUM(arg1.str, &ARG1, &S);\n'
             if arg1 == 'NONE':
                 code += '\t\t\tARG1 = 0;\n'
             if arg2 == 'REG':
                 code += '\t\t\tARG2 = REG_NUM(arg2.str);\n'
             if arg2 == 'NUM':
-                code += '\t\t\tIS_NUM(arg2.str, &ARG2);\n'
+                code += '\t\t\tARG_TO_NUM(arg2.str, &ARG2, &S);\n'
             if arg2 == 'NONE':
                 code += '\t\t\tARG2 = 0;\n'
             code += '\t\t\tASSEMBLED;\n'

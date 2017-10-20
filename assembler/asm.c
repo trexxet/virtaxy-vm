@@ -42,6 +42,15 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
 	
+	// Check if label
+	if (IS_LABEL(instrStr))
+	{
+		char labelStr[SOURCE_STRING_LENGTH] = {0};
+		strncpy(labelStr, instrStr, strlen(instrStr) - 1);
+		symAdd(&S, labelStr, P.size);
+		return SUCCESS;
+	}
+
 	arg_t arg1, arg2;
 	LOAD_ARG(arg1);
 	LOAD_ARG(arg2);
@@ -50,7 +59,7 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 	int invalArg = 0;
 	#include "generated/asm_generated.c"
 
-assembled:
+	assembled:
 	P.size++; // Go to next command
 	if (asm_err == UNKNOWN_COMMAND)
 		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
@@ -70,8 +79,10 @@ assembled:
 	return asm_err;
 }
 
+
 void asmFinal()
 {
+	symDestroy(&S);
 	free(P.ops);
 }
 

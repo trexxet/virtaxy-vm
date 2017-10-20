@@ -42,3 +42,13 @@ void symDestroy(symTable *S)
 	free(S->sym);
 }
 
+
+// Debug
+#include <stdio.h>
+void symPrint(symTable *S)
+{
+	fprintf(stderr, "===SYMBOL TABLE===\n");
+	for (int i = 0; i < S->size; i++)
+		fprintf(stderr, "  '%s': \t%lld\n", S->sym[i].name, S->sym[i].value);
+}
+

@@ -7,7 +7,7 @@
 #define INIT_PROGRAM_SIZE 128                 //Initial program size in bytes
 
 //Assembling configuration
-#define DELIM " ,\n"                          // Delim for strtok_r()
+#define DELIM " ,\t\n"                        // Delim for strtok_r()
 #define REGISTER_PREFIX "rdeh"                // Register prefixes (rax, dax, eax, hax, or no prefix - ax)
 #define REGISTER_LETTER "abcdefghjklmnopq"    // Register groups (ax, bx, cx, ...)
 #define REGISTER_POSTFIX "xhl"                // Register postfixes (ax, ah, al)

@@ -36,24 +36,49 @@
 36: push num 		- push num to stack
 37: push reg 		- push register to stack
 38: pop 		- delete last stack item
-39: pop reg 		- put last stack item to register and delete it
+39: pop reg 		- put last stack item to register and delete it from stack
 40: sinc		- increase top stack value
 41: sdec 		- decrease top stack value
 42: smov reg		- copy top stack value to register
-43: sadd 		- pop two top stack values and push their sum
-44: ssub		- pop two top stack values and push their substraction
-45: smul		- pop two top stack values and push their multiplication
-46: sdiv		- pop two top stack values and push their integer division
-47: smod		- pop two top stack values and push their modulo
-48: sand		- pop two top stack values and push the result of applying bitwise AND to them
-49: snand		- pop two top stack values and push the result of applying bitwise NAND to them
-50: sor			- pop two top stack values and push the result of applying bitwise OR to two them
-51: snor		- pop two top stack values and push the result of applying bitwise NOR to them
-52: sxor		- pop two top stack values and push the result of applying bitwise XOR to them
-53: sxnor		- pop two top stack values and push the result of applying bitwise XNOR to them
+43: sadd 		- pop two stack values and push their sum
+44: ssub		- pop two stack values and push their substraction
+45: smul		- pop two stack values and push their multiplication
+46: sdiv		- pop two stack values and push their integer division
+47: smod		- pop two stack values and push their modulo
+48: sand		- pop two stack values and push the result of applying bitwise AND to them
+49: snand		- pop two stack values and push the result of applying bitwise NAND to them
+50: sor			- pop two stack values and push the result of applying bitwise OR to two them
+51: snor		- pop two stack values and push the result of applying bitwise NOR to them
+52: sxor		- pop two stack values and push the result of applying bitwise XOR to them
+53: sxnor		- pop two stack values and push the result of applying bitwise XNOR to them
 54: snot		- apply bitwise NOT to top stack value
-55: sshl		- pop two top stack values and push the result of shifting pre-top stack value left by top
-56: sshr		- pop two top stack values and push the result of shifting pre-top stack value right by top
-57: srtl		- pop two top stack values and push the result of rotating pre-top stack value left by top
-58: srtr		- pop two top stack values and push the result of rotating pre-top stack value right by top
-
+55: sshl		- pop two stack values and push the result of shifting pre-top stack value left by top
+56: sshr		- pop two stack values and push the result of shifting pre-top stack value right by top
+57: srtl		- pop two stack values and push the result of rotating pre-top stack value left by top
+58: srtr		- pop two stack values and push the result of rotating pre-top stack value right by top
+59: jmp reg		- unconditional jump at register value
+60: jmp num		- unconditional jump at number
+61: jz reg		- jump at reg if zero
+62: jz num		- jump at num if zero
+63: je reg		- jump at reg if equal
+64: je num		- jump at num if equal
+65: jnz reg		- jump at reg if not zero
+66: jnz num		- jump at num if not zero
+67: jne reg		- jump at reg if not equal
+68: jne num		- jump at num if not equal
+69: ja reg		- jump at reg if above (unsigned compare)
+70: ja num		- jump at num if above (unsigned compare)
+71: jb reg		- jump at reg if below (unsigned compare)
+72: jb num		- jump at num if below (unsigned compare)
+73: jae reg		- jump at reg if above or equal (unsigned compare)
+74: jae num		- jump at num if above or equal (unsigned compare)
+75: jbe reg		- jump at reg if below or equal (unsigned compare)
+76: jbe num		- jump at num if below or equal (unsigned compare)
+77: jg reg		- jump at reg if greater (signed compare)
+78: jg num		- jump at num if greater (signed compare)
+79: jl reg		- jump at reg if less (signed compare)
+80: jl num		- jump at num if less (signed compare)
+81: jge reg		- jump at reg if greater or equal (signed compare)
+82: jge num		- jump at num if greater or equal (signed compare)
+83: jle reg		- jump at reg if less or equal (signed compare)
+84: jle num		- jump at num if less or equal (signed compare)

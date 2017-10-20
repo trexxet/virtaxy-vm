@@ -24,3 +24,6 @@ void symAdd(symTable *S, char *name, int64_t value);
 int symGetValue(symTable *S, char *name, int64_t *value);
 void symDestroy(symTable *S);
 
+// Debug:
+void symPrint(symTable *S);
+

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include "symtable.h"
 
 
 typedef enum {
@@ -24,14 +25,17 @@ typedef struct {
 
 #define LOAD_ARG(arg)                   \
 	arg.str = strtok(NULL, DELIM);  \
-	arg.type = IS_NUM(arg.str, NULL) | IS_REG(arg.str) | IS_LABEL(arg.str);
+	arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str) | IS_LABEL(arg.str);
 
 
 __attribute__((hot))
-int isArgNum(char *arg, int64_t *num)
+int isArgNum(char *arg, int64_t *num, symTable *S)
 {
 	if (!arg)
 		return NONE;
+	// Check if arg exists in symbol table
+	if (symGetValue(S, arg, num ? num : NULL))
+		return NUM;
 	// Check if arg is correct decimal / octal /  hexadecimal beginning with '0x'
 	char *endptr = arg;
 	if (num)
@@ -58,7 +62,8 @@ int isArgNum(char *arg, int64_t *num)
 	return NONE;
 }
 
-#define IS_NUM(arg, pnum) isArgNum(arg, pnum)
+#define IS_NUM(arg, symtab) isArgNum(arg, NULL, symtab)
+#define ARG_TO_NUM(arg, pnum, symtab) isArgNum(arg, pnum, symtab)
 
 
 __attribute__((hot))
