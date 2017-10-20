@@ -33,20 +33,20 @@ for instr, args in OPtree.items():
             if arg1 == 'REG':
                 code += '\t\t\tARG1 = REG_NUM(arg1.str);\n'
             if arg1 == 'NUM':
-                code += '\t\t\tARG1 = strtol(arg1.str, NULL, 0);\n'
+                code += '\t\t\tIS_NUM(arg1.str, &ARG1);\n'
             if arg1 == 'NONE':
                 code += '\t\t\tARG1 = 0;\n'
             if arg2 == 'REG':
                 code += '\t\t\tARG2 = REG_NUM(arg2.str);\n'
             if arg2 == 'NUM':
-                code += '\t\t\tARG2 = strtol(arg2.str, NULL, 0);\n'
+                code += '\t\t\tIS_NUM(arg2.str, &ARG2);\n'
             if arg2 == 'NONE':
                 code += '\t\t\tARG2 = 0;\n'
-            code += '\t\t\tasm_err = 0; goto assembled;\n'
+            code += '\t\t\tASSEMBLED;\n'
             code += '\t\t}\n'
-        code += '\t\tasm_err = INVALID_ARGS; invalArg = 2; goto assembled;\n'
+        code += '\t\tINVALID_ARG2;\n'
         code += '\t}\n'
-    code += '\tasm_err = INVALID_ARGS; invalArg = 1; goto assembled;\n'
+    code += '\tINVALID_ARG1;\n'
     code += '}\n\n'
     asm.write(code)
 asm.close()

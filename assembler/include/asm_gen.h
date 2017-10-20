@@ -1,4 +1,4 @@
-// Macros for generated assembler code
+// Functions & macros for generated assembler code
 
 #pragma once
 
@@ -13,4 +13,8 @@
 #define OPCODE P.ops[P.size].opcode
 #define ARG1   P.ops[P.size].arg1
 #define ARG2   P.ops[P.size].arg2
+
+#define ASSEMBLED asm_err = 0; goto assembled;
+#define INVALID_ARG1 asm_err = INVALID_ARGS; invalArg = 1; goto assembled;
+#define INVALID_ARG2 asm_err = INVALID_ARGS; invalArg = 2; goto assembled;
 

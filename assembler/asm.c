@@ -15,8 +15,8 @@
 #include "asm_arg.h"
 // Register types & functions
 #include "asm_reg.h"
-// Macros for assembling
-#include "asm_macros.h"
+// Functions & macros for generated assembler code
+#include "asm_gen.h"
 
 #include "generated/opcodes.h"
 

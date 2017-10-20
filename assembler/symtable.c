@@ -41,3 +41,4 @@ void symDestroy(symTable *S)
 {
 	free(S->sym);
 }
+
