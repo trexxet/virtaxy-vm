@@ -9,6 +9,8 @@
 #include "errors.h"
 #include "config.h"
 
+// Symbol table types & functions
+#include "symtable.h"
 // Argument types & functions
 #include "asm_arg.h"
 // Register types & functions
@@ -25,10 +27,13 @@ symTable S;
 
 _ERRNO_T asmInit()
 {
+	// Init program
 	P.size = 0;
 	P.maxSize = INIT_PROGRAM_SIZE;
-	return (P.ops = calloc(INIT_PROGRAM_SIZE, sizeof(instruction))) ? SUCCESS 
-	                                                                : CANNOT_ALLOCATE_MEMORY;
+	if (!(P.ops = calloc(INIT_PROGRAM_SIZE, sizeof(instruction))))
+		return CANNOT_ALLOCATE_MEMORY;
+	// Init symbol table
+	return symInit(&S);
 }
 
 
@@ -60,6 +65,7 @@ assembled:
 			sprintf(errStr, 
 			        "%s %s, "C_BOLD_RED"%s"C_RESET"\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
 			        errStrWords);
+		#undef errStrWords
 	}
 	return asm_err;
 }

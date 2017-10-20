@@ -2,10 +2,11 @@
 
 #pragma once
 
-#define CHECK_PROGRAM_SIZE(incsize)                        \
-	if (P.maxSize - P.size < incsize)                  \
-		P.ops = (instruction *) realloc(P.ops,     \
-			  (P.maxSize += P.maxSize * 2) * sizeof(instruction))
+
+#define CHECK_PROGRAM_SIZE                             \
+	if (P.maxSize - P.size < 1)                    \
+		P.ops = (instruction *) realloc(P.ops, \
+			  (P.maxSize += P.maxSize / 2) * sizeof(instruction))
 
 #define IF_INSTR(instr) if (strcmp(instrStr, #instr) == 0)
 

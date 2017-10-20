@@ -5,6 +5,7 @@
 #include <string.h>
 #include "../config.h"
 
+
 #define IS_REG2(arg) (arg && strlen(arg) == 2 &&          \
 		      strchr(REGISTER_POSTFIX, arg[1]) && \
 		      strchr(REGISTER_LETTER, arg[0]))
@@ -15,6 +16,7 @@
 		      strchr(REGISTER_LETTER, arg[1]))
 
 #define IS_REG(arg) (IS_REG2(arg) || IS_REG3(arg))
+
 
 __attribute__((hot))
 int registerNumber(char* arg)  // Returns number of register arg,

@@ -28,7 +28,7 @@ for instr, args in OPtree.items():
         code += '\tif (arg1.type == ' + arg1 + ')\n\t{\n'
         for arg2 in args2:
             code += '\t\tif (arg2.type == ' + arg2 + ')\n\t\t{\n'
-            code += '\t\t\tCHECK_PROGRAM_SIZE(3);\n'
+            code += '\t\t\tCHECK_PROGRAM_SIZE;\n'
             code += '\t\t\tOPCODE = ' + instr + '_' + arg1 + '_' + arg2 + ';\n'
             if arg1 == 'REG':
                 code += '\t\t\tARG1 = REG_NUM(arg1.str);\n'

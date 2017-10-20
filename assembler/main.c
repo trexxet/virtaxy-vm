@@ -46,9 +46,9 @@ void assembleFile(char *filename)
 	if (feof(openedFileHandle))
 		parseError(INPUT_IS_EMPTY, filename, 0, NULL);
 	
-	char sourceString[SOURCE_STRING_LENGTH] = {0};
+	char sourceString[SOURCE_STRING_LENGTH + 1] = {0};
 	size_t lineCounter = 0;
-	char errStr[2 * SOURCE_STRING_LENGTH] = {0};
+	char errStr[SOURCE_STRING_LENGTH + 128] = {0};
 	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
 	{
 		_errno = assembleString(sourceString, errStr);

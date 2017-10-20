@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 
+
 typedef enum {
 	NONE = 0,
 	NUM,

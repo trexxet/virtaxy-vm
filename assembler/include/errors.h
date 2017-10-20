@@ -2,6 +2,7 @@
 
 #pragma once
 
+
 typedef enum { 
 	SUCCESS = 0,	
 	INCORRECT_COMMAND_LINE,
