@@ -60,9 +60,22 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 	#include "generated/asm_generated.c"
 
 	assembled:
-	P.size++; // Go to next command
+
 	if (asm_err == UNKNOWN_COMMAND)
+	{
+		// Check if new symbol
+		if ((strcmp(arg1.str, "equ") == 0) && IS_NUM(arg2.str, &S))
+		{
+			int64_t value = 0;
+			ARG_TO_NUM(arg2.str, &value, &S);
+			symAdd(&S, instrStr, value);
+			return SUCCESS;
+		}
+
+		// Else something has gone wrong
 		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
+	}
+
 	if (asm_err == INVALID_ARGS)
 	{
 		#define errStrWords instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]
@@ -76,12 +89,14 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 			        errStrWords);
 		#undef errStrWords
 	}
+	P.size++; // Go to next command
 	return asm_err;
 }
 
 
 void asmFinal()
 {
+	symPrint(&S);
 	symDestroy(&S);
 	free(P.ops);
 }

@@ -51,7 +51,8 @@ void assembleFile(char *filename)
 	char errStr[SOURCE_STRING_LENGTH + 128] = {0};
 	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
 	{
-		_errno = assembleString(sourceString, errStr);
+		if ((sourceString[0] != 0) && (sourceString[0] != '\n'))
+			_errno = assembleString(sourceString, errStr);
 		lineCounter++;
 	}
 	
