@@ -33,15 +33,14 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 {
 	if (!arg)
 		return NONE;
+	int64_t fake_num;
+	int64_t *dest = num ? num : &fake_num;
 	// Check if arg exists in symbol table
-	if (symGetValue(S, arg, num ? num : NULL))
+	if (symGetValue(S, arg, num ? num : NULL) >= 0)
 		return NUM;
-	// Check if arg is correct decimal / octal /  hexadecimal beginning with '0x'
+	// Check if arg is correct decimal / octal / hexadecimal beginning with '0x'
 	char *endptr = arg;
-	if (num)
-		*num = strtoll(arg, &endptr, 0);
-	else
-		strtoll(arg, &endptr, 0);
+	*dest = strtoll(arg, &endptr, 0);
 	if (*endptr == 0)
 		return NUM;
 	// Check if arg ends with 'h'
@@ -53,10 +52,7 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 	// Check if arg is correct hexadecimal ending with 'h'
 	argStrBuf[argStrBufLen] = 0;
 	endptr = argStrBuf;
-	if (num)
-		*num = strtoll(argStrBuf, &endptr, 16);
-	else
-		strtoll(argStrBuf, &endptr, 16);
+	*dest = strtoll(argStrBuf, &endptr, 16);
 	if (*endptr == 0)
 		return NUM;
 	return NONE;

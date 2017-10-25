@@ -19,6 +19,6 @@ typedef struct {
 
 
 _ERRNO_T asmInit();
-_ERRNO_T assembleString(char *sourceStr, char *errStr);
+_ERRNO_T assembleString(char *sourceStr, int pass, char *errStr);
 void asmFinal();
 

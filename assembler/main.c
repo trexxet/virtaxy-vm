@@ -48,13 +48,26 @@ void assembleFile(char *filename)
 	
 	char sourceString[SOURCE_STRING_LENGTH + 1] = {0};
 	size_t lineCounter = 0;
-	char errStr[SOURCE_STRING_LENGTH + 128] = {0};
-	while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && (_errno == 0))
+	char errStr[SOURCE_STRING_LENGTH + ERR_STR_LEN] = {0};
+	#define STRING_NOT_EMPTY (sourceString[0] != 0) && (sourceString[0] != '\n')
+	extern program P; 
+	for (int pass = 1; pass <= 2; pass++)
 	{
-		if ((sourceString[0] != 0) && (sourceString[0] != '\n'))
-			_errno = assembleString(sourceString, errStr);
-		lineCounter++;
+		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
+		       ((pass == 2) ? (_errno == 0) : 1))			
+		{
+			if (STRING_NOT_EMPTY)
+				_errno = assembleString(sourceString, pass, errStr);
+			if (pass == 2)
+				lineCounter++;
+		}
+		if (pass == 1)
+		{
+			P.size = 0;
+			rewind(openedFileHandle);
+		}
 	}
+	#undef STRING_NOT_EMPTY
 	
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);

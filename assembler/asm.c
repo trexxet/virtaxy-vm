@@ -38,7 +38,7 @@ _ERRNO_T asmInit()
 
 
 __attribute__((hot))
-_ERRNO_T assembleString(char *sourceStr, char *errStr)
+_ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
 	
@@ -47,7 +47,8 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 	{
 		char labelStr[SOURCE_STRING_LENGTH] = {0};
 		strncpy(labelStr, instrStr, strlen(instrStr) - 1);
-		symAdd(&S, labelStr, P.size);
+		if (symGetValue(&S, labelStr, NULL) < 0)
+			symAdd(&S, labelStr, P.size); 
 		return SUCCESS;
 	}
 
@@ -55,40 +56,44 @@ _ERRNO_T assembleString(char *sourceStr, char *errStr)
 	LOAD_ARG(arg1);
 	LOAD_ARG(arg2);
 
-	_ERRNO_T asm_err = UNKNOWN_COMMAND;
-	int invalArg = 0;
-	#include "generated/asm_generated.c"
-
-	assembled:
-
-	if (asm_err == UNKNOWN_COMMAND)
+	// Check if new constant
+	if ((strcmp(arg1.str, "equ") == 0) && IS_NUM(arg2.str, &S))
 	{
-		// Check if new symbol
-		if ((strcmp(arg1.str, "equ") == 0) && IS_NUM(arg2.str, &S))
-		{
-			int64_t value = 0;
-			ARG_TO_NUM(arg2.str, &value, &S);
+		int64_t value = 0;
+		ARG_TO_NUM(arg2.str, &value, &S);
+		if (symGetValue(&S, instrStr, NULL) < 0)
 			symAdd(&S, instrStr, value);
-			return SUCCESS;
-		}
-
-		// Else something has gone wrong
-		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
+		return SUCCESS;
 	}
 
-	if (asm_err == INVALID_ARGS)
+	// Try to assemble command
+	_ERRNO_T asm_err = 0;
+	if (pass == 2)
 	{
-		#define errStrWords instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]
-		if (invalArg == 1)
-			sprintf(errStr, 
-			        "%s "C_BOLD_RED"%s"C_RESET", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 
-			        errStrWords);
-		if (invalArg == 2)
-			sprintf(errStr, 
-			        "%s %s, "C_BOLD_RED"%s"C_RESET"\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
-			        errStrWords);
-		#undef errStrWords
+		asm_err = UNKNOWN_COMMAND;
+		int invalArg = 0;
+		#include "generated/asm_generated.c"
+
+		assembled:
+
+		if (asm_err == UNKNOWN_COMMAND)
+			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
+
+		if (asm_err == INVALID_ARGS)
+		{
+			#define errStrWords instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]
+			if (invalArg == 1)
+				sprintf(errStr, 
+					"%s "C_BOLD_RED"%s"C_RESET", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 
+					errStrWords);
+			if (invalArg == 2)
+				sprintf(errStr, 
+					"%s %s, "C_BOLD_RED"%s"C_RESET"\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
+					errStrWords);
+			#undef errStrWords
+		}
 	}
+
 	P.size++; // Go to next command
 	return asm_err;
 }

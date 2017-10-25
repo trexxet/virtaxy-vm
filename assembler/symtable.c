@@ -31,9 +31,9 @@ int symGetValue(symTable *S, char *name, int64_t *value)
 		{
 			if (value)
 				*value = S->sym[i].value;
-			return 1;
+			return i;
 		}
-	return 0;
+	return -1;
 }
 
 
