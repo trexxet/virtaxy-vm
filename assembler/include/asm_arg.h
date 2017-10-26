@@ -63,28 +63,6 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 
 
 __attribute__((hot))
-int isArgReg(char *arg)
-{
-	if (!arg)
-		return NONE;
-	// Check if arg is 2-letter register
-	if (strlen(arg) == 2 &&
-	    strchr(REGISTER_POSTFIX, arg[1]) &&
-	    strchr(REGISTER_LETTER, arg[0]))
-		return REG;
-	// Check if arg is 3-letter register
-	if (strlen(arg) == 3 &&
-	    arg[2] == REGISTER_POSTFIX[0] &&
-	    strchr(REGISTER_PREFIX, arg[0]) &&
-	    strchr(REGISTER_LETTER, arg[1]))
-		return REG;
-	return NONE;
-}
-
-#define IS_REG(arg) isArgReg(arg)
-
-
-__attribute__((hot))
 int isArgLabel(char *arg)
 {
 	if (!arg)

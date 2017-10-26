@@ -1,0 +1,10 @@
+r?x (0, 63)
+d?x (32, 63)
+e?x (0, 31)
+h?x (16, 31)
+?x  (0, 15)
+?h  (8, 15)
+?l  (0, 7)
+
+Groups: abcdefghigklmnopq
+

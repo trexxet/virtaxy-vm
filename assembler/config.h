@@ -8,11 +8,5 @@
 
 //Assembling configuration
 #define DELIM " ,\t\n"                        // Delim for strtok_r()
-#define REGISTER_PREFIX "rdeh"                // Register prefixes (rax, dax, eax, hax, or no prefix - ax)
-#define REGISTER_LETTER "abcdefghjklmnopq"    // Register groups (ax, bx, cx, ...)
-#define REGISTER_POSTFIX "xhl"                // Register postfixes (ax, ah, al)
-#define NUM_OF_REGS_IN_GROUP 7                // strlen(REGISTER_PREFIX) + strlen(REGISTER_POSTFIX)
-
-// Miscellaneous
 #define ERR_STR_LEN 128                       // Error explainning string length
 

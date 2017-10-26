@@ -82,3 +82,14 @@
 82: jge num		- jump at num if greater or equal (signed compare)
 83: jle reg		- jump at reg if less or equal (signed compare)
 84: jle num		- jump at num if less or equal (signed compare)
+85: cmp reg, num	- compare reg to num
+86: cmp num, reg	- compare num to reg
+87: cmp reg1, reg2	- compare reg1 to reg2
+88: test reg, num	- bitwisely test reg and num
+89: test reg1, reg2	- bitwisely test reg1 and reg2
+90: nop			- do nothing
+91: call reg		- call function by reg
+92: call num		- call function by num
+93: ret			- return from function
+94: in reg		- get terminal input (using scanf) and write to reg
+95: out reg		- print reg to terminal
