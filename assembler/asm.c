@@ -57,7 +57,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	LOAD_ARG(arg2);
 
 	// Check if new constant
-	if ((strcmp(arg1.str, "equ") == 0) && IS_NUM(arg2.str, &S))
+	if ((strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
 	{
 		int64_t value = 0;
 		ARG_TO_NUM(arg2.str, &value, &S);
@@ -66,7 +66,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	// Try to assemble command
+	// Try to assemble command on second pass
 	_ERRNO_T asm_err = 0;
 	if (pass == 2)
 	{
@@ -81,7 +81,8 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 
 		if (asm_err == INVALID_ARGS)
 		{
-			#define errStrWords instrStr, arg1.str, arg2.str, argTypeStr[arg1.type], argTypeStr[arg2.type]
+			#define errStrWords instrStr, arg1.str, arg2.str, \
+			                    argTypeStr[arg1.type], argTypeStr[arg2.type]
 			if (invalArg == 1)
 				sprintf(errStr, 
 					"%s "C_BOLD_RED"%s"C_RESET", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 

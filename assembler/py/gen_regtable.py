@@ -26,10 +26,8 @@ regs.write('reg_t reg[NUM_OF_REGISTERS] = {\n\n')
 for i, reg in enumerate(regList):
     regItem = '{\t.name = "' + str(reg[0]) + '", \t'
     regItem += '\t.bits_start = ' + str(reg[1]) + ', \t'
-    regItem += '\t.bits_end = ' + str(reg[2]) + ' \t}'
-    if i < len(regList) - 1:
-        regItem += ',\n'
+    regItem += '\t.bits_end = ' + str(reg[2]) + ' \t},\n'
     regs.write(regItem)
-regs.write('\n\n};\n')
+regs.write('\n};\n')
 regs.close()
 

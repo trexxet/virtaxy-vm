@@ -7,6 +7,7 @@
 #define INIT_PROGRAM_SIZE 128                 // Initial program size in bytes
 
 //Assembling configuration
-#define DELIM " ,\t\n"                        // Delim for strtok_r()
+#define DELIM " ,\t\n"                        // Delim for strtok()
 #define ERR_STR_LEN 128                       // Error explainning string length
+#define CONST_KEYWORD "equ"                   // Keyword for defining constants
 

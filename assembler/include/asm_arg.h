@@ -9,13 +9,18 @@
 
 
 typedef enum {
-	NONE = 0,
-	NUM,
-	REG,
-	LABEL
+	NONE = 0b0000,
+	NUM  = 0b0001,
+	REG  = 0b0010
 } argType;
 
-const char* argTypeStr[] = {"NONE", "NUM", "REG", "LABEL"};
+#define argtypestr(arg) [arg] = #arg
+const char* argTypeStr[] = {
+	argtypestr(NONE), 
+	argtypestr(NUM), 
+	argtypestr(REG)
+};
+#undef argtypestr
 
 typedef struct {
 	char *str;
@@ -25,7 +30,7 @@ typedef struct {
 
 #define LOAD_ARG(arg)                   \
 	arg.str = strtok(NULL, DELIM);  \
-	arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str) | IS_LABEL(arg.str);
+	arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str);
 
 
 __attribute__((hot))
@@ -66,11 +71,11 @@ __attribute__((hot))
 int isArgLabel(char *arg)
 {
 	if (!arg)
-		return NONE;
+		return 0;
 	char *colonPtr = strrchr(arg, ':');
 	if (colonPtr && colonPtr == (strrchr(arg, 0) - 1))
-		return LABEL;
-	return NONE;
+		return 1;
+	return 0;
 }
 
 #define IS_LABEL(arg) isArgLabel(arg)

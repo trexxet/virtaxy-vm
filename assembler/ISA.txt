@@ -1,95 +1,101 @@
-01: inc reg 		- increase register
-02: dec reg 		- decrease register
-03: mov reg, num 	- put num to register
-04: mov reg1, reg2 	- copy reg2 to reg1
-05: add reg, num 	- add num to register
-06: add reg1, reg2 	- add reg2 to reg1
-07: sub reg, num 	- subtract num from register
-08: sub reg1, reg2 	- subtract reg2 from reg1
-09: mul reg, num 	- multiply register by num
-10: mul reg1, reg2 	- multiply reg1 by reg2
-11: div reg, num 	- integerly divide register by num
-12: div reg1, reg2 	- integerly divide reg1 by reg2
-13: mod reg, num 	- modulo register by num
-14: mod reg1, reg2 	- modulo reg1 by reg2
-15: and reg, num 	- apply bitwise AND to register and num
-16: and reg1, reg2 	- apply bitwise AND to reg1 and reg2
-17: nand reg, num 	- apply bitwise NAND to register and num
-18: nand reg1, reg2 	- apply bitwise NAND to reg1 and reg2
-19: or reg, num 	- apply bitwise OR to register and num
-20: or reg1, reg2 	- apply bitwise OR to reg1 and reg2
-21: nor reg, num 	- apply bitwise NOR to register and num
-22: nor reg1, reg2 	- apply bitwise NOR to reg1 and reg2
-23: xor reg, num 	- apply bitwise XOR to register and num
-24: xor reg1, reg2 	- apply bitwise XOR to reg1 and reg2
-25: xnor reg, num 	- apply bitwise XNOR to register and num
-26: xnor reg1, reg2 	- apply bitwise XNOR to reg1 and reg2
-27: not reg		- apply bitwise NOT to register
-28: shl reg, num 	- shift register left by num
-29: shl reg1, reg2	- shift reg1 left by reg2
-30: shr reg, num	- shift register right by num
-31: shr reg1, reg2	- shift reg1 right by reg2
-32: rtl reg, num	- rotate register left by num
-33: rtl reg1, reg2	- rotate reg1 left by reg2
-34: rtr reg, num 	- rotate register right by num
-35: rtr reg1, reg2	- rotate reg1 right by reg2
-36: push num 		- push num to stack
-37: push reg 		- push register to stack
-38: pop 		- delete last stack item
-39: pop reg 		- put last stack item to register and delete it from stack
-40: sinc		- increase top stack value
-41: sdec 		- decrease top stack value
-42: smov reg		- copy top stack value to register
-43: sadd 		- pop two stack values and push their sum
-44: ssub		- pop two stack values and push their substraction
-45: smul		- pop two stack values and push their multiplication
-46: sdiv		- pop two stack values and push their integer division
-47: smod		- pop two stack values and push their modulo
-48: sand		- pop two stack values and push the result of applying bitwise AND to them
-49: snand		- pop two stack values and push the result of applying bitwise NAND to them
-50: sor			- pop two stack values and push the result of applying bitwise OR to two them
-51: snor		- pop two stack values and push the result of applying bitwise NOR to them
-52: sxor		- pop two stack values and push the result of applying bitwise XOR to them
-53: sxnor		- pop two stack values and push the result of applying bitwise XNOR to them
-54: snot		- apply bitwise NOT to top stack value
-55: sshl		- pop two stack values and push the result of shifting pre-top stack value left by top
-56: sshr		- pop two stack values and push the result of shifting pre-top stack value right by top
-57: srtl		- pop two stack values and push the result of rotating pre-top stack value left by top
-58: srtr		- pop two stack values and push the result of rotating pre-top stack value right by top
-59: jmp reg		- unconditional jump at register value
-60: jmp num		- unconditional jump at number
-61: jz reg		- jump at reg if zero
-62: jz num		- jump at num if zero
-63: je reg		- jump at reg if equal
-64: je num		- jump at num if equal
-65: jnz reg		- jump at reg if not zero
-66: jnz num		- jump at num if not zero
-67: jne reg		- jump at reg if not equal
-68: jne num		- jump at num if not equal
-69: ja reg		- jump at reg if above (unsigned compare)
-70: ja num		- jump at num if above (unsigned compare)
-71: jb reg		- jump at reg if below (unsigned compare)
-72: jb num		- jump at num if below (unsigned compare)
-73: jae reg		- jump at reg if above or equal (unsigned compare)
-74: jae num		- jump at num if above or equal (unsigned compare)
-75: jbe reg		- jump at reg if below or equal (unsigned compare)
-76: jbe num		- jump at num if below or equal (unsigned compare)
-77: jg reg		- jump at reg if greater (signed compare)
-78: jg num		- jump at num if greater (signed compare)
-79: jl reg		- jump at reg if less (signed compare)
-80: jl num		- jump at num if less (signed compare)
-81: jge reg		- jump at reg if greater or equal (signed compare)
-82: jge num		- jump at num if greater or equal (signed compare)
-83: jle reg		- jump at reg if less or equal (signed compare)
-84: jle num		- jump at num if less or equal (signed compare)
-85: cmp reg, num	- compare reg to num
-86: cmp num, reg	- compare num to reg
-87: cmp reg1, reg2	- compare reg1 to reg2
-88: test reg, num	- bitwisely test reg and num
-89: test reg1, reg2	- bitwisely test reg1 and reg2
-90: nop			- do nothing
-91: call reg		- call function by reg
-92: call num		- call function by num
-93: ret			- return from function
-94: in reg		- get terminal input (using scanf) and write to reg
-95: out reg		- print reg to terminal
+01: nop			- do nothing
+02: ld reg, num		- load to reg value stored at num address
+03: ld reg1, reg2	- load to reg1 value stored at reg2 address
+04: st num1, num2	- store num2 at num1 address
+05: st num, reg		- store reg at num address
+06: st reg, num		- store num at reg address
+07: st reg1, reg2	- store reg2 at reg1 address
+08: mov reg, num 	- put num to register
+09: mov reg1, reg2 	- copy reg2 to reg1
+0A: inc reg 		- increase register
+0B: dec reg 		- decrease register
+0C: add reg, num 	- add num to register
+0D: add reg1, reg2 	- add reg2 to reg1
+0E: sub reg, num 	- subtract num from register
+0F: sub reg1, reg2 	- subtract reg2 from reg1
+10: mul reg, num 	- multiply register by num
+11: mul reg1, reg2 	- multiply reg1 by reg2
+12: div reg, num 	- integerly divide register by num
+13: div reg1, reg2 	- integerly divide reg1 by reg2
+14: mod reg, num 	- modulo register by num
+15: mod reg1, reg2 	- modulo reg1 by reg2
+16: and reg, num 	- apply bitwise AND to register and num
+17: and reg1, reg2 	- apply bitwise AND to reg1 and reg2
+18: nand reg, num 	- apply bitwise NAND to register and num
+19: nand reg1, reg2 	- apply bitwise NAND to reg1 and reg2
+1A: or reg, num 	- apply bitwise OR to register and num
+1B: or reg1, reg2 	- apply bitwise OR to reg1 and reg2
+1C: nor reg, num 	- apply bitwise NOR to register and num
+1D: nor reg1, reg2 	- apply bitwise NOR to reg1 and reg2
+1E: xor reg, num 	- apply bitwise XOR to register and num
+1F: xor reg1, reg2 	- apply bitwise XOR to reg1 and reg2
+20: xnor reg, num 	- apply bitwise XNOR to register and num
+21: xnor reg1, reg2 	- apply bitwise XNOR to reg1 and reg2
+22: not reg		- apply bitwise NOT to register
+23: shl reg, num 	- shift register left by num
+24: shl reg1, reg2	- shift reg1 left by reg2
+25: shr reg, num	- shift register right by num
+26: shr reg1, reg2	- shift reg1 right by reg2
+27: rtl reg, num	- rotate register left by num
+28: rtl reg1, reg2	- rotate reg1 left by reg2
+29: rtr reg, num 	- rotate register right by num
+2A: rtr reg1, reg2	- rotate reg1 right by reg2
+2B: push num 		- push num to stack
+2C: push reg 		- push register to stack
+2D: pop 		- delete last stack item
+2E: pop reg 		- put last stack item to register and delete it from stack
+2F: sinc		- increase top stack value
+30: sdec 		- decrease top stack value
+31: smov reg		- copy top stack value to register
+32: sadd 		- pop two stack values and push their sum
+33: ssub		- pop two stack values and push their substraction
+34: smul		- pop two stack values and push their multiplication
+35: sdiv		- pop two stack values and push their integer division
+36: smod		- pop two stack values and push their modulo
+37: sand		- pop two stack values and push the result of applying bitwise AND to them
+38: snand		- pop two stack values and push the result of applying bitwise NAND to them
+39: sor			- pop two stack values and push the result of applying bitwise OR to two them
+3A: snor		- pop two stack values and push the result of applying bitwise NOR to them
+3B: sxor		- pop two stack values and push the result of applying bitwise XOR to them
+3C: sxnor		- pop two stack values and push the result of applying bitwise XNOR to them
+3D: snot		- apply bitwise NOT to top stack value
+3E: sshl		- pop two stack values and push the result of shifting pre-top stack value left by top
+3F: sshr		- pop two stack values and push the result of shifting pre-top stack value right by top
+40: srtl		- pop two stack values and push the result of rotating pre-top stack value left by top
+41: srtr		- pop two stack values and push the result of rotating pre-top stack value right by top
+42: jmp reg		- unconditional jump at register value
+43: jmp num		- unconditional jump at number
+44: jz reg		- jump at reg if zero
+45: jz num		- jump at num if zero
+46: je reg		- jump at reg if equal
+47: je num		- jump at num if equal
+48: jnz reg		- jump at reg if not zero
+49: jnz num		- jump at num if not zero
+4A: jne reg		- jump at reg if not equal
+4B: jne num		- jump at num if not equal
+4C: ja reg		- jump at reg if above (unsigned compare)
+4D: ja num		- jump at num if above (unsigned compare)
+4E: jb reg		- jump at reg if below (unsigned compare)
+4F: jb num		- jump at num if below (unsigned compare)
+50: jae reg		- jump at reg if above or equal (unsigned compare)
+51: jae num		- jump at num if above or equal (unsigned compare)
+52: jbe reg		- jump at reg if below or equal (unsigned compare)
+53: jbe num		- jump at num if below or equal (unsigned compare)
+54: jg reg		- jump at reg if greater (signed compare)
+55: jg num		- jump at num if greater (signed compare)
+56: jl reg		- jump at reg if less (signed compare)
+57: jl num		- jump at num if less (signed compare)
+58: jge reg		- jump at reg if greater or equal (signed compare)
+59: jge num		- jump at num if greater or equal (signed compare)
+5A: jle reg		- jump at reg if less or equal (signed compare)
+5B: jle num		- jump at num if less or equal (signed compare)
+5C: cmp reg, num	- compare reg to num
+5D: cmp num, reg	- compare num to reg
+5E: cmp reg1, reg2	- compare reg1 to reg2
+5F: test reg, num	- bitwisely test reg and num
+60: test reg1, reg2	- bitwisely test reg1 and reg2
+61: call reg		- call function by reg
+62: call num		- call function by num
+63: ret			- return from function
+64: in reg		- get terminal input (using scanf) and write to reg
+65: out reg		- print reg to terminal

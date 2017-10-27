@@ -9,7 +9,7 @@ LDLIBS =
 all:
 	$(PYTHON) py/gen_opcodes.py
 	$(PYTHON) py/gen_assembly.py
-	$(PYTHON) py/gen_reg_asm.py
+	$(PYTHON) py/gen_regtable.py
 	$(CC) $(CSRC) $(CFLAGS) -o $(TARGET) $(LDLIBS)
 clean:
 	rm -rf *.o vmm-asm generated/*
