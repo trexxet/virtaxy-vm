@@ -50,13 +50,14 @@ void assembleFile(char *filename)
 	size_t lineCounter = 0;
 	char errStr[SOURCE_STRING_LENGTH + ERR_STR_LEN] = {0};
 	#define STRING_NOT_EMPTY (sourceString[0] != 0) && (sourceString[0] != '\n')
+	#define STRING_NOT_COMMENT (sourceString[0] != COMMENT_SYMBOL)
 	extern program P; 
 	for (int pass = 1; pass <= 2; pass++)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
 		       ((pass == 2) ? (_errno == 0) : 1))			
 		{
-			if (STRING_NOT_EMPTY)
+			if (STRING_NOT_EMPTY && STRING_NOT_COMMENT)
 				_errno = assembleString(sourceString, pass, errStr);
 			if (pass == 2)
 				lineCounter++;
@@ -68,6 +69,7 @@ void assembleFile(char *filename)
 		}
 	}
 	#undef STRING_NOT_EMPTY
+	#undef STRING_NOT_COMMENT
 	
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);

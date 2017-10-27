@@ -50,18 +50,6 @@ IF_INSTR(and)
 
 IF_INSTR(call)
 {
-	if (arg1.type == REG)
-	{
-		if (arg2.type == NONE)
-		{
-			CHECK_PROGRAM_SIZE;
-			OPCODE = CALL_REG_NONE;
-			ARG1 = REG_NUM(arg1.str);
-			ARG2 = 0;
-			ASSEMBLED;
-		}
-		INVALID_ARG2;
-	}
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -74,11 +62,35 @@ IF_INSTR(call)
 		}
 		INVALID_ARG2;
 	}
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = CALL_REG_NONE;
+			ARG1 = REG_NUM(arg1.str);
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
 	INVALID_ARG1;
 }
 
 IF_INSTR(cmp)
 {
+	if (arg1.type == NUM)
+	{
+		if (arg2.type == REG)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = CMP_NUM_REG;
+			ARG_TO_NUM(arg1.str, &ARG1, &S);
+			ARG2 = REG_NUM(arg2.str);
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NUM)
@@ -94,18 +106,6 @@ IF_INSTR(cmp)
 			CHECK_PROGRAM_SIZE;
 			OPCODE = CMP_REG_REG;
 			ARG1 = REG_NUM(arg1.str);
-			ARG2 = REG_NUM(arg2.str);
-			ASSEMBLED;
-		}
-		INVALID_ARG2;
-	}
-	if (arg1.type == NUM)
-	{
-		if (arg2.type == REG)
-		{
-			CHECK_PROGRAM_SIZE;
-			OPCODE = CMP_NUM_REG;
-			ARG_TO_NUM(arg1.str, &ARG1, &S);
 			ARG2 = REG_NUM(arg2.str);
 			ASSEMBLED;
 		}
@@ -192,18 +192,6 @@ IF_INSTR(inc)
 
 IF_INSTR(ja)
 {
-	if (arg1.type == REG)
-	{
-		if (arg2.type == NONE)
-		{
-			CHECK_PROGRAM_SIZE;
-			OPCODE = JA_REG_NONE;
-			ARG1 = REG_NUM(arg1.str);
-			ARG2 = 0;
-			ASSEMBLED;
-		}
-		INVALID_ARG2;
-	}
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -216,23 +204,23 @@ IF_INSTR(ja)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jae)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JAE_REG_NONE;
+			OPCODE = JA_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jae)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -245,23 +233,23 @@ IF_INSTR(jae)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jb)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JB_REG_NONE;
+			OPCODE = JAE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jb)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -274,23 +262,23 @@ IF_INSTR(jb)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jbe)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JBE_REG_NONE;
+			OPCODE = JB_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jbe)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -303,23 +291,23 @@ IF_INSTR(jbe)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(je)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JE_REG_NONE;
+			OPCODE = JBE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(je)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -332,23 +320,23 @@ IF_INSTR(je)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jg)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JG_REG_NONE;
+			OPCODE = JE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jg)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -361,23 +349,23 @@ IF_INSTR(jg)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jge)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JGE_REG_NONE;
+			OPCODE = JG_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jge)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -390,23 +378,23 @@ IF_INSTR(jge)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jl)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JL_REG_NONE;
+			OPCODE = JGE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jl)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -419,23 +407,23 @@ IF_INSTR(jl)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jle)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JLE_REG_NONE;
+			OPCODE = JL_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jle)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -448,23 +436,23 @@ IF_INSTR(jle)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jmp)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JMP_REG_NONE;
+			OPCODE = JLE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jmp)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -477,23 +465,23 @@ IF_INSTR(jmp)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jne)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JNE_REG_NONE;
+			OPCODE = JMP_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jne)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -506,23 +494,23 @@ IF_INSTR(jne)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jnz)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JNZ_REG_NONE;
+			OPCODE = JNE_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jnz)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -535,23 +523,23 @@ IF_INSTR(jnz)
 		}
 		INVALID_ARG2;
 	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(jz)
-{
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = JZ_REG_NONE;
+			OPCODE = JNZ_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(jz)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -559,6 +547,18 @@ IF_INSTR(jz)
 			CHECK_PROGRAM_SIZE;
 			OPCODE = JZ_NUM_NONE;
 			ARG_TO_NUM(arg1.str, &ARG1, &S);
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = JZ_REG_NONE;
+			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}
@@ -795,18 +795,6 @@ IF_INSTR(out)
 
 IF_INSTR(pop)
 {
-	if (arg1.type == REG)
-	{
-		if (arg2.type == NONE)
-		{
-			CHECK_PROGRAM_SIZE;
-			OPCODE = POP_REG_NONE;
-			ARG1 = REG_NUM(arg1.str);
-			ARG2 = 0;
-			ASSEMBLED;
-		}
-		INVALID_ARG2;
-	}
 	if (arg1.type == NONE)
 	{
 		if (arg2.type == NONE)
@@ -814,6 +802,18 @@ IF_INSTR(pop)
 			CHECK_PROGRAM_SIZE;
 			OPCODE = POP_NONE_NONE;
 			ARG1 = 0;
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = POP_REG_NONE;
+			ARG1 = REG_NUM(arg1.str);
 			ARG2 = 0;
 			ASSEMBLED;
 		}

@@ -9,9 +9,9 @@
 
 
 typedef enum {
-	NONE = 0b0000,
-	NUM  = 0b0001,
-	REG  = 0b0010
+	NONE = 0b00,
+	NUM  = 0b01,
+	REG  = 0b10
 } argType;
 
 #define argtypestr(arg) [arg] = #arg
@@ -72,8 +72,8 @@ int isArgLabel(char *arg)
 {
 	if (!arg)
 		return 0;
-	char *colonPtr = strrchr(arg, ':');
-	if (colonPtr && colonPtr == (strrchr(arg, 0) - 1))
+	char *labelSymPtr = strrchr(arg, LABEL_SYMBOL);
+	if (labelSymPtr && labelSymPtr == (strrchr(arg, 0) - 1))
 		return 1;
 	return 0;
 }
