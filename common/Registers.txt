@@ -8,3 +8,12 @@ h?x (16, 31)
 
 Groups: abcdefghigklmnopq
 
+Public:
+rbp (0, 63)
+rsp (0, 63)
+
+Private:
+rt0 (0, 63)
+rt1 (0, 63)
+rfr (0, 63)
+
