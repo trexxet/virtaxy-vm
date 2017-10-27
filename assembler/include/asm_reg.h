@@ -4,7 +4,7 @@
 
 
 #include <string.h>
-#include "../generated/registers.h"
+#include "../../common/generated/registers.h"
 
 
 __attribute__((hot))

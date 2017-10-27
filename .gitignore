@@ -1,2 +1,6 @@
+.gitignore
+*.vasm
+*.vo
 *.swp
-vmm-asm
+*/bin
+

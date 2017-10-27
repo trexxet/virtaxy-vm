@@ -1,6 +1,6 @@
 import re
 
-instr = open('ISA.txt')
+instr = open('ISA_description.txt')
 opcodes = open('generated/opcodes.h', 'w')
 for line in instr:
     words = re.split('\W+', line)

@@ -2,7 +2,7 @@ import re
 from collections import OrderedDict
 
 # Create opcodes tree
-opcodes = open('generated/opcodes.h')
+opcodes = open('../common/generated/opcodes.h')
 OPtree = {}
 
 for line in opcodes:
@@ -20,7 +20,7 @@ opcodes.close()
 
 
 # Generate code
-asm = open('generated/asm_generated.c', 'w')
+asm = open('asm_generated.c', 'w')
 
 for instr, args in OPtree.items():
     code = 'IF_INSTR(' + instr.lower() + ')\n{\n'

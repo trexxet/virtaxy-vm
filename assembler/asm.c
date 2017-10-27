@@ -18,7 +18,7 @@
 // Functions & macros for generated assembler code
 #include "asm_gen.h"
 
-#include "generated/opcodes.h"
+#include "../../common/generated/opcodes.h"
 
 
 program P;
@@ -72,7 +72,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	{
 		asm_err = UNKNOWN_COMMAND;
 		int invalArg = 0;
-		#include "generated/asm_generated.c"
+		#include "asm_generated.c"
 
 		assembled:
 

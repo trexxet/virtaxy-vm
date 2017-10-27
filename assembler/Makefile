@@ -4,13 +4,13 @@ TARGET = vmm-asm
 
 CSRC = main.c asm.c symtable.c
 CFLAGS = -g -std=gnu11 -Iinclude
-LDLIBS =  
 
 all:
-	$(PYTHON) py/gen_opcodes.py
-	$(PYTHON) py/gen_assembly.py
-	$(PYTHON) py/gen_regtable.py
-	$(CC) $(CSRC) $(CFLAGS) -o $(TARGET) $(LDLIBS)
+	cd ../common && make
+	$(PYTHON) gen_assembly.py
+	$(CC) $(CSRC) $(CFLAGS) -o bin/$(TARGET)
+
 clean:
-	rm -rf *.o vmm-asm generated/*
+	cd ../common && make clean
+	rm asm_generated.c bin/vmm-asm 
 
