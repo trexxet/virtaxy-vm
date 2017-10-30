@@ -99,3 +99,5 @@
 63: ret			- return from function
 64: in reg		- get terminal input (using scanf) and write to reg
 65: out reg		- print reg to terminal
+66: pushf		- push flag register to stack
+67: popf		- pop flag register from stack

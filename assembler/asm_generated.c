@@ -795,6 +795,18 @@ IF_INSTR(out)
 
 IF_INSTR(pop)
 {
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = POP_REG_NONE;
+			ARG1 = REG_NUM(arg1.str);
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
 	if (arg1.type == NONE)
 	{
 		if (arg2.type == NONE)
@@ -807,13 +819,18 @@ IF_INSTR(pop)
 		}
 		INVALID_ARG2;
 	}
-	if (arg1.type == REG)
+	INVALID_ARG1;
+}
+
+IF_INSTR(popf)
+{
+	if (arg1.type == NONE)
 	{
 		if (arg2.type == NONE)
 		{
 			CHECK_PROGRAM_SIZE;
-			OPCODE = POP_REG_NONE;
-			ARG1 = REG_NUM(arg1.str);
+			OPCODE = POPF_NONE_NONE;
+			ARG1 = 0;
 			ARG2 = 0;
 			ASSEMBLED;
 		}
@@ -843,6 +860,23 @@ IF_INSTR(push)
 			CHECK_PROGRAM_SIZE;
 			OPCODE = PUSH_REG_NONE;
 			ARG1 = REG_NUM(arg1.str);
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(pushf)
+{
+	if (arg1.type == NONE)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = PUSHF_NONE_NONE;
+			ARG1 = 0;
 			ARG2 = 0;
 			ASSEMBLED;
 		}

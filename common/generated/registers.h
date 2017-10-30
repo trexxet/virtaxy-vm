@@ -4,7 +4,7 @@ typedef struct {
 	uint8_t private;
 } reg_t;
 
-#define NUM_OF_REGISTERS 124
+#define NUM_OF_REGISTERS 125
 
 reg_t reg[NUM_OF_REGISTERS] = {
 
@@ -12,6 +12,7 @@ reg_t reg[NUM_OF_REGISTERS] = {
 { .name = "rsp", 	.bits_start = 0, 	.bits_end = 63,  	.private = 0 	},
 { .name = "rt0", 	.bits_start = 0, 	.bits_end = 63,  	.private = 1 	},
 { .name = "rt1", 	.bits_start = 0, 	.bits_end = 63,  	.private = 1 	},
+{ .name = "rip", 	.bits_start = 0, 	.bits_end = 63,  	.private = 1 	},
 { .name = "rfr", 	.bits_start = 0, 	.bits_end = 63,  	.private = 1 	},
 { .name = "rax", 	.bits_start = 0, 	.bits_end = 63,  	.private = 0 	},
 { .name = "dax", 	.bits_start = 32, 	.bits_end = 63,  	.private = 0 	},

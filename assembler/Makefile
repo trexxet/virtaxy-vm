@@ -11,6 +11,5 @@ all:
 	$(CC) $(CSRC) $(CFLAGS) -o bin/$(TARGET)
 
 clean:
-	cd ../common && make clean
 	rm asm_generated.c bin/vmm-asm 
 

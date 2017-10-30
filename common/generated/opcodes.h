@@ -99,3 +99,5 @@
 #define RET_NONE_NONE		 0x63
 #define IN_REG_NONE		 0x64
 #define OUT_REG_NONE		 0x65
+#define PUSHF_NONE_NONE		 0x66
+#define POPF_NONE_NONE		 0x67
