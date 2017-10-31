@@ -26,13 +26,13 @@ void finalization();
 
 void main(int argc, char* argv[])
 {
-	_errno = machineInit();
-	if (_errno)
-		parseError(_errno, NULL, NULL);
-
 	conf_t conf = {NULL, DEFAULT_MEMSIZE};
 	parseCmdLineArgs(argc, argv, &conf);
 	
+	_errno = machineInit(conf.memSize);
+	if (_errno)
+		parseError(_errno, NULL, NULL);
+
 	executeFile(conf.inputFilename);
 
 	finalization();
@@ -49,7 +49,7 @@ void executeFile(char *filename)
 	
 	//fread(&P.size, sizeof(uint64_t), 1, openedFileHandle);
 	//fread(&P.ops, sizeof(uint64_t), P.size, openedFileHandle);
-	_errno = runMachine();
+	_errno = machineRun();
 	
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, NULL);
@@ -92,6 +92,7 @@ void parseError(_ERRNO_T _errno, char *file, char *errStr)
 //Here we free all dynamically allocated memory, pray the Valgrind
 _Noreturn void finalization()
 {
+	machineDestroy();
 	exit(_errno);
 }
 

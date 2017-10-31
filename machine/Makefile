@@ -1,7 +1,7 @@
 CC = gcc
 TARGET = vmm
 
-CSRC = main.c machine.c
+CSRC = main.c machine.c mem.c
 CFLAGS = -g -std=gnu11 -Iinclude
 
 all:
