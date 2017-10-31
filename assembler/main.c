@@ -7,13 +7,19 @@
 
 #include "errors.h"
 #include "config.h"
-#include "include/asm.h"
+#include "asm.h"
 
 
 _ERRNO_T _errno = SUCCESS;
 
 
-void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char **outputFilename);
+typedef struct {
+	char *inputFilename;
+	char *outputFilename;
+} conf_t;
+
+
+void parseCmdLineArgs(int argc, char *argv[], conf_t *conf);
 void assembleFile(char *filename);
 void writeProgram(char *filename);
 
@@ -27,12 +33,11 @@ void main(int argc, char *argv[])
 	if (_errno)
 		parseError(_errno, NULL, 0, NULL);
 
-	char *inputFilename = NULL;
-	char *outputFilename = DEFAULT_OUTPUT_FILENAME;
-	parseCmdLineArgs(argc, argv, &inputFilename, &outputFilename);
+	conf_t conf = {NULL, DEFAULT_OUTPUT_FILENAME};
+	parseCmdLineArgs(argc, argv, &conf);
 
-	assembleFile(inputFilename);
-	writeProgram(outputFilename);
+	assembleFile(conf.inputFilename);
+	writeProgram(conf.outputFilename);
 
 	finalization();
 }
@@ -97,7 +102,7 @@ void writeProgram(char *filename)
 }
 
 
-void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char **outputFilename)
+void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 {
 	int opt;
 	opterr = 0;
@@ -105,16 +110,16 @@ void parseCmdLineArgs(int argc, char *argv[], char **inputFilename, char **outpu
 		switch (opt)
 		{
 			case 'o':
-				*outputFilename = optarg;
+				conf -> outputFilename = optarg;
 				break;
 			default:
 			case '?':
 				parseError(INCORRECT_COMMAND_LINE, NULL, 0, NULL);
 				break;
 		}
-	if (argc - optind == 0)
+	if (argc == optind)
 		parseError(NO_INPUT_FILES, NULL, 0, NULL);
-	*inputFilename = argv[optind];
+	conf -> inputFilename = argv[optind];
 }
 
 
