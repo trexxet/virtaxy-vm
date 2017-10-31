@@ -1,36 +1,6 @@
-// Argument types & functions
-
-#pragma once
-
-#include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
-#include "symtable.h"
-
-
-typedef enum {
-	NONE = 0b00,
-	NUM  = 0b01,
-	REG  = 0b10
-} argType;
-
-#define argtypestr(arg) [arg] = #arg
-const char* argTypeStr[] = {
-	argtypestr(NONE), 
-	argtypestr(NUM), 
-	argtypestr(REG)
-};
-#undef argtypestr
-
-typedef struct {
-	char *str;
-	argType type;
-} arg_t;
-
-
-#define LOAD_ARG(arg)                   \
-	arg.str = strtok(NULL, DELIM);  \
-	arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str);
+#include "config.h"
+#include "argtypes.h"
 
 
 __attribute__((hot))
@@ -63,9 +33,6 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 	return NONE;
 }
 
-#define IS_NUM(arg, symtab) isArgNum(arg, NULL, symtab)
-#define ARG_TO_NUM(arg, pnum, symtab) isArgNum(arg, pnum, symtab)
-
 
 __attribute__((hot))
 int isArgLabel(char *arg)
@@ -78,5 +45,13 @@ int isArgLabel(char *arg)
 	return 0;
 }
 
-#define IS_LABEL(arg) isArgLabel(arg)
+
+__attribute__((hot))
+int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exists
+{
+	for (int64_t i = 0; i < NUM_OF_REGISTERS; i++)
+		if ((strcmp(reg[i].name, arg) == 0) && !reg[i].private)
+			return i;
+	return -1;
+}
 

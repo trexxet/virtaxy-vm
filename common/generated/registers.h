@@ -6,7 +6,7 @@ typedef struct {
 
 #define NUM_OF_REGISTERS 125
 
-reg_t reg[NUM_OF_REGISTERS] = {
+reg_t static reg[NUM_OF_REGISTERS] = {
 
 { .name = "rbp", 	.bits_start = 0, 	.bits_end = 63,  	.private = 0 	},
 { .name = "rsp", 	.bits_start = 0, 	.bits_end = 63,  	.private = 0 	},

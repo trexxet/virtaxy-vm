@@ -2,7 +2,7 @@ CC = gcc
 PYTHON = python3
 TARGET = vmm-asm
 
-CSRC = main.c asm.c symtable.c
+CSRC = main.c asm.c argtypes.c symtable.c
 CFLAGS = -g -std=gnu11 -Iinclude
 
 all:

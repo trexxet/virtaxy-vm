@@ -33,7 +33,7 @@ regList += list(map(lambda x: [x[1][0].replace('?', x[0]), x[1][1], x[1][2], x[1
 regs = open('generated/registers.h', 'w')
 regs.write('typedef struct {\n\tchar name[8];\n\tuint8_t bits_start, bits_end;\n\tuint8_t private;\n} reg_t;\n\n')
 regs.write('#define NUM_OF_REGISTERS ' + str(len(regList)) + '\n\n')
-regs.write('reg_t reg[NUM_OF_REGISTERS] = {\n\n')
+regs.write('reg_t static reg[NUM_OF_REGISTERS] = {\n\n')
 for i, reg in enumerate(regList):
     regItem = '{ .name = "' + str(reg[0]) + '", \t'
     regItem += '.bits_start = ' + str(reg[1]) + ', \t'
