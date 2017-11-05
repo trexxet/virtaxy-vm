@@ -65,40 +65,33 @@
 41: srtr		- pop two stack values and push the result of rotating pre-top stack value right by top
 42: jmp reg		- unconditional jump at register value
 43: jmp num		- unconditional jump at number
-44: jz reg		- jump at reg if zero
-45: jz num		- jump at num if zero
-46: je reg		- jump at reg if equal
-47: je num		- jump at num if equal
-48: jnz reg		- jump at reg if not zero
-49: jnz num		- jump at num if not zero
-4A: jne reg		- jump at reg if not equal
-4B: jne num		- jump at num if not equal
-4C: ja reg		- jump at reg if above (unsigned compare)
-4D: ja num		- jump at num if above (unsigned compare)
-4E: jb reg		- jump at reg if below (unsigned compare)
-4F: jb num		- jump at num if below (unsigned compare)
-50: jae reg		- jump at reg if above or equal (unsigned compare)
-51: jae num		- jump at num if above or equal (unsigned compare)
-52: jbe reg		- jump at reg if below or equal (unsigned compare)
-53: jbe num		- jump at num if below or equal (unsigned compare)
-54: jg reg		- jump at reg if greater (signed compare)
-55: jg num		- jump at num if greater (signed compare)
-56: jl reg		- jump at reg if less (signed compare)
-57: jl num		- jump at num if less (signed compare)
-58: jge reg		- jump at reg if greater or equal (signed compare)
-59: jge num		- jump at num if greater or equal (signed compare)
-5A: jle reg		- jump at reg if less or equal (signed compare)
-5B: jle num		- jump at num if less or equal (signed compare)
-5C: cmp reg, num	- compare reg to num
-5D: cmp num, reg	- compare num to reg
-5E: cmp reg1, reg2	- compare reg1 to reg2
-5F: test reg, num	- bitwisely test reg and num
-60: test reg1, reg2	- bitwisely test reg1 and reg2
-61: call reg		- call function by reg
-62: call num		- call function by num
-63: ret			- return from function
-64: in reg		- get terminal input (using scanf) and write to reg
-65: out reg		- print reg to terminal
-66: pushf		- push flag register to stack
-67: popf		- pop flag register from stack
-68: dump		- dump everything for debug
+44: bz reg		- branch at reg if zero
+45: bz num		- branch at num if zero
+46: be reg		- branch at reg if equal
+47: be num		- branch at num if equal
+48: bnz reg		- branch at reg if not zero
+49: bnz num		- branch at num if not zero
+4A: bne reg		- branch at reg if not equal
+4B: bne num		- branch at num if not equal
+4C: ba reg		- branch at reg if above (unsigned compare)
+4D: ba num		- branch at num if above (unsigned compare)
+4E: bb reg		- branch at reg if below (unsigned compare)
+4F: bb num		- branch at num if below (unsigned compare)
+50: bae reg		- branch at reg if above or equal (unsigned compare)
+51: bae num		- branch at num if above or equal (unsigned compare)
+52: bbe reg		- branch at reg if below or equal (unsigned compare)
+53: bbe num		- branch at num if below or equal (unsigned compare)
+54: bg reg		- branch at reg if greater (signed compare)
+55: bg num		- branch at num if greater (signed compare)
+56: bl reg		- branch at reg if less (signed compare)
+57: bl num		- branch at num if less (signed compare)
+58: bge reg		- branch at reg if greater or equal (signed compare)
+59: bge num		- branch at num if greater or equal (signed compare)
+5A: ble reg		- branch at reg if less or equal (signed compare)
+5B: ble num		- branch at num if less or equal (signed compare)
+5C: call reg		- call function by reg
+5D: call num		- call function by num
+5E: ret			- return from function
+5F: in reg		- get terminal input (using scanf) and write to reg
+60: out reg		- print reg to terminal
+61: dump		- dump everything for debug
