@@ -5,9 +5,10 @@ typedef struct {
 	uint8_t private;
 } reg_t;
 
-#define NUM_OF_REGISTERS 118
+#define NUM_OF_REGNAMES 118
+#define NUM_OF_REGISTERS 22
 
-reg_t static regTable[NUM_OF_REGISTERS] = {
+reg_t static regTable[NUM_OF_REGNAMES] = {
 
 { .name = "rax",   .group = 0,    .bitmask = 0xffffffffffffffff,   .private = 0 },
 { .name = "dax",   .group = 0,    .bitmask = 0xffffffff00000000,   .private = 0 },

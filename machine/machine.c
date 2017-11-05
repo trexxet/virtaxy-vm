@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "mem.h"
+#include "registers.h"
 #include "errors.h"
 #include "machine.h"
 
@@ -17,6 +18,7 @@ _ERRNO_T machineInit(size_t memSize) {
 
 
 _ERRNO_T machineRun() {
+	memDump(&M);
 	return SUCCESS;
 }
 

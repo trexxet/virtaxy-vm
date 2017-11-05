@@ -156,6 +156,23 @@ IF_INSTR(div)
 	INVALID_ARG1;
 }
 
+IF_INSTR(dump)
+{
+	if (arg1.type == NONE)
+	{
+		if (arg2.type == NONE)
+		{
+			CHECK_PROGRAM_SIZE;
+			OPCODE = DUMP_NONE_NONE;
+			ARG1 = 0;
+			ARG2 = 0;
+			ASSEMBLED;
+		}
+		INVALID_ARG2;
+	}
+	INVALID_ARG1;
+}
+
 IF_INSTR(in)
 {
 	if (arg1.type == REG)

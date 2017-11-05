@@ -7,6 +7,7 @@
 #include "config.h"
 #include "errors.h"
 #include "machine.h"
+#include "mem.h"
 
 
 _ERRNO_T _errno = SUCCESS;
@@ -47,8 +48,9 @@ void executeFile(char *filename)
 	if (feof(openedFileHandle))
 		parseError(INPUT_IS_EMPTY, filename, NULL);
 	
-	//fread(&P.size, sizeof(uint64_t), 1, openedFileHandle);
-	//fread(&P.ops, sizeof(uint64_t), P.size, openedFileHandle);
+	extern mem_t M;
+	int64_t *memPtr = M.data;
+	while(fread(memPtr++, sizeof(int64_t), 1, openedFileHandle));
 	_errno = machineRun();
 	
 	if (fclose(openedFileHandle) == EOF)
@@ -66,10 +68,10 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 		switch (opt)
 		{
 			case 'm':
-				conf -> memSize = *optarg;
+				conf -> memSize = strtol(optarg, NULL, 0);
 				break;
-			default:
 			case '?':
+			default:
 				parseError(INCORRECT_COMMAND_LINE, NULL, NULL);
 				break;
 		}

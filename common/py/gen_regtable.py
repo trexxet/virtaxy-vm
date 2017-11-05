@@ -42,8 +42,9 @@ regs.write('typedef struct {' +\
            '\n\tuint64_t bitmask;' +\
            '\n\tuint8_t private;' +\
            '\n} reg_t;\n\n')
-regs.write('#define NUM_OF_REGISTERS ' + str(len(regList)) + '\n\n')
-regs.write('reg_t static regTable[NUM_OF_REGISTERS] = {\n\n')
+regs.write('#define NUM_OF_REGNAMES ' + str(len(regList)) + '\n')
+regs.write('#define NUM_OF_REGISTERS ' + str(groupID) + '\n\n')
+regs.write('reg_t static regTable[NUM_OF_REGNAMES] = {\n\n')
 for reg in regList:
     regItem = '%-19s' % ('{ .name = "' + str(reg[0]) + '",')
     regItem += '%-15s' % ('.group = ' + str(reg[1]) + ',')
