@@ -50,9 +50,10 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	arg_t arg1, arg2;
+	arg_t arg1, arg2, arg3;
 	LOAD_ARG(arg1);
 	LOAD_ARG(arg2);
+	LOAD_ARG(arg3);
 
 	// Check if new constant
 	if ((strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
@@ -75,19 +76,14 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		assembled:
 
 		if (asm_err == UNKNOWN_COMMAND)
-			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str);
+			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str, arg3.str);
 
 		if (asm_err == INVALID_ARGS)
 		{
-			#define errStrWords instrStr, arg1.str, arg2.str, \
-			                    argTypeStr[arg1.type], argTypeStr[arg2.type]
-			if (invalArg == 1)
+			#define errStrWords instrStr, arg1.str, arg2.str, arg3.str, \
+			                    argTypeStr[arg1.type], argTypeStr[arg2.type], argTypeStr[arg3.type]
 				sprintf(errStr, 
-					"%s "C_BOLD_RED"%s"C_RESET", %s\n arg1: "C_BOLD_RED"%s"C_RESET"\n arg2: %s", 
-					errStrWords);
-			if (invalArg == 2)
-				sprintf(errStr, 
-					"%s %s, "C_BOLD_RED"%s"C_RESET"\n arg1: %s\n arg2: "C_BOLD_RED"%s"C_RESET, 
+					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n, arg3: %s", 
 					errStrWords);
 			#undef errStrWords
 		}

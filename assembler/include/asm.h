@@ -9,6 +9,7 @@ typedef struct {
 	uint64_t opcode;
 	int64_t arg1;
 	int64_t arg2;
+	int64_t arg3;
 } instruction;
 
 typedef struct {

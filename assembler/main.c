@@ -95,6 +95,7 @@ void writeProgram(char *filename)
 		fwrite(&P.ops[i].opcode, sizeof(uint64_t), 1, openedFileHandle);
 		fwrite(&P.ops[i].arg1, sizeof(int64_t), 1, openedFileHandle);
 		fwrite(&P.ops[i].arg2, sizeof(int64_t), 1, openedFileHandle);
+		fwrite(&P.ops[i].arg3, sizeof(int64_t), 1, openedFileHandle);
 	}
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, 0, NULL);
