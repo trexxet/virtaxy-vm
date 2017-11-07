@@ -1,13 +1,18 @@
 import re
 
 # Load ISA description
-instr = open('ISA_description.txt')
+instr = open('ISA.txt')
 opcodes = open('generated/opcodes.h', 'w')
 
 # Form opcodes list
 for line in instr:
     words = line.split('-')[0]
     words = re.split('\W+', words)
+    # Proceed if line is an opcode definition
+    try:
+        int(words[0], 16)
+    except ValueError:
+        continue
     string = '#define ' + words[1].upper()
     # Set 5 words
     while len(words) < 5:
@@ -22,7 +27,7 @@ for line in instr:
             string += '_NUM'
         else:
             string += '_NONE'
-    opcodes.write('%-32s' % (string) + '0x' + words[0] + '\n')
+    opcodes.write('%-32s' % string + '0x' + words[0] + '\n')
 opcodes.close()
 instr.close()
 

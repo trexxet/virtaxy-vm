@@ -1,0 +1,172 @@
+01: nop                   - do nothing
+	;
+02: ld reg1, num2         - reg1 = [num2]
+	WRITE_REG(arg1, READ_MEM(arg2));
+03: ld reg1, reg2         - reg1 = [reg2]
+	WRITE_REG(arg1, READ_MEM(READ_REG(arg2)));
+04: st num1, num2         - [num1] = num2
+	WRITE_MEM(arg1, arg2);
+05: st num1, reg2         - [num1] = reg2
+	WRITE_MEM(arg1, READ_REG(arg2));
+06: st reg1, num2         - [reg1] = num2
+	WRITE_MEM(READ_REG(arg1), arg2);
+07: st reg1, reg2         - [reg1] = reg2
+	WRITE_MEM(READ_REG(arg1), READ_REG(arg2));
+08: mov reg1, num2        - reg1 = num2
+	WRITE_REG(arg1, arg2);
+09: mov reg1, reg2        - reg1 = reg2
+	WRITE_REG(arg1, READ_REG(arg2));
+0A: inc reg1              - reg1 ++
+	WRITE_REG(arg1, READ_REG(arg1) + 1);
+0B: dec reg1              - reg1 --
+	WRITE_REG(arg1, READ_REG(arg1) - 1);
+0C: add reg1, num2        - reg1 += num2
+	WRITE_REG(arg1, READ_REG(arg1) + arg2);
+0D: add reg1, reg2        - reg1 += reg2
+	WRITE_REG(arg1, READ_REG(arg1) + READ_REG(arg2));
+0E: sub reg1, num2        - reg1 -= num2
+	WRITE_REG(arg1, READ_REG(arg1) - arg2);
+0F: sub reg1, reg2        - reg1 -= reg2
+	WRITE_REG(arg1, READ_REG(arg1) - READ_REG(arg2));
+10: mul reg1, num2        - reg1 *= num2
+	WRITE_REG(arg1, READ_REG(arg1) * arg2);
+11: mul reg1, reg2        - reg1 *= reg2
+	WRITE_REG(arg1, READ_REG(arg1) * READ_REG(arg2));
+12: div reg1, num2        - reg1 /= num2
+	WRITE_REG(arg1, READ_REG(arg1) / arg2);
+13: div reg1, reg2        - reg1 /= reg2
+	WRITE_REG(arg1, READ_REG(arg1) / READ_REG(arg2));
+14: mod reg1, num2        - reg1 %= num2
+	WRITE_REG(arg1, READ_REG(arg1) % arg2);
+15: mod reg1, reg2        - reg1 %= reg2
+	WRITE_REG(arg1, READ_REG(arg1) % READ_REG(arg2));
+16: and reg1, num2        - reg1 &= num2
+	WRITE_REG(arg1, READ_REG(arg1) & arg2);
+17: and reg1, reg2        - reg1 &= reg2
+	WRITE_REG(arg1, READ_REG(arg1) & READ_REG(arg2));
+18: nand reg1, num2       - reg1 = reg1 NAND num2
+	WRITE_REG(arg1, ~(READ_REG(arg1) & arg2));
+19: nand reg1, reg2       - reg1 = reg1 NAND reg2
+	WRITE_REG(arg1, ~(READ_REG(arg1) & READ_REG(arg2)));
+1A: or reg1, num2         - reg1 |= num2
+	WRITE_REG(arg1, READ_REG(arg1) | arg2);
+1B: or reg1, reg2         - reg1 |= reg2
+	WRITE_REG(arg1, READ_REG(arg1) | READ_REG(arg2));
+1C: nor reg1, num2        - reg1 = reg1 NOR num2
+	WRITE_REG(arg1, ~(READ_REG(arg1) | arg2));
+1D: nor reg1, reg2        - reg1 = reg1 NOR reg2
+	WRITE_REG(arg1, ~(READ_REG(arg1) | READ_REG(arg2)));
+1E: xor reg1, num2        - reg1 ^= num2
+	WRITE_REG(arg1, READ_REG(arg1) ^ arg2);
+1F: xor reg1, reg2        - reg1 ^= reg2
+	WRITE_REG(arg1, READ_REG(arg1) ^ READ_REG(arg2));
+20: xnor reg1, num2       - reg1 = reg1 XNOR num2
+	WRITE_REG(arg1, ~(READ_REG(arg1) ^ arg2));
+21: xnor reg1, reg2       - reg1 = reg1 XNOR reg2
+	WRITE_REG(arg1, ~(READ_REG(arg1) ^ READ_REG(arg2)));
+22: not reg1              - reg1 = ~reg1
+	WRITE_REG(arg1, ~READ_REG(arg1));
+23: shl reg1, num2        - reg1 <<= num2
+	WRITE_REG(arg1, READ_REG(arg1) << arg2);
+24: shl reg1, reg2        - reg1 <<= reg2
+	WRITE_REG(arg1, READ_REG(arg1) << READ_REG(arg2));
+25: shr reg1, num2        - reg1 >>= num2
+	WRITE_REG(arg1, READ_REG(arg1) >> arg2);
+26: shr reg1, reg2        - reg1 >>= reg2
+	WRITE_REG(arg1, READ_REG(arg1) >> READ_REG(arg2));
+27: rtl reg1, num2        - rotate reg1 left by num2
+	WRITE_REG(arg1, (READ_REG(arg1) << arg2) | (READ_REG(arg1) >> (64 - arg2)));
+28: rtl reg1, reg2        - rotate reg1 left by reg2
+	WRITE_REG(arg1, (READ_REG(arg1) << READ_REG(arg2)) | (READ_REG(arg1) >> (64 - READ_REG(arg2))));
+29: rtr reg1, num2        - rotate reg1 right by num2
+	WRITE_REG(arg1, (READ_REG(arg1) >> arg2) | (READ_REG(arg1) << (64 - arg2)));
+2A: rtr reg1, reg2        - rotate reg1 right by reg2
+	WRITE_REG(arg1, (READ_REG(arg1) >> READ_REG(arg2)) | (READ_REG(arg1) << (64 - READ_REG(arg2))));
+2B: push num1             - push num1 to stack
+	WRITE_REG(SP, READ_REG(SP) - 1);
+	WRITE_MEM(READ_REG(SP), arg1);
+2C: push reg1             - push reg1 to stack
+	WRITE_REG(SP, READ_REG(SP) - 1);
+	WRITE_MEM(READ_REG(SP), READ_REG(arg1));
+2D: pop                   - pop from stack to void
+	WRITE_REG(SP, READ_REG(SP) + 1);
+2E: pop reg1              - pop from stack to reg1
+	WRITE_REG(arg1, READ_MEM(READ_REG(SP)));
+	WRITE_REG(SP, READ_REG(SP) + 1);
+2F: jmp reg1              - unconditional jump at register value
+	WRITE_REG(IP, READ_REG(arg1)*4);
+30: jmp num1              - unconditional jump at number
+	WRITE_REG(IP, arg1*4);
+31: bz reg1, reg2         - branch at reg2 if reg1 == 0
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, READ_REG(arg2)*4);
+32: bz reg1, num2         - branch at num2 if reg1 == 0
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, arg2*4);
+33: bnz reg1, reg2        - branch at reg2 if reg1 != 0
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, READ_REG(arg2)*4);
+34: bnz reg1, num2        - branch at num2 if reg1 != 0
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, arg2*4);
+35: be reg1, reg2, reg3   - branch at reg3 if reg1 == reg2
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+36: be reg1, reg2, num3   - branch at num3 if reg1 == reg2
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+37: be reg1, num2, reg3   - branch at reg3 if reg1 == num2
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+38: be reg1, num2, num3   - branch at num3 if reg1 == num2
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, arg3*4);
+39: bne reg1, reg2, reg3  - branch at reg3 if reg1 != reg2
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+3A: bne reg1, reg2, num3  - branch at num3 if reg1 != reg2
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+3B: bne reg1, num2, reg3  - branch at reg3 if reg1 != num2
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+3C: bne reg1, num2, num3  - branch at num3 if reg1 != num2
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, arg3*4);
+3D: bg reg1, reg2, reg3   - branch at reg3 if reg1 > reg2 
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+3E: bg reg1, reg2, num3   - branch at num3 if reg1 > reg2 
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+3F: bg reg1, num2, reg3   - branch at reg3 if reg1 > num2 
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+40: bg reg1, num2, num3   - branch at num3 if reg1 > num2 
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, arg3*4);
+41: bl reg1, reg2, reg3   - branch at reg3 if reg1 < reg2 
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+42: bl reg1, reg2, num3   - branch at num3 if reg1 < reg2 
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+43: bl reg1, num2, reg3   - branch at reg3 if reg1 < num2 
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+44: bl reg1, num2, num3   - branch at num3 if reg1 < num2 
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, arg3*4);
+45: bge reg1, reg2, reg3  - branch at reg3 if reg1 >= reg2 
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+46: bge reg1, reg2, num3  - branch at num3 if reg1 >= reg2 
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+47: bge reg1, num2, reg3  - branch at reg3 if reg1 >= num2 
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+48: bge reg1, num2, num3  - branch at num3 if reg1 >= num2 
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, arg3*4);
+49: ble reg1, reg2, reg3  - branch at reg3 if reg1 <= reg2 
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+4A: ble reg1, reg2, num3  - branch at num3 if reg1 <= reg2 
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+4B: ble reg1, num2, reg3  - branch at reg3 if reg1 <= num2 
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+4C: ble reg1, num2, num3  - branch at num3 if reg1 <= num2 
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, arg3*4);
+4D: call reg1             - call function at reg1
+	WRITE_REG(SP, READ_REG(SP) - 1);
+	WRITE_MEM(READ_REG(SP), READ_REG(IP));
+	WRITE_REG(IP, READ_REG(arg1)*4);
+4E: call num1             - call function at num1
+	WRITE_REG(SP, READ_REG(SP) - 1);
+	WRITE_MEM(READ_REG(SP), READ_REG(IP));
+	WRITE_REG(IP, arg1*4);
+4F: ret                   - return from function
+	WRITE_REG(IP, READ_MEM(READ_REG(SP)));
+	WRITE_REG(SP, READ_REG(SP) + 1);
+50: in reg1               - get terminal input (using scanf) and write to reg1
+	scanf("%lld\n", &REG(arg1));
+51: out reg1              - print reg1 to terminal
+	printf("%lld\n", READ_REG(arg1));
+52: dump                  - dump everything for debug
+	dumpEverything();

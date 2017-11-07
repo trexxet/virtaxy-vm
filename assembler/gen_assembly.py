@@ -6,7 +6,7 @@ opcodes = open('../common/generated/opcodes.h')
 OPtree = {}
 
 for line in opcodes:
-    OPdef = re.split('[\s_+]', line)
+    OPdef = re.split('[\s_]', line)
     instr = OPdef[1]
     arg1 = OPdef[2]
     arg2 = OPdef[3]
@@ -26,13 +26,13 @@ opcodes.close()
 asm = open('asm_generated.c', 'w')
 
 for instr, args in OPtree.items():
-    code = 'IF_INSTR(%s)\n{\n' % (instr.lower())
+    code = 'IF_INSTR(%s)\n{\n' % instr.lower()
     for arg1, args2 in args.items():
-        code += '\tif (arg1.type == %s)\n\t{\n' % (arg1)
+        code += '\tif (arg1.type == %s)\n\t{\n' % arg1
         for arg2, args3 in args2.items():
-            code += '\t\tif (arg2.type == %s)\n\t\t{\n' % (arg2)
+            code += '\t\tif (arg2.type == %s)\n\t\t{\n' % arg2
             for arg3 in args3:
-                code += '\t\t\tif (arg3.type == %s)\n\t\t\t{\n' % (arg3)
+                code += '\t\t\tif (arg3.type == %s)\n\t\t\t{\n' % arg3
                 code += '\t\t\t\tCHECK_PROGRAM_SIZE;\n'
                 code += '\t\t\t\tOPCODE = %s_%s_%s_%s;\n' % (instr, arg1, arg2, arg3)
                 for i, arg in enumerate([arg1, arg2, arg3]):

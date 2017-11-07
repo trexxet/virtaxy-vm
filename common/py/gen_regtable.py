@@ -46,12 +46,16 @@ regs.write('typedef struct {' +\
 regs.write('#define NUM_OF_REGNAMES ' + str(len(regList)) + '\n')
 regs.write('#define NUM_OF_REGISTERS ' + str(groupID) + '\n\n')
 regs.write('reg_t static regTable[NUM_OF_REGNAMES] = {\n\n')
-for reg in regList:
-    regItem = '%-19s' % ('{ .name = "' + str(reg[0]) + '",')
+# Create register item
+for i, reg in enumerate(regList):
+    regItem = '%-19s' % ('{ .name = "' + reg[0] + '",')
     regItem += '%-14s' % ('.group = ' + str(reg[1]) + ',')
     regItem += '%-33s' % ('.bitmask = ' + str(reg[2]) + ',')
     regItem += '%-13s' % ('.shl = ' + str(reg[3]) + ',')
     regItem += '.private = ' + str(reg[4]) + ' },\n'
+    # Catch BP, SP, IP, T0 and T1 registers
+    if reg[0] in ['bp', 'sp', 'ip', 't0', 't1']:
+        regItem += '#define %s %d\n' % (reg[0].upper(), i)
     regs.write(regItem)
 regs.write('\n};\n')
 regs.close()

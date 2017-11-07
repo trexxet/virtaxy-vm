@@ -123,10 +123,15 @@ reg_t static regTable[NUM_OF_REGNAMES] = {
 { .name = "px",    .group = 15,  .bitmask = 0x000000000000ffff,   .shl = 0,    .private = 0 },
 { .name = "ph",    .group = 15,  .bitmask = 0x000000000000ff00,   .shl = 8,    .private = 0 },
 { .name = "pl",    .group = 15,  .bitmask = 0x00000000000000ff,   .shl = 0,    .private = 0 },
-{ .name = "rbp",   .group = 16,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 0 },
-{ .name = "rsp",   .group = 17,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 0 },
-{ .name = "rt0",   .group = 18,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
-{ .name = "rt1",   .group = 19,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
-{ .name = "rip",   .group = 20,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
+{ .name = "bp",    .group = 16,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 0 },
+#define BP 112
+{ .name = "sp",    .group = 17,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 0 },
+#define SP 113
+{ .name = "t0",    .group = 18,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
+#define T0 114
+{ .name = "t1",    .group = 19,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
+#define T1 115
+{ .name = "ip",    .group = 20,  .bitmask = 0xffffffffffffffff,   .shl = 0,    .private = 1 },
+#define IP 116
 
 };

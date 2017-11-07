@@ -9,11 +9,11 @@ h?x (16, 31)
 Groups: abcdefghigklmnop
 
 Public:
-rbp (0, 63) - stack base pointer
-rsp (0, 63) - stack top pointer
+bp (0, 63) - stack base pointer
+sp (0, 63) - stack top pointer
 
 Private:
-rt0 (0, 63) - temporary register 0
-rt1 (0, 63) - temporary register 1
-rip (0, 63) - instruction pointer
+t0 (0, 63) - temporary register 0
+t1 (0, 63) - temporary register 1
+ip (0, 63) - instruction pointer
 
