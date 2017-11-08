@@ -80,3 +80,4 @@
 #define IN_REG_NONE_NONE        0x50
 #define OUT_REG_NONE_NONE       0x51
 #define DUMP_NONE_NONE_NONE     0x52
+#define HLT_NONE_NONE_NONE      0x53

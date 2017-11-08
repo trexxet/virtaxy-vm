@@ -56,7 +56,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	LOAD_ARG(arg3);
 
 	// Check if new constant
-	if ((strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
+	if (arg1.str && (strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
 	{
 		int64_t value = 0;
 		ARG_TO_NUM(arg2.str, &value, &S);

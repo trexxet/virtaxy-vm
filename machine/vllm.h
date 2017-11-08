@@ -6,14 +6,16 @@
 
 // Registers interface
 #define REG(id) (reg[REG_GRP(id)])
-#define READ_REG(id) ((REG(id) & REG_BITMASK(id)) >> REG_SHL(id))
+#define READ_REG(id) (int64_t)((REG(id) & REG_BITMASK(id)) >> REG_SHL(id))
 #define WRITE_REG(id, value) REG(id) = ((REG(id) & (~REG_BITMASK(id))) | \
                                        (((value) << REG_SHL(id)) & REG_BITMASK(id)))
 
 // Memory interface
-#define READ_MEM(addr) (M.data[addr])
+#define READ_MEM(addr) (int64_t)(M.data[addr])
 #define WRITE_MEM(addr, value) M.data[addr] = (value)
 
 // Just to look nicer
 #define IF if
+#define ELSE else
+#define HALT goto stop
 
