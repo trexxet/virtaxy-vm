@@ -49,7 +49,7 @@ int isArgLabel(char *arg)
 __attribute__((hot))
 int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exists
 {
-	for (int64_t i = 0; i < NUM_OF_REGISTERS; i++)
+	for (int64_t i = 0; i < NUM_OF_REGNAMES; i++)
 		if ((strcmp(regTable[i].name, arg) == 0) && !regTable[i].private)
 			return i;
 	return -1;

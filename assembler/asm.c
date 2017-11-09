@@ -83,7 +83,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 			#define errStrWords instrStr, arg1.str, arg2.str, arg3.str, \
 			                    argTypeStr[arg1.type], argTypeStr[arg2.type], argTypeStr[arg3.type]
 				sprintf(errStr, 
-					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n, arg3: %s", 
+					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s", 
 					errStrWords);
 			#undef errStrWords
 		}

@@ -16,6 +16,7 @@ mem_t M;
 
 
 // Debug
+int debug = 0;
 #include <stdio.h>
 void dumpRegisters();
 void dumpEverything();
@@ -24,6 +25,7 @@ void dumpEverything();
 
 _ERRNO_T machineInit(size_t memSize) {
 	WRITE_REG(BP, memSize - 1);
+	WRITE_REG(SP, memSize - 1);
 	return memInit(&M, memSize);
 }
 
@@ -34,6 +36,11 @@ _ERRNO_T machineRun() {
 		int64_t arg1 = READ_MEM(READ_REG(IP)+1);
 		int64_t arg2 = READ_MEM(READ_REG(IP)+2);
 		int64_t arg3 = READ_MEM(READ_REG(IP)+3);
+
+		if (debug) {
+			dumpRegisters();
+			dumpCmd();
+		}
 
 		switch (opcode)
 		{

@@ -1,6 +1,5 @@
 .gitignore
-*.vasm
 *.vo
 *.swp
-*/bin
+bin
 

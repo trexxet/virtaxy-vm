@@ -235,7 +235,7 @@
 	WRITE_MEM(READ_REG(SP), READ_REG(IP));
 	WRITE_REG(IP, arg1*4);
 4F: ret                   - return from function
-	WRITE_REG(IP, READ_MEM(READ_REG(SP)));
+	WRITE_REG(IP, READ_MEM(READ_REG(SP)) + 4);
 	WRITE_REG(SP, READ_REG(SP) + 1);
 50: in reg1               - get terminal input (using scanf) and write to reg1
 	scanf("%lld", &REG(arg1));

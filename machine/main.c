@@ -64,11 +64,15 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 {
 	int opt;
 	opterr = 0;
+	extern int debug;
 	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
 		switch (opt)
 		{
 			case 'm':
 				conf -> memSize = strtol(optarg, NULL, 0);
+				break;
+			case 'd':
+				debug = 1;
 				break;
 			case '?':
 			default:

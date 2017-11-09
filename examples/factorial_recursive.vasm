@@ -1,0 +1,26 @@
+; Print factorial of input number
+
+main:
+	in rax
+	push rax
+	call fact
+	out rax
+	hlt
+
+fact:
+	mov rbx, sp
+	inc rbx
+	ld rax, rbx
+	bg rax, 0, .callAgain
+		mov rax, 1
+		ret
+	.callAgain:
+		mov rbx, rax
+		dec rbx
+		push rax
+		push rbx
+		call fact
+		inc sp
+		pop rbx
+		mul rax, rbx
+		ret

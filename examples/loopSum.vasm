@@ -1,0 +1,15 @@
+; Sum N integers
+
+mov rax, 0
+in rcx
+sumLoop:
+	ble rcx, 0, end
+	in rbx
+	add rax, rbx
+	dec rcx
+	jmp sumLoop
+
+end:
+out rax
+hlt
+

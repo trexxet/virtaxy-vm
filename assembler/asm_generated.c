@@ -72,28 +72,6 @@ IF_INSTR(be)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BE_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BE_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -116,6 +94,28 @@ IF_INSTR(be)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BE_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BE_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -125,28 +125,6 @@ IF_INSTR(bg)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BG_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BG_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -169,6 +147,28 @@ IF_INSTR(bg)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BG_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BG_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -178,28 +178,6 @@ IF_INSTR(bge)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BGE_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BGE_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -222,6 +200,28 @@ IF_INSTR(bge)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BGE_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BGE_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -231,28 +231,6 @@ IF_INSTR(bl)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BL_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BL_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -275,6 +253,28 @@ IF_INSTR(bl)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BL_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BL_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -284,28 +284,6 @@ IF_INSTR(ble)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BLE_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BLE_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -328,6 +306,28 @@ IF_INSTR(ble)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BLE_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BLE_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -337,28 +337,6 @@ IF_INSTR(bne)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == REG)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BNE_REG_REG_REG;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = REG_NUM(arg3.str);
-				ASSEMBLED;
-			}
-			if (arg3.type == NUM)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BNE_REG_REG_NUM;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG_TO_NUM(arg3.str, &ARG3, &S);
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == REG)
@@ -381,6 +359,28 @@ IF_INSTR(bne)
 			}
 			INVALID_ARG3;
 		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == REG)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BNE_REG_REG_REG;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG3 = REG_NUM(arg3.str);
+				ASSEMBLED;
+			}
+			if (arg3.type == NUM)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BNE_REG_REG_NUM;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
+				ARG_TO_NUM(arg3.str, &ARG3, &S);
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
 		INVALID_ARG2;
 	}
 	INVALID_ARG1;
@@ -390,19 +390,6 @@ IF_INSTR(bnz)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == NONE)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BNZ_REG_REG_NONE;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = 0;
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == NONE)
@@ -411,6 +398,19 @@ IF_INSTR(bnz)
 				OPCODE = BNZ_REG_NUM_NONE;
 				ARG1 = REG_NUM(arg1.str);
 				ARG_TO_NUM(arg2.str, &ARG2, &S);
+				ARG3 = 0;
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
+		if (arg2.type == REG)
+		{
+			if (arg3.type == NONE)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = BNZ_REG_REG_NONE;
+				ARG1 = REG_NUM(arg1.str);
+				ARG2 = REG_NUM(arg2.str);
 				ARG3 = 0;
 				ASSEMBLED;
 			}
@@ -425,19 +425,6 @@ IF_INSTR(bz)
 {
 	if (arg1.type == REG)
 	{
-		if (arg2.type == REG)
-		{
-			if (arg3.type == NONE)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = BZ_REG_REG_NONE;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = REG_NUM(arg2.str);
-				ARG3 = 0;
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
 		if (arg2.type == NUM)
 		{
 			if (arg3.type == NONE)
@@ -451,23 +438,14 @@ IF_INSTR(bz)
 			}
 			INVALID_ARG3;
 		}
-		INVALID_ARG2;
-	}
-	INVALID_ARG1;
-}
-
-IF_INSTR(call)
-{
-	if (arg1.type == REG)
-	{
-		if (arg2.type == NONE)
+		if (arg2.type == REG)
 		{
 			if (arg3.type == NONE)
 			{
 				CHECK_PROGRAM_SIZE;
-				OPCODE = CALL_REG_NONE_NONE;
+				OPCODE = BZ_REG_REG_NONE;
 				ARG1 = REG_NUM(arg1.str);
-				ARG2 = 0;
+				ARG2 = REG_NUM(arg2.str);
 				ARG3 = 0;
 				ASSEMBLED;
 			}
@@ -475,6 +453,11 @@ IF_INSTR(call)
 		}
 		INVALID_ARG2;
 	}
+	INVALID_ARG1;
+}
+
+IF_INSTR(call)
+{
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -484,6 +467,23 @@ IF_INSTR(call)
 				CHECK_PROGRAM_SIZE;
 				OPCODE = CALL_NUM_NONE_NONE;
 				ARG_TO_NUM(arg1.str, &ARG1, &S);
+				ARG2 = 0;
+				ARG3 = 0;
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
+		INVALID_ARG2;
+	}
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			if (arg3.type == NONE)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = CALL_REG_NONE_NONE;
+				ARG1 = REG_NUM(arg1.str);
 				ARG2 = 0;
 				ARG3 = 0;
 				ASSEMBLED;
@@ -642,23 +642,6 @@ IF_INSTR(inc)
 
 IF_INSTR(jmp)
 {
-	if (arg1.type == REG)
-	{
-		if (arg2.type == NONE)
-		{
-			if (arg3.type == NONE)
-			{
-				CHECK_PROGRAM_SIZE;
-				OPCODE = JMP_REG_NONE_NONE;
-				ARG1 = REG_NUM(arg1.str);
-				ARG2 = 0;
-				ARG3 = 0;
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
-		INVALID_ARG2;
-	}
 	if (arg1.type == NUM)
 	{
 		if (arg2.type == NONE)
@@ -668,6 +651,23 @@ IF_INSTR(jmp)
 				CHECK_PROGRAM_SIZE;
 				OPCODE = JMP_NUM_NONE_NONE;
 				ARG_TO_NUM(arg1.str, &ARG1, &S);
+				ARG2 = 0;
+				ARG3 = 0;
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
+		INVALID_ARG2;
+	}
+	if (arg1.type == REG)
+	{
+		if (arg2.type == NONE)
+		{
+			if (arg3.type == NONE)
+			{
+				CHECK_PROGRAM_SIZE;
+				OPCODE = JMP_REG_NONE_NONE;
+				ARG1 = REG_NUM(arg1.str);
 				ARG2 = 0;
 				ARG3 = 0;
 				ASSEMBLED;
