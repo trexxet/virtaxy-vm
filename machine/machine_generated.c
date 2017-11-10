@@ -325,7 +325,8 @@ case OUT_REG_NONE_NONE:
 	WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case DUMP_NONE_NONE_NONE:
-	dumpEverything();
+	dumpRegisters();
+	memDump(&M);
 	WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case HLT_NONE_NONE_NONE:

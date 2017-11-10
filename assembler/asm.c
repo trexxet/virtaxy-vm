@@ -23,6 +23,9 @@ program P;
 symTable S;
 
 
+int printSymtableAtFinal = 0;
+
+
 _ERRNO_T asmInit()
 {
 	// Init program
@@ -55,28 +58,33 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	LOAD_ARG(arg2);
 	LOAD_ARG(arg3);
 
-	// If new constant
-	if (arg1.str && (strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
+	// If new not-label symbol (constant, variable or reserved memory)
+	if (arg1.str && IS_NUM(arg2.str, &S))
 	{
-		int64_t value = 0;
-		ARG_TO_NUM(arg2.str, &value, &S);
-		if (symGetValue(&S, instrStr, NULL) < 0)
-			symAdd(&S, instrStr, value);
-		return SUCCESS;
-	}
+		enum {CONST = 1, VAR = 2, RESMEM = 3};
+		uint8_t symType = 0;
+		if (strcmp(arg1.str, CONST_KEYWORD) == 0)
+			symType = CONST;
+		else if (strcmp(arg1.str, VAR_KEYWORD) == 0)
+			symType = VAR;
+		else if (strcmp(arg1.str, RES_KEYWORD) == 0)
+			symType = RESMEM;
+		else goto notSymbol;
 
-	// If new variable
-	if (arg1.str && (strcmp(arg1.str, VAR_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
-	{
 		int64_t value = 0;
-		if (symGetValue(&S, instrStr, NULL) < 0)
-			symAdd(&S, instrStr, P.size);
-		CHECK_PROGRAM_SIZE;
 		ARG_TO_NUM(arg2.str, &value, &S);
-		OPCODE = value;
-		P.size++;
+		if (symGetValue(&S, instrStr, NULL) < 0)
+			symAdd(&S, instrStr, (symType == CONST) ? value : P.size);
+		if (symType != CONST)
+		{
+			CHECK_PROGRAM_SIZE;
+			if (symType == VAR)
+				OPCODE = value;
+			P.size += (symType == RESMEM) ? value : 1;
+		}
 		return SUCCESS;
 	}
+	notSymbol: ;
 
 	// Try to assemble command on second pass
 	_ERRNO_T asm_err = 0;
@@ -109,7 +117,8 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 
 void asmFinal()
 {
-	symPrint(&S);
+	if (printSymtableAtFinal)
+		symPrint(&S);
 	symDestroy(&S);
 	free(P.bytes);
 }

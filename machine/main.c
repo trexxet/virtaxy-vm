@@ -64,15 +64,21 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 {
 	int opt;
 	opterr = 0;
-	extern int debug;
+	extern struct {int reg, mem, stack;} printDump;
 	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
 		switch (opt)
 		{
-			case 'm':
+			case 'M': // Set memory size
 				conf -> memSize = strtol(optarg, NULL, 0);
 				break;
-			case 'd':
-				debug = 1;
+			case 'r': // Print registers and current opcode every cycle
+				printDump.reg = 1;
+				break;
+			case 'm': // Print memory dump every cycle
+				printDump.mem = 1;
+				break;
+			case 's': // Print stack dump every cycle
+				printDump.stack = 1;
 				break;
 			case '?':
 			default:

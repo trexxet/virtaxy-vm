@@ -23,7 +23,7 @@ const static char* errmsg[] = {
 	[SUCCESS] = 
 		"Execution successful",
 	[INCORRECT_COMMAND_LINE] = 
-		C_BOLD_BLUE"Usage:"C_RESET" vmm <source> -o <output>",
+		C_BOLD_BLUE"Usage:"C_RESET" vmm <source> [-M <memsize>] [-rms]",
 	[NO_INPUT_FILES] = 
 		C_BOLD_RED"error:"C_RESET" no input files",
 	[CANNOT_OPEN_FILE] = 

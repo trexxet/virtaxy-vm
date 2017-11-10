@@ -28,7 +28,7 @@ void memDump(mem_t *M)
 	printf("\n===========================MEMORY DUMP==========================\n");
 	for (size_t i = 0; i < M -> size; i++)
 	{
-		printf("%-8lx", M -> data[i]);
+		printf("%-8llx", M -> data[i]);
 		if (((i + 1) & 0xF) == 0)
 			printf("\n");
 	}

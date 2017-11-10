@@ -244,7 +244,8 @@
 	printf("%lld\n", READ_REG(arg1));
 	WRITE_REG(IP, READ_REG(IP) + 4);
 52: dump                  - dump everything for debug
-	dumpEverything();
+	dumpRegisters();
+	memDump(&M);
 	WRITE_REG(IP, READ_REG(IP) + 4);
-53: hlt
+53: hlt                   - stop execution
 	HALT;

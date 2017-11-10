@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -101,11 +102,15 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 {
 	int opt;
 	opterr = 0;
+	extern int printSymtableAtFinal;
 	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
 		switch (opt)
 		{
-			case 'o':
+			case 'o': // Set output filename
 				conf -> outputFilename = optarg;
+				break;
+			case 's': // Print symbol table
+				printSymtableAtFinal = 1;
 				break;
 			default:
 			case '?':
