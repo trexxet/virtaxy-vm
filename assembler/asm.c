@@ -28,7 +28,7 @@ _ERRNO_T asmInit()
 	// Init program
 	P.size = 0;
 	P.maxSize = INIT_PROGRAM_SIZE;
-	if (!(P.ops = calloc(INIT_PROGRAM_SIZE, sizeof(instruction))))
+	if (!(P.bytes = calloc(INIT_PROGRAM_SIZE, sizeof(int64_t))))
 		return CANNOT_ALLOCATE_MEMORY;
 	// Init symbol table
 	return symInit(&S);
@@ -40,7 +40,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
 	
-	// Check if label
+	// If label
 	if (IS_LABEL(instrStr))
 	{
 		char labelStr[SOURCE_STRING_LENGTH] = {0};
@@ -55,13 +55,26 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	LOAD_ARG(arg2);
 	LOAD_ARG(arg3);
 
-	// Check if new constant
+	// If new constant
 	if (arg1.str && (strcmp(arg1.str, CONST_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
 	{
 		int64_t value = 0;
 		ARG_TO_NUM(arg2.str, &value, &S);
 		if (symGetValue(&S, instrStr, NULL) < 0)
 			symAdd(&S, instrStr, value);
+		return SUCCESS;
+	}
+
+	// If new variable
+	if (arg1.str && (strcmp(arg1.str, VAR_KEYWORD) == 0) && IS_NUM(arg2.str, &S))
+	{
+		int64_t value = 0;
+		if (symGetValue(&S, instrStr, NULL) < 0)
+			symAdd(&S, instrStr, P.size);
+		CHECK_PROGRAM_SIZE;
+		ARG_TO_NUM(arg2.str, &value, &S);
+		OPCODE = value;
+		P.size++;
 		return SUCCESS;
 	}
 
@@ -89,7 +102,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		}
 	}
 
-	P.size++; // Go to next command
+	P.size += 4;
 	return asm_err;
 }
 
@@ -98,6 +111,6 @@ void asmFinal()
 {
 	symPrint(&S);
 	symDestroy(&S);
-	free(P.ops);
+	free(P.bytes);
 }
 

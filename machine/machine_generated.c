@@ -185,132 +185,132 @@ case POP_REG_NONE_NONE:
 	WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case JMP_REG_NONE_NONE:
-	WRITE_REG(IP, READ_REG(arg1)*4);
+	WRITE_REG(IP, READ_REG(arg1));
 	break;
 case JMP_NUM_NONE_NONE:
-	WRITE_REG(IP, arg1*4);
+	WRITE_REG(IP, arg1);
 	break;
 case BZ_REG_REG_NONE:
-	IF (READ_REG(arg1) == 0) WRITE_REG(IP, READ_REG(arg2)*4);
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, READ_REG(arg2));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BZ_REG_NUM_NONE:
-	IF (READ_REG(arg1) == 0) WRITE_REG(IP, arg2*4);
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, arg2);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNZ_REG_REG_NONE:
-	IF (READ_REG(arg1) != 0) WRITE_REG(IP, READ_REG(arg2)*4);
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, READ_REG(arg2));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNZ_REG_NUM_NONE:
-	IF (READ_REG(arg1) != 0) WRITE_REG(IP, arg2*4);
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, arg2);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BE_REG_REG_REG:
-	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BE_REG_REG_NUM:
-	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BE_REG_NUM_REG:
-	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BE_REG_NUM_NUM:
-	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNE_REG_REG_REG:
-	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNE_REG_REG_NUM:
-	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNE_REG_NUM_REG:
-	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BNE_REG_NUM_NUM:
-	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BG_REG_REG_REG:
-	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BG_REG_REG_NUM:
-	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BG_REG_NUM_REG:
-	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BG_REG_NUM_NUM:
-	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BL_REG_REG_REG:
-	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BL_REG_REG_NUM:
-	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BL_REG_NUM_REG:
-	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BL_REG_NUM_NUM:
-	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BGE_REG_REG_REG:
-	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BGE_REG_REG_NUM:
-	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BGE_REG_NUM_REG:
-	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BGE_REG_NUM_NUM:
-	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BLE_REG_REG_REG:
-	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BLE_REG_REG_NUM:
-	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BLE_REG_NUM_REG:
-	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case BLE_REG_NUM_NUM:
-	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 	break;
 case CALL_REG_NONE_NONE:
 	WRITE_REG(SP, READ_REG(SP) - 1);
 	WRITE_MEM(READ_REG(SP), READ_REG(IP));
-	WRITE_REG(IP, READ_REG(arg1)*4);
+	WRITE_REG(IP, READ_REG(arg1));
 	break;
 case CALL_NUM_NONE_NONE:
 	WRITE_REG(SP, READ_REG(SP) - 1);
 	WRITE_MEM(READ_REG(SP), READ_REG(IP));
-	WRITE_REG(IP, arg1*4);
+	WRITE_REG(IP, arg1);
 	break;
 case RET_NONE_NONE_NONE:
 	WRITE_REG(IP, READ_MEM(READ_REG(SP)) + 4);

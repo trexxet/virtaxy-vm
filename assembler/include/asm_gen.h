@@ -4,15 +4,15 @@
 
 #define CHECK_PROGRAM_SIZE                             \
 	if (P.maxSize - P.size < 1)                    \
-		P.ops = (instruction *) realloc(P.ops, \
-			  (P.maxSize += P.maxSize / 2) * sizeof(instruction))
+		P.bytes = (int64_t *) realloc(P.bytes, \
+			  (P.maxSize += P.maxSize / 2) * sizeof(int64_t))
 
 #define IF_INSTR(instr) if (strcmp(instrStr, #instr) == 0)
 
-#define OPCODE P.ops[P.size].opcode
-#define ARG1   P.ops[P.size].arg1
-#define ARG2   P.ops[P.size].arg2
-#define ARG3   P.ops[P.size].arg3
+#define OPCODE P.bytes[P.size+0]
+#define ARG1   P.bytes[P.size+1]
+#define ARG2   P.bytes[P.size+2]
+#define ARG3   P.bytes[P.size+3]
 
 #define ASSEMBLED asm_err = 0; goto assembled;
 #define INVALID_ARG1 asm_err = INVALID_ARGS; invalArg = 1; goto assembled;

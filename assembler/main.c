@@ -89,14 +89,8 @@ void writeProgram(char *filename)
 	FILE* openedFileHandle = fopen(filename, "wb");
 	if (!openedFileHandle)
 		parseError(CANNOT_OPEN_FILE, filename, 0, NULL);
-	//fwrite(&P.size, sizeof(uint64_t), 1, openedFileHandle);
 	for (uint64_t i = 0; i < P.size; i++)
-	{
-		fwrite(&P.ops[i].opcode, sizeof(uint64_t), 1, openedFileHandle);
-		fwrite(&P.ops[i].arg1, sizeof(int64_t), 1, openedFileHandle);
-		fwrite(&P.ops[i].arg2, sizeof(int64_t), 1, openedFileHandle);
-		fwrite(&P.ops[i].arg3, sizeof(int64_t), 1, openedFileHandle);
-	}
+		fwrite(&P.bytes[i], sizeof(uint64_t), 1, openedFileHandle);
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, 0, NULL);
 	openedFileHandle = NULL;

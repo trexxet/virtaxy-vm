@@ -131,7 +131,7 @@
 	WRITE_REG(SP, READ_REG(SP) - 1);
 	WRITE_MEM(READ_REG(SP), READ_REG(arg1));
 	WRITE_REG(IP, READ_REG(IP) + 4);
-2D: pop                   - pop from stack to void
+2D: pop                   - pop from stack to the void
 	WRITE_REG(SP, READ_REG(SP) + 1);
 	WRITE_REG(IP, READ_REG(IP) + 4);
 2E: pop reg1              - pop from stack to reg1
@@ -139,101 +139,101 @@
 	WRITE_REG(SP, READ_REG(SP) + 1);
 	WRITE_REG(IP, READ_REG(IP) + 4);
 2F: jmp reg1              - unconditional jump at register value
-	WRITE_REG(IP, READ_REG(arg1)*4);
+	WRITE_REG(IP, READ_REG(arg1));
 30: jmp num1              - unconditional jump at number
-	WRITE_REG(IP, arg1*4);
+	WRITE_REG(IP, arg1);
 31: bz reg1, reg2         - branch at reg2 if reg1 == 0
-	IF (READ_REG(arg1) == 0) WRITE_REG(IP, READ_REG(arg2)*4);
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, READ_REG(arg2));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 32: bz reg1, num2         - branch at num2 if reg1 == 0
-	IF (READ_REG(arg1) == 0) WRITE_REG(IP, arg2*4);
+	IF (READ_REG(arg1) == 0) WRITE_REG(IP, arg2);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 33: bnz reg1, reg2        - branch at reg2 if reg1 != 0
-	IF (READ_REG(arg1) != 0) WRITE_REG(IP, READ_REG(arg2)*4);
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, READ_REG(arg2));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 34: bnz reg1, num2        - branch at num2 if reg1 != 0
-	IF (READ_REG(arg1) != 0) WRITE_REG(IP, arg2*4);
+	IF (READ_REG(arg1) != 0) WRITE_REG(IP, arg2);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 35: be reg1, reg2, reg3   - branch at reg3 if reg1 == reg2
-	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 36: be reg1, reg2, num3   - branch at num3 if reg1 == reg2
-	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) == READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 37: be reg1, num2, reg3   - branch at reg3 if reg1 == num2
-	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 38: be reg1, num2, num3   - branch at num3 if reg1 == num2
-	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) == arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 39: bne reg1, reg2, reg3  - branch at reg3 if reg1 != reg2
-	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3A: bne reg1, reg2, num3  - branch at num3 if reg1 != reg2
-	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) != READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3B: bne reg1, num2, reg3  - branch at reg3 if reg1 != num2
-	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3C: bne reg1, num2, num3  - branch at num3 if reg1 != num2
-	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) != arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3D: bg reg1, reg2, reg3   - branch at reg3 if reg1 > reg2 
-	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3E: bg reg1, reg2, num3   - branch at num3 if reg1 > reg2 
-	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) > READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 3F: bg reg1, num2, reg3   - branch at reg3 if reg1 > num2 
-	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 40: bg reg1, num2, num3   - branch at num3 if reg1 > num2
-	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) > arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 41: bl reg1, reg2, reg3   - branch at reg3 if reg1 < reg2 
-	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 42: bl reg1, reg2, num3   - branch at num3 if reg1 < reg2 
-	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) < READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 43: bl reg1, num2, reg3   - branch at reg3 if reg1 < num2 
-	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 44: bl reg1, num2, num3   - branch at num3 if reg1 < num2 
-	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) < arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 45: bge reg1, reg2, reg3  - branch at reg3 if reg1 >= reg2 
-	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 46: bge reg1, reg2, num3  - branch at num3 if reg1 >= reg2 
-	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) >= READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 47: bge reg1, num2, reg3  - branch at reg3 if reg1 >= num2 
-	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 48: bge reg1, num2, num3  - branch at num3 if reg1 >= num2 
-	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) >= arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 49: ble reg1, reg2, reg3  - branch at reg3 if reg1 <= reg2 
-	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 4A: ble reg1, reg2, num3  - branch at num3 if reg1 <= reg2 
-	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) <= READ_REG(arg2)) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 4B: ble reg1, num2, reg3  - branch at reg3 if reg1 <= num2 
-	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, READ_REG(arg3)*4);
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, READ_REG(arg3));
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 4C: ble reg1, num2, num3  - branch at num3 if reg1 <= num2 
-	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, arg3*4);
+	IF (READ_REG(arg1) <= arg2) WRITE_REG(IP, arg3);
 	ELSE WRITE_REG(IP, READ_REG(IP) + 4);
 4D: call reg1             - call function at reg1
 	WRITE_REG(SP, READ_REG(SP) - 1);
 	WRITE_MEM(READ_REG(SP), READ_REG(IP));
-	WRITE_REG(IP, READ_REG(arg1)*4);
+	WRITE_REG(IP, READ_REG(arg1));
 4E: call num1             - call function at num1
 	WRITE_REG(SP, READ_REG(SP) - 1);
 	WRITE_MEM(READ_REG(SP), READ_REG(IP));
-	WRITE_REG(IP, arg1*4);
+	WRITE_REG(IP, arg1);
 4F: ret                   - return from function
 	WRITE_REG(IP, READ_MEM(READ_REG(SP)) + 4);
 	WRITE_REG(SP, READ_REG(SP) + 1);

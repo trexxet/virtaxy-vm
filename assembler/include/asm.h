@@ -6,14 +6,7 @@
 
 
 typedef struct {
-	uint64_t opcode;
-	int64_t arg1;
-	int64_t arg2;
-	int64_t arg3;
-} instruction;
-
-typedef struct {
-	instruction* ops;
+	int64_t* bytes;
 	uint64_t size;
 	uint64_t maxSize;
 } program;
