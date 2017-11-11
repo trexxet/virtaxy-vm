@@ -1,5 +1,6 @@
 ; Print 1 if input is greater than zero,
 ;   otherwise print 0
+
 in rax
 bg rax, 0, greaterThanZero
 	mov rbx, 0

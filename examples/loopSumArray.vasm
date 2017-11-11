@@ -1,0 +1,40 @@
+; Store N < 10 integers in memory and sum them
+
+maxN equ 10
+errCode equ -1
+
+main:
+	in rbx
+	; Check if N < maxN, if not then print errCode
+	bl rbx, maxN, .inputLoop
+		mov rax, errCode
+		out rax
+		hlt
+
+	.inputLoop:
+		bge rcx, rbx, .endInput
+		in rax
+		mov rdx, ints
+		add rdx, rcx
+		st rdx, rax
+		inc rcx
+		jmp .inputLoop
+	.endInput:
+	
+	mov rcx, 0
+	.sumLoop:
+		bge rcx, rbx, .endSum
+		mov rdx, ints
+		add rdx, rcx
+		ld rax, rdx
+		add rex, rax
+		inc rcx
+		jmp .sumLoop
+	.endSum:
+	
+	out rex
+hlt
+
+; Reserved memory for integers
+ints res maxN
+

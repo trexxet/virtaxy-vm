@@ -2,8 +2,8 @@
 
 #pragma once
 
-#define CHECK_PROGRAM_SIZE                             \
-	if (P.maxSize - P.size < 1)                    \
+#define CHECK_PROGRAM_SIZE(dSize)                      \
+	if (P.maxSize - P.size < dSize + 1)            \
 		P.bytes = (int64_t *) realloc(P.bytes, \
 			  (P.maxSize += P.maxSize / 2) * sizeof(int64_t))
 

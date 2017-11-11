@@ -33,7 +33,7 @@ for instr, args in OPtree.items():
             code += '\t\tif (arg2.type == %s)\n\t\t{\n' % arg2
             for arg3 in args3:
                 code += '\t\t\tif (arg3.type == %s)\n\t\t\t{\n' % arg3
-                code += '\t\t\t\tCHECK_PROGRAM_SIZE;\n'
+                code += '\t\t\t\tCHECK_PROGRAM_SIZE(OPSIZE);\n'
                 code += '\t\t\t\tOPCODE = %s_%s_%s_%s;\n' % (instr, arg1, arg2, arg3)
                 for i, arg in enumerate([arg1, arg2, arg3]):
                     if arg == 'REG':

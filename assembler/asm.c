@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdint.h>
 
+#define OPSIZE 4
+
 #include "asm.h"
 #include "errors.h"
 #include "config.h"
@@ -42,6 +44,8 @@ __attribute__((hot))
 _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
+	if (!instrStr || instrStr[0] == COMMENT_SYMBOL)
+		return SUCCESS;
 	
 	// If label
 	if (IS_LABEL(instrStr))
@@ -77,7 +81,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 			symAdd(&S, instrStr, (symType == CONST) ? value : P.size);
 		if (symType != CONST)
 		{
-			CHECK_PROGRAM_SIZE;
+			CHECK_PROGRAM_SIZE((symType == RESMEM) ? value : 1);
 			if (symType == VAR)
 				OPCODE = value;
 			P.size += (symType == RESMEM) ? value : 1;
@@ -110,7 +114,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		}
 	}
 
-	P.size += 4;
+	P.size += OPSIZE;
 	return asm_err;
 }
 
