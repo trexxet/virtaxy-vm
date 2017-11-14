@@ -30,9 +30,10 @@ typedef struct {
 } arg_t;
 
 
-#define LOAD_ARG(arg)                   \
-	arg.str = strtok(NULL, DELIM);  \
-	arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str);
+#define LOAD_ARG(arg) {                                           \
+	arg.str = strtok(NULL, DELIM);                            \
+	if (arg.str && arg.str[0] != COMMENT_SYMBOL)              \
+		arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str); }
 
 int isArgNum(char *arg, int64_t *num, symTable *S);
 int isArgLabel(char *arg);
