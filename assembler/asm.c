@@ -57,10 +57,12 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	arg_t arg1, arg2, arg3;
+	arg_t arg1 = {NULL, NONE}, arg2 = {NULL, NONE}, arg3 = {NULL, NONE};
 	LOAD_ARG(arg1);
-	LOAD_ARG(arg2);
-	LOAD_ARG(arg3);
+	if (arg1.type != NONE)
+		LOAD_ARG(arg2);
+	if (arg2.type != NONE)
+		LOAD_ARG(arg3);
 
 	// If new not-label symbol (constant, variable or reserved memory)
 	if (arg1.str && IS_NUM(arg2.str, &S))
