@@ -992,23 +992,6 @@ IF_INSTR(out)
 
 IF_INSTR(pop)
 {
-	if (arg1.type == NONE)
-	{
-		if (arg2.type == NONE)
-		{
-			if (arg3.type == NONE)
-			{
-				CHECK_PROGRAM_SIZE(OPSIZE);
-				OPCODE = POP_NONE_NONE_NONE;
-				ARG1 = 0;
-				ARG2 = 0;
-				ARG3 = 0;
-				ASSEMBLED;
-			}
-			INVALID_ARG3;
-		}
-		INVALID_ARG2;
-	}
 	if (arg1.type == REG)
 	{
 		if (arg2.type == NONE)
@@ -1018,6 +1001,23 @@ IF_INSTR(pop)
 				CHECK_PROGRAM_SIZE(OPSIZE);
 				OPCODE = POP_REG_NONE_NONE;
 				ARG1 = REG_NUM(arg1.str);
+				ARG2 = 0;
+				ARG3 = 0;
+				ASSEMBLED;
+			}
+			INVALID_ARG3;
+		}
+		INVALID_ARG2;
+	}
+	if (arg1.type == NONE)
+	{
+		if (arg2.type == NONE)
+		{
+			if (arg3.type == NONE)
+			{
+				CHECK_PROGRAM_SIZE(OPSIZE);
+				OPCODE = POP_NONE_NONE_NONE;
+				ARG1 = 0;
 				ARG2 = 0;
 				ARG3 = 0;
 				ASSEMBLED;

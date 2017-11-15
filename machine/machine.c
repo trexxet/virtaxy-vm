@@ -17,6 +17,7 @@ mem_t M;
 
 // Debug
 struct {int reg, mem, stack;} printDump = {0};
+int stepByStep = 0;
 #include <stdio.h>
 void dumpRegisters();
 void dumpStack();
@@ -57,6 +58,10 @@ _ERRNO_T machineRun() {
 			default:
 				return UNKNOWN_COMMAND;
 		}
+		
+		// Wait for user response if step-by-step execution
+		if (stepByStep)
+			getchar();
 	}
 
 	stop:

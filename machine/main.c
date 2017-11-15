@@ -65,6 +65,7 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 	int opt;
 	opterr = 0;
 	extern struct {int reg, mem, stack;} printDump;
+	extern int stepByStep;
 	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
 		switch (opt)
 		{
@@ -79,6 +80,9 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 				break;
 			case 's': // Print stack dump every cycle
 				printDump.stack = 1;
+				break;
+			case 'd': // Step-by-step execution
+				stepByStep = 1;
 				break;
 			case '?':
 			default:
