@@ -45,6 +45,19 @@ int isArgLabel(char *arg)
 	return 0;
 }
 
+	
+__attribute__((hot))
+int isArgKeyword(char *arg)
+{
+	if (!arg)
+		return 0;
+	#define _strcmp(_kword) (strcmp(arg, _kword) == 0)
+	if (_strcmp(CONST_KEYWORD) || _strcmp(VAR_KEYWORD) || _strcmp(RES_KEYWORD))
+		return KEYWORD;
+	#undef _strcmp
+	return 0;
+}
+
 
 __attribute__((hot))
 int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exists

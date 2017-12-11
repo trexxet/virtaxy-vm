@@ -64,8 +64,8 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	if (arg2.type != NONE)
 		LOAD_ARG(arg3);
 
-	// If new not-label symbol (constant, variable or reserved memory)
-	if (arg1.str && IS_NUM(arg2.str, &S))
+	// If keyword (constant, variable or reserved memory)
+	if (arg1.type == KEYWORD && IS_NUM(arg2.str, &S))
 	{
 		enum {CONST = 1, VAR = 2, RESMEM = 3};
 		uint8_t symType = 0;

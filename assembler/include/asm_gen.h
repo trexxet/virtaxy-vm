@@ -24,4 +24,5 @@
 #define IS_NUM(arg, symtab) isArgNum(arg, NULL, symtab)
 #define ARG_TO_NUM(arg, pnum, symtab) isArgNum(arg, pnum, symtab)
 #define IS_LABEL(arg) isArgLabel(arg)
+#define IS_KEYWORD(arg) isArgKeyword(arg)
 

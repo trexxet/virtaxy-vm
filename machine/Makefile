@@ -11,5 +11,5 @@ all:
 	$(CC) $(CSRC) $(CFLAGS) -o ../bin/$(TARGET)
 
 clean:
-	rm bin/vmm
+	rm ../bin/vmm
 
