@@ -2,4 +2,7 @@
 *.vo
 *.swp
 bin
+common/generated/*
+assembler/asm_generated.c
+machine/machine_generated.c
 

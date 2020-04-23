@@ -11,7 +11,8 @@
 #include "asm.h"
 
 
-_ERRNO_T _errno = SUCCESS;
+// Name _errno is occupied in some gcc implementations :^(
+errcode_t errcode = SUCCESS;
 
 
 typedef struct {
@@ -24,15 +25,15 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf);
 void assembleFile(char *filename);
 void writeProgram(char *filename);
 
-void parseError(_ERRNO_T _errno, char *file, size_t line, char *errStr);
+void parseError(errcode_t errcode, char *file, size_t line, char *errStr);
 void finalization();
 
 
 void main(int argc, char *argv[])
 {
-	_errno = asmInit();
-	if (_errno)
-		parseError(_errno, NULL, 0, NULL);
+	errcode = asmInit();
+	if (errcode)
+		parseError(errcode, NULL, 0, NULL);
 
 	conf_t conf = {NULL, DEFAULT_OUTPUT_FILENAME};
 	parseCmdLineArgs(argc, argv, &conf);
@@ -60,10 +61,10 @@ void assembleFile(char *filename)
 	for (int pass = 1; pass <= 2; pass++)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
-		       ((pass == 2) ? (_errno == 0) : 1))			
+		       ((pass == 2) ? (errcode == 0) : 1))
 		{
 			if (STRING_NOT_EMPTY)
-				_errno = assembleString(sourceString, pass, errStr);
+				errcode = assembleString(sourceString, pass, errStr);
 			if (pass == 2)
 				lineCounter++;
 		}
@@ -78,7 +79,7 @@ void assembleFile(char *filename)
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);
 	openedFileHandle = NULL;
-	parseError(_errno, filename, lineCounter, _errno ? errStr : NULL);
+	parseError(errcode, filename, lineCounter, errcode ? errStr : NULL);
 }
 
 
@@ -121,13 +122,13 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 }
 
 
-void parseError(_ERRNO_T _errno, char *file, size_t line, char *errStr)
+void parseError(errcode_t errcode, char *file, size_t line, char *errStr)
 {
-	fprintf((_errno == SUCCESS) ? stdout : stderr, 
-	                              "%s:%zu: %s\n", file, line, errmsg[_errno]);
+	fprintf((errcode == SUCCESS) ? stdout : stderr,
+	                              "%s:%zu: %s\n", file, line, errmsg[errcode]);
 	if (errStr)
 		fprintf(stderr, "%s\n", errStr);
-	if (_errno != SUCCESS)
+	if (errcode != SUCCESS)
 		finalization();
 }
 
@@ -136,6 +137,6 @@ void parseError(_ERRNO_T _errno, char *file, size_t line, char *errStr)
 _Noreturn void finalization()
 {
 	asmFinal();
-	exit(_errno);
+	exit(errcode);
 }
 

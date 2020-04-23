@@ -19,7 +19,7 @@ typedef struct {
 } symTable;
 
 
-_ERRNO_T symInit(symTable *S);
+errcode_t symInit(symTable *S);
 void symAdd(symTable *S, char *name, int64_t value);
 int symGetValue(symTable *S, char *name, int64_t *value);
 void symDestroy(symTable *S);

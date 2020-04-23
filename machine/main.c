@@ -10,7 +10,7 @@
 #include "mem.h"
 
 
-_ERRNO_T _errno = SUCCESS;
+errcode_t errcode = SUCCESS;
 
 
 typedef struct {
@@ -21,7 +21,7 @@ typedef struct {
 
 void parseCmdLineArgs(int argc, char *argv[], conf_t *conf);
 void executeFile(char *filename);
-void parseError(_ERRNO_T _errno, char *file, char *errStr);
+void parseError(errcode_t errcode, char *file, char *errStr);
 void finalization();
 
 
@@ -30,9 +30,9 @@ void main(int argc, char* argv[])
 	conf_t conf = {NULL, DEFAULT_MEMSIZE};
 	parseCmdLineArgs(argc, argv, &conf);
 	
-	_errno = machineInit(conf.memSize);
-	if (_errno)
-		parseError(_errno, NULL, NULL);
+	errcode = machineInit(conf.memSize);
+	if (errcode)
+		parseError(errcode, NULL, NULL);
 
 	executeFile(conf.inputFilename);
 
@@ -51,12 +51,12 @@ void executeFile(char *filename)
 	extern mem_t M;
 	int64_t *memPtr = M.data;
 	while(fread(memPtr++, sizeof(int64_t), 1, openedFileHandle));
-	_errno = machineRun();
+	errcode = machineRun();
 	
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, NULL);
 	openedFileHandle = NULL;
-	parseError(_errno, filename, NULL);
+	parseError(errcode, filename, NULL);
 }
 
 
@@ -95,12 +95,12 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 }
 
 
-void parseError(_ERRNO_T _errno, char *file, char *errStr)
+void parseError(errcode_t errcode, char *file, char *errStr)
 {
-	fprintf((_errno == SUCCESS) ? stdout : stderr, "%s: %s\n", file, errmsg[_errno]);
+	fprintf((errcode == SUCCESS) ? stdout : stderr, "%s: %s\n", file, errmsg[errcode]);
 	if (errStr)
 		fprintf(stderr, "%s\n", errStr);
-	if (_errno != SUCCESS)
+	if (errcode != SUCCESS)
 		finalization();
 }
 
@@ -109,6 +109,6 @@ void parseError(_ERRNO_T _errno, char *file, char *errStr)
 _Noreturn void finalization()
 {
 	machineDestroy();
-	exit(_errno);
+	exit(errcode);
 }
 

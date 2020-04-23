@@ -11,7 +11,7 @@ typedef struct {
 } mem_t;
 
 
-_ERRNO_T memInit(mem_t *M, size_t memSize);
+errcode_t memInit(mem_t *M, size_t memSize);
 void memDestroy(mem_t *M);
 void memDump(mem_t *M);
 

@@ -3,7 +3,7 @@
 #include "errors.h"
 
 
-_ERRNO_T memInit(mem_t *M, size_t memSize)
+errcode_t memInit(mem_t *M, size_t memSize)
 {
 	M -> size = memSize;
 	M -> data = (int64_t *) calloc(memSize, sizeof(int64_t));

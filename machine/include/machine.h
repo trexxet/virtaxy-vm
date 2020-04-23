@@ -4,7 +4,7 @@
 #include "errors.h"
 
 
-_ERRNO_T machineInit(size_t memSize);
-_ERRNO_T machineRun();
+errcode_t machineInit(size_t memSize);
+errcode_t machineRun();
 void machineDestroy();
 

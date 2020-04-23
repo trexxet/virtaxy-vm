@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-_ERRNO_T symInit(symTable *S)
+errcode_t symInit(symTable *S)
 {
 	S->size = 0;
 	S->maxSize = INIT_PROGRAM_SIZE;

@@ -28,7 +28,7 @@ symTable S;
 int printSymtableAtFinal = 0;
 
 
-_ERRNO_T asmInit()
+errcode_t asmInit()
 {
 	// Init program
 	P.size = 0;
@@ -41,7 +41,7 @@ _ERRNO_T asmInit()
 
 
 __attribute__((hot))
-_ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
+errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
 	if (!instrStr || instrStr[0] == COMMENT_SYMBOL)
@@ -93,7 +93,7 @@ _ERRNO_T assembleString(char *sourceStr, int pass, char *errStr)
 	notSymbol: ;
 
 	// Try to assemble command on second pass
-	_ERRNO_T asm_err = 0;
+	errcode_t asm_err = 0;
 	if (pass == 2)
 	{
 		asm_err = UNKNOWN_COMMAND;

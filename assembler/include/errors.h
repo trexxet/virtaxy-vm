@@ -13,7 +13,7 @@ typedef enum {
 	CANNOT_ALLOCATE_MEMORY,
 	UNKNOWN_COMMAND,
 	INVALID_ARGS
-} _ERRNO_T;
+} errcode_t;
 
 
 #define C_BOLD_RED "\033[1m\033[31m"

@@ -24,7 +24,7 @@ void dumpStack();
 #define dumpCmd() printf("op = %llx\targ1 = %lld\targ2 = %lld\targ3 = %lld\n", opcode, arg1, arg2, arg3);
 
 
-_ERRNO_T machineInit(size_t memSize) {
+errcode_t machineInit(size_t memSize) {
 	// Init stack
 	WRITE_REG(BP, memSize - 1);
 	WRITE_REG(SP, memSize - 1);
@@ -33,7 +33,7 @@ _ERRNO_T machineInit(size_t memSize) {
 }
 
 
-_ERRNO_T machineRun() {
+errcode_t machineRun() {
 	while (1) {
 		// Fetch
 		int64_t opcode = READ_MEM(READ_REG(IP));
