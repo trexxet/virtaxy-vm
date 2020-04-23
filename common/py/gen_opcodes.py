@@ -1,7 +1,9 @@
-import re
+import re, os
 
 # Load ISA description
 instr = open('ISA.txt')
+if not os.path.exists('generated'):
+    os.makedirs('generated')
 opcodes = open('generated/opcodes.h', 'w')
 
 # Form opcodes list

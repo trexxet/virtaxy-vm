@@ -1,4 +1,4 @@
-import re
+import re, os
 from itertools import product
 
 # Load registers description file
@@ -34,6 +34,8 @@ regList = list(map(lambda x: [x[1][0].replace('?', x[0][1]), x[0][0], x[1][1], x
                    matchedList)) + serviceRegs
 
 # Write registers table to file
+if not os.path.exists('generated'):
+    os.makedirs('generated')
 regs = open('generated/registers.h', 'w')
 # Register item definition
 regs.write('typedef struct {' +\
