@@ -1,10 +1,14 @@
-import re, os
+import sys, re, os
+
+ISAName = sys.argv[1]
+genSrcPath = '../isa/' + ISAName
+genDstPath = '../generated/' + ISAName
 
 # Load ISA description
-instr = open('ISA.txt')
-if not os.path.exists('generated'):
-    os.makedirs('generated')
-opcodes = open('generated/opcodes.h', 'w')
+instr = open(genSrcPath + '/ISA.txt')
+if not os.path.exists(genDstPath):
+    os.makedirs(genDstPath)
+opcodes = open(genDstPath + '/opcodes.h', 'w')
 
 # Form opcodes list
 for line in instr:

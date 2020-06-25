@@ -1,8 +1,11 @@
-import re
+import sys, re
 from collections import OrderedDict
 
+ISAName = sys.argv[1]
+genPath = '../generated/' + ISAName
+
 # Create opcodes tree
-opcodes = open('../common/generated/opcodes.h')
+opcodes = open(genPath + '/opcodes.h')
 OPtree = {}
 
 for line in opcodes:
@@ -23,7 +26,7 @@ opcodes.close()
 
 
 # Generate code
-asm = open('asm_generated.c', 'w')
+asm = open(genPath + '/asm_generated.c', 'w')
 
 for instr, args in OPtree.items():
     code = 'IF_INSTR(%s)\n{\n' % instr.lower()

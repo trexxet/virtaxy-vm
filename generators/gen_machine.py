@@ -1,8 +1,12 @@
-import re
+import sys, re
 from functools import reduce
 
+ISAName = sys.argv[1]
+genISAPath = '../isa/' + ISAName
+genPath = '../generated/' + ISAName
+
 # Load opcodes
-opcodes = open('../common/generated/opcodes.h')
+opcodes = open(genPath + '/opcodes.h')
 OPlist = {}
 for line in opcodes:
     OPdef = re.split('\s+', line)
@@ -12,8 +16,8 @@ for line in opcodes:
 opcodes.close()
 
 # Generate code
-machine = open('machine_generated.c', 'w')
-ISA = open('../common/ISA.txt')
+machine = open(genPath + '/machine_generated.c', 'w')
+ISA = open(genISAPath + '/ISA.txt')
 code = []
 
 for line in ISA:

@@ -1,8 +1,12 @@
-import re, os
+import sys, re, os
 from itertools import product
 
+ISAName = sys.argv[1]
+genSrcPath = '../isa/' + ISAName
+genDstPath = '../generated/' + ISAName
+
 # Load registers description file
-regs_desc = open('Registers.txt')
+regs_desc = open(genSrcPath + '/Registers.txt')
 patternList, groups = [], []
 serviceRegs = []
 Public = Private = False
@@ -34,9 +38,9 @@ regList = list(map(lambda x: [x[1][0].replace('?', x[0][1]), x[0][0], x[1][1], x
                    matchedList)) + serviceRegs
 
 # Write registers table to file
-if not os.path.exists('generated'):
-    os.makedirs('generated')
-regs = open('generated/registers.h', 'w')
+if not os.path.exists(genDstPath):
+    os.makedirs(genDstPath)
+regs = open(genDstPath + '/registers.h', 'w')
 # Register item definition
 regs.write('typedef struct {' +\
            '\n\tchar name[8];' +\
