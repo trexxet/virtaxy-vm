@@ -18,7 +18,7 @@
 // Functions & macros for generated assembler code
 #include "asm_gen.h"
 
-#include "../../common/generated/opcodes.h"
+#include "opcodes.h" // Generated
 
 
 program P;
@@ -98,7 +98,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 	{
 		asm_err = UNKNOWN_COMMAND;
 		int invalArg = 0;
-		#include "asm_generated.c"
+		#include "assembler-gen.c" // Generated
 
 		assembled:
 

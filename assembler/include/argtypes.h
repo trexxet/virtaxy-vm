@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 #include "symtable.h"
-#include "../../common/generated/registers.h"
+#include "registers.h" // Generated
 
 
 typedef enum {

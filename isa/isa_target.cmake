@@ -5,8 +5,8 @@ set(GENERATED_PATH "${CMAKE_SOURCE_DIR}/generated/${ARCH}")
 
 set(OPCODES_H "${GENERATED_PATH}/opcodes.h")
 set(REGISTERS_H "${GENERATED_PATH}/registers.h")
-set(ASSEMBLER_C "${GENERATED_PATH}/assembler.c")
-set(MACHINE_C "${GENERATED_PATH}/machine.c")
+set(ASSEMBLER_C "${GENERATED_PATH}/assembler-gen.c")
+set(MACHINE_C "${GENERATED_PATH}/machine-gen.c")
 
 set(OPCODES_GEN "${GENERATOR_PATH}/gen_opcodes.py")
 set(REGISTERS_GEN "${GENERATOR_PATH}/gen_registers.py")
@@ -45,7 +45,7 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:Python3::Interpreter> ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
-add_custom_target(${ARCH} ALL
+add_custom_target(${ARCH}
 	DEPENDS ${OPCODES_H} ${REGISTERS_H} ${ASSEMBLER_C} ${MACHINE_C}
 )
 

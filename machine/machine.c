@@ -4,11 +4,11 @@
 #include <stdint.h>
 
 #include "mem.h"
-#include "registers.h"
+#include "regfile.h"
 #include "errors.h"
 #include "machine.h"
 
-#include "../common/generated/opcodes.h"
+#include "opcodes.h" // Generated
 #include "vllm.h"
 
 
@@ -54,7 +54,7 @@ errcode_t machineRun() {
 		// Decode and execute
 		switch (opcode)
 		{
-			#include "machine_generated.c"
+			#include "machine-gen.c" // Generated
 			default:
 				return UNKNOWN_COMMAND;
 		}
