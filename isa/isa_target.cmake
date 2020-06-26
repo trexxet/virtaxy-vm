@@ -8,36 +8,41 @@ set(REGISTERS_H "${GENERATED_PATH}/registers.h")
 set(ASSEMBLER_C "${GENERATED_PATH}/assembler.c")
 set(MACHINE_C "${GENERATED_PATH}/machine.c")
 
+set(OPCODES_GEN "${GENERATOR_PATH}/gen_opcodes.py")
+set(REGISTERS_GEN "${GENERATOR_PATH}/gen_registers.py")
+set(ASSEMBLER_GEN "${GENERATOR_PATH}/gen_assembler.py")
+set(MACHINE_GEN "${GENERATOR_PATH}/gen_machine.py")
+
 # Generate opcodes
 add_custom_command(
 	OUTPUT ${OPCODES_H}
-	DEPENDS ${ISA_SRC}
+	DEPENDS ${ISA_SRC} ${OPCODES_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_opcodes.py ${ARCH} ${ISA_SRC}
+	COMMAND python3 ${OPCODES_GEN} ${ARCH} ${ISA_SRC}
 )
 
 # Generate register table
 add_custom_command(
 	OUTPUT ${REGISTERS_H}
-	DEPENDS ${REGISTERS_SRC}
+	DEPENDS ${REGISTERS_SRC} ${REGISTERS_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_registers.py ${ARCH} ${REGISTERS_SRC}
+	COMMAND python3 ${REGISTERS_GEN} ${ARCH} ${REGISTERS_SRC}
 )
 
 # Generate assembler code
 add_custom_command(
 	OUTPUT ${ASSEMBLER_C}
-	DEPENDS ${OPCODES_H}
+	DEPENDS ${OPCODES_H} ${ASSEMBLER_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_assembler.py ${ARCH}
+	COMMAND python3 ${ASSEMBLER_GEN} ${ARCH}
 )
 
 # Generate machine code
 add_custom_command(
 	OUTPUT ${MACHINE_C}
-	DEPENDS ${OPCODES_H} ${ISA_SRC}
+	DEPENDS ${OPCODES_H} ${ISA_SRC} ${MACHINE_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_machine.py ${ARCH} ${ISA_SRC}
+	COMMAND python3 ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
 add_custom_target(${ARCH} ALL

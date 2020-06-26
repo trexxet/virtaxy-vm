@@ -18,7 +18,7 @@ opcodes.close()
 
 # Generate code
 machine = open(genPath + '/machine.c', 'w')
-ISA = open(genISAPath + '/ISA.txt')
+ISA = open(genISAPath + '/' + ISASrc)
 code = []
 
 for line in ISA:
