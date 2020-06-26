@@ -18,7 +18,7 @@ add_custom_command(
 	OUTPUT ${OPCODES_H}
 	DEPENDS ${ISA_SRC} ${OPCODES_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 ${OPCODES_GEN} ${ARCH} ${ISA_SRC}
+	COMMAND $<TARGET_FILE:Python3::Interpreter> ${OPCODES_GEN} ${ARCH} ${ISA_SRC}
 )
 
 # Generate register table
@@ -26,7 +26,7 @@ add_custom_command(
 	OUTPUT ${REGISTERS_H}
 	DEPENDS ${REGISTERS_SRC} ${REGISTERS_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 ${REGISTERS_GEN} ${ARCH} ${REGISTERS_SRC}
+	COMMAND $<TARGET_FILE:Python3::Interpreter> ${REGISTERS_GEN} ${ARCH} ${REGISTERS_SRC}
 )
 
 # Generate assembler code
@@ -34,7 +34,7 @@ add_custom_command(
 	OUTPUT ${ASSEMBLER_C}
 	DEPENDS ${OPCODES_H} ${ASSEMBLER_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 ${ASSEMBLER_GEN} ${ARCH}
+	COMMAND $<TARGET_FILE:Python3::Interpreter> ${ASSEMBLER_GEN} ${ARCH}
 )
 
 # Generate machine code
@@ -42,7 +42,7 @@ add_custom_command(
 	OUTPUT ${MACHINE_C}
 	DEPENDS ${OPCODES_H} ${ISA_SRC} ${MACHINE_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
+	COMMAND $<TARGET_FILE:Python3::Interpreter> ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
 add_custom_target(${ARCH} ALL
