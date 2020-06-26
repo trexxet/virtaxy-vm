@@ -26,7 +26,7 @@ opcodes.close()
 
 
 # Generate code
-asm = open(genPath + '/asm_generated.c', 'w')
+asm = open(genPath + '/assembler.c', 'w')
 
 for instr, args in OPtree.items():
     code = 'IF_INSTR(%s)\n{\n' % instr.lower()

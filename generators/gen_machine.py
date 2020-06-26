@@ -16,7 +16,7 @@ for line in opcodes:
 opcodes.close()
 
 # Generate code
-machine = open(genPath + '/machine_generated.c', 'w')
+machine = open(genPath + '/machine.c', 'w')
 ISA = open(genISAPath + '/ISA.txt')
 code = []
 
