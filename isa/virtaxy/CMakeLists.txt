@@ -18,7 +18,7 @@ add_custom_command(
 	OUTPUT ${OPCODES_H}
 	DEPENDS ${ISA_SRC}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_opcodes.py ${ARCH}
+	COMMAND python3 gen_opcodes.py ${ARCH} ${ISA_SRC}
 )
 
 # Generate register table
@@ -26,7 +26,7 @@ add_custom_command(
 	OUTPUT ${REGISTERS_H}
 	DEPENDS ${REGISTERS_SRC}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_registers.py ${ARCH}
+	COMMAND python3 gen_registers.py ${ARCH} ${REGISTERS_SRC}
 )
 
 # Generate assembler code
@@ -42,10 +42,10 @@ add_custom_command(
 	OUTPUT ${MACHINE_C}
 	DEPENDS ${OPCODES_H} ${ISA_SRC}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
-	COMMAND python3 gen_machine.py ${ARCH}
+	COMMAND python3 gen_machine.py ${ARCH} ${ISA_SRC}
 )
 
-add_custom_target(test-gen ALL
+add_custom_target(${ARCH} ALL
 	DEPENDS ${OPCODES_H} ${REGISTERS_H} ${ASSEMBLER_C} ${MACHINE_C}
 )
 

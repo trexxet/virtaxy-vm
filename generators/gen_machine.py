@@ -2,6 +2,7 @@ import sys, re
 from functools import reduce
 
 ISAName = sys.argv[1]
+ISASrc = sys.argv[2]
 genISAPath = '../isa/' + ISAName
 genPath = '../generated/' + ISAName
 

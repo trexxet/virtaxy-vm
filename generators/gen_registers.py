@@ -2,11 +2,12 @@ import sys, re, os
 from itertools import product
 
 ISAName = sys.argv[1]
+regsSrc = sys.argv[2]
 genSrcPath = '../isa/' + ISAName
 genDstPath = '../generated/' + ISAName
 
 # Load registers description file
-regs_desc = open(genSrcPath + '/Registers.txt')
+regs_desc = open(genSrcPath + '/' + regsSrc)
 patternList, groups = [], []
 serviceRegs = []
 Public = Private = False
