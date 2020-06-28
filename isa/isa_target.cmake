@@ -45,7 +45,7 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:Python3::Interpreter> ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
-add_custom_target(${ARCH}
+add_custom_target(isa-${ARCH}
 	DEPENDS ${OPCODES_H} ${REGISTERS_H} ${ASSEMBLER_C} ${MACHINE_C}
 )
 

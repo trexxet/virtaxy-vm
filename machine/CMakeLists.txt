@@ -8,8 +8,12 @@ set(SOURCE_FILES
 	mem.c
 )
 
-set(TGT vvm-${ARCH})
-add_executable(${TGT} ${SOURCE_FILES})
-add_dependencies(${TGT} ${ARCH})
-target_include_directories(${TGT} PRIVATE "include" "${CMAKE_SOURCE_DIR}/generated/${ARCH}")
+foreach(ARCH ${ARCH_LIST})
+	set(TGT vvm-${ARCH})
+	add_executable(${TGT} ${SOURCE_FILES})
+	add_dependencies(${TGT} isa-${ARCH})
+	target_include_directories(${TGT} PRIVATE
+		"include"
+		"${CMAKE_SOURCE_DIR}/generated/${ARCH}")
+endforeach()
 

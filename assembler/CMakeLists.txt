@@ -10,9 +10,13 @@ set(SOURCE_FILES
 	tinyexpr.c
 )
 
-set(TGT vasm-${ARCH})
-add_executable(${TGT} ${SOURCE_FILES})
-add_dependencies(${TGT} ${ARCH})
-target_include_directories(${TGT} PRIVATE "include" "${CMAKE_SOURCE_DIR}/generated/${ARCH}")
-target_link_libraries(${TGT} m)
+foreach(ARCH ${ARCH_LIST})
+	set(TGT vasm-${ARCH})
+	add_executable(${TGT} ${SOURCE_FILES})
+	add_dependencies(${TGT} isa-${ARCH})
+	target_include_directories(${TGT} PRIVATE
+		"include"
+		"${CMAKE_SOURCE_DIR}/generated/${ARCH}")
+	target_link_libraries(${TGT} m)
+endforeach()
 
