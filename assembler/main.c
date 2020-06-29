@@ -27,6 +27,7 @@ void assembleFile(char *filename);
 void writeProgram(char *filename);
 
 void parseError(errcode_t errcode, char *file, size_t line, char *errStr);
+void printVersion();
 void finalization();
 
 
@@ -53,12 +54,12 @@ void assembleFile(char *filename)
 		parseError(CANNOT_OPEN_FILE, filename, 0, NULL);
 	if (feof(openedFileHandle))
 		parseError(INPUT_IS_EMPTY, filename, 0, NULL);
-	
+
 	char sourceString[SOURCE_STRING_LENGTH + 1] = {0};
 	size_t lineCounter = 0;
 	char errStr[SOURCE_STRING_LENGTH + ERR_STR_LEN] = {0};
 	#define STRING_NOT_EMPTY (sourceString[0] != 0) && (sourceString[0] != '\n')
-	extern program P; 
+	extern program P;
 	for (int pass = 1; pass <= 2; pass++)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
@@ -76,7 +77,7 @@ void assembleFile(char *filename)
 		}
 	}
 	#undef STRING_NOT_EMPTY
-	
+
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);
 	openedFileHandle = NULL;
@@ -103,7 +104,7 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 	int opt;
 	opterr = 0;
 	extern int printSymtableAtFinal;
-	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
+	while ((opt = getopt(argc, argv, "o:sv")) != -1)
 		switch (opt)
 		{
 			case 'o': // Set output filename
@@ -111,6 +112,10 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 				break;
 			case 's': // Print symbol table
 				printSymtableAtFinal = 1;
+				break;
+			case 'v': // Print version
+				printVersion();
+				finalization();
 				break;
 			default:
 			case '?':
@@ -126,11 +131,18 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 void parseError(errcode_t errcode, char *file, size_t line, char *errStr)
 {
 	fprintf((errcode == SUCCESS) ? stdout : stderr,
-	                              "%s:%zu: %s\n", file, line, errmsg[errcode]);
+	                               "%s:%zu: %s\n", file, line, errmsg[errcode]);
 	if (errStr)
 		fprintf(stderr, "%s\n", errStr);
 	if (errcode != SUCCESS)
 		finalization();
+}
+
+
+void printVersion()
+{
+	printf("Virtaxy assembler version %s\n", VERSION);
+	printf("Arch: %s\n", ARCH);
 }
 
 

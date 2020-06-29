@@ -15,6 +15,9 @@ foreach(ARCH ${ARCH_LIST})
 	target_include_directories(${TGT} PRIVATE
 		"include"
 		"${CMAKE_SOURCE_DIR}/generated/${ARCH}")
+	target_compile_definitions(${TGT} PRIVATE
+		ARCH="${ARCH}"
+		VERSION="${VERSION}")
 	install(TARGETS ${TGT})
 endforeach()
 

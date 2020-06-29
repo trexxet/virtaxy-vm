@@ -16,13 +16,15 @@ errcode_t errcode = SUCCESS;
 
 typedef struct {
 	char *inputFilename;
-	size_t memSize; 
+	size_t memSize;
 } conf_t;
 
 
 void parseCmdLineArgs(int argc, char *argv[], conf_t *conf);
 void executeFile(char *filename);
+
 void parseError(errcode_t errcode, char *file, char *errStr);
+void printVersion();
 void finalization();
 
 
@@ -30,7 +32,7 @@ void main(int argc, char* argv[])
 {
 	conf_t conf = {NULL, DEFAULT_MEMSIZE};
 	parseCmdLineArgs(argc, argv, &conf);
-	
+
 	errcode = machineInit(conf.memSize);
 	if (errcode)
 		parseError(errcode, NULL, NULL);
@@ -48,12 +50,12 @@ void executeFile(char *filename)
 		parseError(CANNOT_OPEN_FILE, filename, NULL);
 	if (feof(openedFileHandle))
 		parseError(INPUT_IS_EMPTY, filename, NULL);
-	
+
 	extern mem_t M;
 	int64_t *memPtr = M.data;
 	while(fread(memPtr++, sizeof(int64_t), 1, openedFileHandle));
 	errcode = machineRun();
-	
+
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, NULL);
 	openedFileHandle = NULL;
@@ -67,7 +69,7 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 	opterr = 0;
 	extern struct {int reg, mem, stack;} printDump;
 	extern int stepByStep;
-	while ((opt = getopt(argc, argv, COMMAND_LINE_OPTIONS)) != -1)
+	while ((opt = getopt(argc, argv, "M:rmsdv")) != -1)
 		switch (opt)
 		{
 			case 'M': // Set memory size
@@ -84,6 +86,10 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 				break;
 			case 'd': // Step-by-step execution
 				stepByStep = 1;
+				break;
+			case 'v': // Print version
+				printVersion();
+				finalization();
 				break;
 			case '?':
 			default:
@@ -103,6 +109,13 @@ void parseError(errcode_t errcode, char *file, char *errStr)
 		fprintf(stderr, "%s\n", errStr);
 	if (errcode != SUCCESS)
 		finalization();
+}
+
+
+void printVersion()
+{
+	printf("Virtaxy machine version %s\n", VERSION);
+	printf("Arch: %s\n", ARCH);
 }
 
 

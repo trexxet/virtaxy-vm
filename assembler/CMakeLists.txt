@@ -17,6 +17,9 @@ foreach(ARCH ${ARCH_LIST})
 		"include"
 		"${CMAKE_SOURCE_DIR}/generated/${ARCH}")
 	target_link_libraries(${TGT} m)
+	target_compile_definitions(${TGT} PRIVATE
+		ARCH="${ARCH}"
+		VERSION="${VERSION}")
 	install(TARGETS ${TGT})
 endforeach()
 
