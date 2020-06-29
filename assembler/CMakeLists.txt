@@ -7,7 +7,6 @@ set(SOURCE_FILES
 	asm.c
 	argtypes.c
 	symtable.c
-	tinyexpr.c
 )
 
 foreach(ARCH ${ARCH_LIST})
