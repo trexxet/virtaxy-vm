@@ -12,7 +12,6 @@
 #include "asm.h"
 
 
-// Name _errno is occupied in some gcc implementations :^(
 errcode_t errcode = SUCCESS;
 
 
@@ -28,6 +27,7 @@ void writeProgram(char *filename);
 
 void parseError(errcode_t errcode, char *file, size_t line, char *errStr);
 void printVersion();
+void printHelp();
 void finalization();
 
 
@@ -104,7 +104,7 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 	int opt;
 	opterr = 0;
 	extern int printSymtableAtFinal;
-	while ((opt = getopt(argc, argv, "o:sv")) != -1)
+	while ((opt = getopt(argc, argv, "o:svh")) != -1)
 		switch (opt)
 		{
 			case 'o': // Set output filename
@@ -115,6 +115,10 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 				break;
 			case 'v': // Print version
 				printVersion();
+				finalization();
+				break;
+			case 'h': // Print help
+				printHelp();
 				finalization();
 				break;
 			default:
@@ -143,6 +147,17 @@ void printVersion()
 {
 	printf("Virtaxy assembler version %s\n", VERSION);
 	printf("Arch: %s\n", ARCH);
+}
+
+
+void printHelp()
+{
+	printVersion();
+	printf("Options:\n");
+	printf("\t-o=filename    Set output filename\n");
+	printf("\t-s             Print symbol table at the end of assembling\n");
+	printf("\t-v             Print version and arch\n");
+	printf("\t-h             Print this help\n");
 }
 
 

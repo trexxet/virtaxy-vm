@@ -25,6 +25,7 @@ void executeFile(char *filename);
 
 void parseError(errcode_t errcode, char *file, char *errStr);
 void printVersion();
+void printHelp();
 void finalization();
 
 
@@ -69,19 +70,19 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 	opterr = 0;
 	extern struct {int reg, mem, stack;} printDump;
 	extern int stepByStep;
-	while ((opt = getopt(argc, argv, "M:rmsdv")) != -1)
+	while ((opt = getopt(argc, argv, "M:rmsdvh")) != -1)
 		switch (opt)
 		{
 			case 'M': // Set memory size
 				conf -> memSize = strtol(optarg, NULL, 0);
 				break;
-			case 'r': // Print registers and current opcode every cycle
+			case 'r': // Print registers and current opcode every tick
 				printDump.reg = 1;
 				break;
-			case 'm': // Print memory dump every cycle
+			case 'm': // Print memory dump every tick
 				printDump.mem = 1;
 				break;
-			case 's': // Print stack dump every cycle
+			case 's': // Print stack dump every tick
 				printDump.stack = 1;
 				break;
 			case 'd': // Step-by-step execution
@@ -89,6 +90,10 @@ void parseCmdLineArgs(int argc, char *argv[], conf_t *conf)
 				break;
 			case 'v': // Print version
 				printVersion();
+				finalization();
+				break;
+			case 'h': // Print help
+				printHelp();
 				finalization();
 				break;
 			case '?':
@@ -116,6 +121,20 @@ void printVersion()
 {
 	printf("Virtaxy machine version %s\n", VERSION);
 	printf("Arch: %s\n", ARCH);
+}
+
+
+void printHelp()
+{
+	printVersion();
+	printf("Options:\n");
+	printf("\t-M=size        Set memory size (in bytes)\n");
+	printf("\t-r             Print register values and executed opcode every tick\n");
+	printf("\t-m             Print memory dump every tick\n");
+	printf("\t-s             Print stack dump every tick\n");
+	printf("\t-d             Step-by-step execution (use with -r, -m or -s)\n");
+	printf("\t-v             Print version and arch\n");
+	printf("\t-h             Print this help\n");
 }
 
 
