@@ -6,6 +6,7 @@ extern int yylex();
 
 %define parse.error verbose
 %parse-param {YYSTYPE* result}
+%locations
 
 %token T_NUM
 %token T_ADD T_SUB T_MUL T_DIV
@@ -30,5 +31,4 @@ Expr: T_NUM { $$ = $1; }
     | T_LPAR Expr T_RPAR { $$ = $2; }
 
 %%
-
 
