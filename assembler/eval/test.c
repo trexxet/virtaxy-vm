@@ -36,7 +36,7 @@ int main() {
 	evalPrintExpr("0x3+4*2+1");
 	evalPrintExpr("1 + 2");
 	evalPrintExpr("2++3");
-	//evalPrintExpr("1/0");
+	evalPrintExpr("1/(4-4)");
 	die();
 	return 0;
 }

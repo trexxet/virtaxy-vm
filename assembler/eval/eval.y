@@ -1,9 +1,12 @@
 %{
 #include <stdio.h>
 #include <stdint.h>
+
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
 char *tab_expr = NULL;
+
+#define ERR_DIV_BY_ZERO -1
 %}
 
 %define parse.error custom
@@ -28,7 +31,15 @@ Expr: T_NUM { $$ = $1; }
     | Expr T_ADD Expr { $$ = $1 + $3; }
     | Expr T_SUB Expr { $$ = $1 - $3; }
     | Expr T_MUL Expr { $$ = $1 * $3; }
-    | Expr T_DIV Expr { $$ = $1 / $3; }
+    | Expr T_DIV Expr {
+          if ($3 == 0) {
+              YYSTYPE err = ERR_DIV_BY_ZERO;
+              yypcontext_t ctx = {yyssp, yytoken, &@2};
+              yyreport_syntax_error(&ctx, &err);
+              YYABORT;
+          }
+          $$ = $1 / $3;
+      }
     | T_SUB Expr %prec NEG { $$ = -$2; }
     | T_LPAR Expr T_RPAR { $$ = $2; }
 
@@ -39,7 +50,9 @@ Expr: T_NUM { $$ = $1; }
 #define C_RESET "\033[0m"
 
 
-int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* res) {
+// As we're not interested in evaluation result in case of error (which is 0),
+// we may use it to report special error cases, such as division by 0 etc.
+int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	int pos = yypcontext_location(ctx)->first_column;
 	const char* token = yysymbol_name(yypcontext_token(ctx));
 
@@ -54,7 +67,10 @@ int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* res) {
 	for (i = 1; i < pos; i++) fputc(' ', stderr);
 	fprintf(stderr, C_BOLD_RED"^"C_RESET"\n");
 
-	fprintf (stderr, "Syntax error in expression: unexpected token %s\n", token);
+	if (*err == ERR_DIV_BY_ZERO)
+		fprintf (stderr, "Error in expression: division by 0\n");
+	else
+		fprintf (stderr, "Syntax error in expression: unexpected token %s\n", token);
 	return 0;
 }
 
