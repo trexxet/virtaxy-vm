@@ -4,14 +4,15 @@
 #include "eval.tab.h"
 
 
-static char* expr = NULL;
-
-
 YYSTYPE evalExpr(char *expr, int* err) {
-	extern int yy_scan_string(char *);
+	// Kinda ugly extern declarations - but Bison
+	// does not provide them in header file
 	extern void lex_reset_state();
 	lex_reset_state();
+	extern int yy_scan_string(char *);
 	yy_scan_string(expr);
+	extern char* tab_expr; // yyreport_syntax_error() does not know
+	tab_expr = expr;       // about expr, so we pass it with extern
 	YYSTYPE result = 0;
 	*err = yyparse(&result);
 	return result;
@@ -25,24 +26,18 @@ void evalPrintExpr(char *expr) {
 }
 
 
-int main() {
-	expr = "0x3+4*2+1";
-	evalPrintExpr(expr);
-	expr = "1 + 2";
-	evalPrintExpr(expr);
-	expr = "0xA + 2";
-	evalPrintExpr(expr);
+void die() {
 	extern int yylex_destroy();
 	yylex_destroy();
-	return 0;
 }
 
 
-int yyerror(YYSTYPE* res, char const *s) {
-	extern YYLTYPE yylloc;
-	printf("%s\n", expr);
-	for (int i = 0; i < yylloc.first_column - 1; i++) putchar(' ');
-	printf("^\n");
-	printf("%s\n", s);
+int main() {
+	evalPrintExpr("0x3+4*2+1");
+	evalPrintExpr("1 + 2");
+	evalPrintExpr("2++3");
+	//evalPrintExpr("1/0");
+	die();
+	return 0;
 }
 

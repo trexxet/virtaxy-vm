@@ -32,5 +32,7 @@ void lex_update_yylloc() {
 void lex_reset_state() {
 	yy_flush_buffer(YY_CURRENT_BUFFER);
 	yylloc = (YYLTYPE){1, 1, 1, 1};
+	extern char* tab_expr;
+	tab_expr = NULL;
 }
 
