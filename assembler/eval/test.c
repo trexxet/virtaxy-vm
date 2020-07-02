@@ -33,10 +33,10 @@ void die() {
 
 
 int main() {
-	evalPrintExpr("0x3+4*2+1");
-	evalPrintExpr("1 + 2");
-	evalPrintExpr("2++3");
-	evalPrintExpr("1/(4-4)");
+	evalPrintExpr("0xA+0X1+bh+11b"); // 25
+	evalPrintExpr("1 + 2 *  2"); // 5
+	evalPrintExpr("2++3"); // unexpected +
+	evalPrintExpr("1/(4-4)"); // div by 0
 	die();
 	return 0;
 }
