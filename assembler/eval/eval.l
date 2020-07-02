@@ -1,7 +1,8 @@
 %{
 #include "eval.tab.h"
-#define YY_USER_ACTION {update_yylloc();}
-void update_yylloc();
+#define YY_USER_ACTION {lex_update_yylloc();}
+void lex_update_yylloc();
+void lex_reset_state();
 %}
 
 %option noyywrap
@@ -22,8 +23,14 @@ void update_yylloc();
 
 %%
 
-void update_yylloc() {
+void lex_update_yylloc() {
 	yylloc.first_column = yylloc.last_column;
 	yylloc.last_column += yyleng;
+}
+
+
+void lex_reset_state() {
+	yy_flush_buffer(YY_CURRENT_BUFFER);
+	yylloc = (YYLTYPE){1, 1, 1, 1};
 }
 
