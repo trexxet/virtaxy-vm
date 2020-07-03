@@ -4,7 +4,6 @@
 
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
-char *tab_expr = NULL;
 
 #define ERR_DIV_BY_ZERO -1
 %}
@@ -55,11 +54,12 @@ Expr: T_NUM { $$ = $1; }
 int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	int pos = yypcontext_location(ctx)->first_column;
 	const char* token = yysymbol_name(yypcontext_token(ctx));
+	extern char* orig_expr;
 
 	int i = 0;
-	while (tab_expr[i]) {
-		if (i == pos - 1) fprintf(stderr, C_BOLD_RED"%c"C_RESET, tab_expr[i]);
-		else fputc(tab_expr[i], stderr);
+	while (orig_expr[i]) {
+		if (i == pos - 1) fprintf(stderr, C_BOLD_RED"%c"C_RESET, orig_expr[i]);
+		else fputc(orig_expr[i], stderr);
 		i++;
 	}
 	fputc('\n', stderr);

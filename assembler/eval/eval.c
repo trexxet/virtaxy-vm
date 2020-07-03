@@ -1,24 +1,26 @@
 #include "eval.h"
 #include "eval.tab.h"
+#include "eval.lex.h"
+
+
+// yyreport_syntax_error() does not know about expr, so we pass it with extern
+char* orig_expr = NULL;
 
 
 YYSTYPE evalExpr(char *expr, int* err) {
-	// Kinda ugly extern declarations - but Bison
-	// does not provide them in header file
-	extern void lex_reset_state();
-	lex_reset_state();
-	extern int yy_scan_string(char *);
 	yy_scan_string(expr);
-	extern char* tab_expr; // yyreport_syntax_error() does not know
-	tab_expr = expr;       // about expr, so we pass it with extern
+	orig_expr = expr;
 	YYSTYPE result = 0;
 	*err = yyparse(&result);
+	orig_expr = NULL;
+	extern void lex_reset_state();
+	lex_reset_state();
 	return result;
 }
 
 
 void evalDie() {
-	extern int yylex_destroy();
+	orig_expr = NULL;
 	yylex_destroy();
 }
 
