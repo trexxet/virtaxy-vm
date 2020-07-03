@@ -42,7 +42,7 @@ for instr, args in OPtree.items():
                     if arg == 'REG':
                         code += '\t\t\t\tARG(%d) = REG_NUM(arg[%d].str);\n' % (i + 1, i + 1)
                     if arg == 'EXPR':
-                        code += '\t\t\t\tARG_TO_NUM(arg[%d].str, &ARG(%d), &S);\n' % (i + 1, i + 1)
+                        code += '\t\t\t\tEVAL_EXPR(arg[%d].str, &ARG(%d), &S);\n' % (i + 1, i + 1)
                     if arg == 'NONE':
                         code += '\t\t\t\tARG(%d) = 0;\n' % (i + 1)
                 code += '\t\t\t\tASSEMBLED;\n'

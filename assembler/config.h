@@ -11,5 +11,5 @@
 #define RES_KEYWORD "res"                     // Keyword for reserved memory
 #define COMMENT_CHR ';'                       // Character for commentaries
 #define LABEL_CHR ':'                         // Character for labels
-#define FRBD_LBL_CHR "0123456789+-*/()"       // Characters banned for symbols to start with
+#define EXPR_FIRST_CHR "0123456789+-*/()"     // Characters expressions begin with
 

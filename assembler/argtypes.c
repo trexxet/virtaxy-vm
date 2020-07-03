@@ -5,7 +5,7 @@
 
 
 __attribute__((hot))
-int isArgNum(char *arg, int64_t *num, symTable *S)
+int isArgExpr(char *arg, int64_t *num, symTable *S)
 {
 	if (!arg)
 		return NONE;

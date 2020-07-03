@@ -66,7 +66,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		LOAD_ARG(arg[3]);
 
 	// If keyword (constant, variable or reserved memory)
-	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_NUM(arg[2].str, &S))
+	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_EXPR(arg[2].str, &S))
 	{
 		enum {CONST = 1, VAR = 2, RESMEM = 3};
 		uint8_t symType = 0;
@@ -79,7 +79,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		else goto notSymbol;
 
 		int64_t value = 0;
-		ARG_TO_NUM(arg[2].str, &value, &S);
+		EVAL_EXPR(arg[2].str, &value, &S);
 		if (symGetValue(&S, instrStr, NULL) < 0)
 			symAdd(&S, instrStr, (symType == CONST) ? value : P.size);
 		if (symType != CONST)

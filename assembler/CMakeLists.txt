@@ -18,7 +18,7 @@ foreach(ARCH ${ARCH_LIST})
 	target_include_directories(${TGT} PRIVATE
 		"include"
 		"${CMAKE_SOURCE_DIR}/generated/${ARCH}")
-	target_link_libraries(${TGT} m)
+	target_link_libraries(${TGT} m eval)
 	target_compile_definitions(${TGT} PRIVATE
 		ARCH="${ARCH}"
 		VERSION="${VERSION}")
