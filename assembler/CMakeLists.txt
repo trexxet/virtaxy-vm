@@ -9,6 +9,8 @@ set(SOURCE_FILES
 	symtable.c
 )
 
+add_subdirectory(eval)
+
 foreach(ARCH ${ARCH_LIST})
 	set(TGT vasm-${ARCH})
 	add_executable(${TGT} ${SOURCE_FILES})
