@@ -4,6 +4,7 @@
 
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
+int evalSilentParser = 0;
 
 #define ERR_DIV_BY_ZERO -1
 %}
@@ -32,7 +33,7 @@ Expr: T_NUM { $$ = $1; }
     | Expr T_MUL Expr { $$ = $1 * $3; }
     | Expr T_DIV Expr {
           if ($3 == 0) {
-              YYSTYPE err = ERR_DIV_BY_ZERO;
+              YYSTYPE err = *result = ERR_DIV_BY_ZERO;
               yypcontext_t ctx = {yyssp, yytoken, &@2};
               yyreport_syntax_error(&ctx, &err);
               YYABORT;
@@ -49,9 +50,10 @@ Expr: T_NUM { $$ = $1; }
 #define C_RESET "\033[0m"
 
 
-// As we're not interested in evaluation result in case of error (which is 0),
-// we may use it to report special error cases, such as division by 0 etc.
+// As we're not interested in evaluation result in case of error, we
+// may use it to report special error cases, such as division by 0 etc.
 int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
+	if (evalSilentParser) return 0;
 	int pos = yypcontext_location(ctx)->first_column;
 	extern char* orig_expr;
 

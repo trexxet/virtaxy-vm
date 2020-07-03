@@ -16,6 +16,10 @@ int main() {
 	evalPrintExpr("1 + 2 *  2"); // 5
 	evalPrintExpr("2++3"); // unexpected +
 	evalPrintExpr("1/(4-4)"); // div by 0
+
+	evalSilentParser = 1;
+	evalPrintExpr("1/0"); // div by 0 but silent
+
 	evalDie();
 	return 0;
 }
