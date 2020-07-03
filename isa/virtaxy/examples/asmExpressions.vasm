@@ -1,0 +1,12 @@
+; Inline constant expressions
+
+mov rax, 1
+out rax
+mov rax, 1h+(01b+0x1)
+out rax
+mov rax, 1 * 3
+out rax
+mov rax, (-2 + 4*4) / 2
+out rax
+hlt
+

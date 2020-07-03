@@ -9,6 +9,7 @@
 #define CONST_KEYWORD "equ"                   // Keyword for defining constants
 #define VAR_KEYWORD "var"                     // Keyword for initialized variables
 #define RES_KEYWORD "res"                     // Keyword for reserved memory
-#define COMMENT_SYMBOL ';'                    // Symbol for comments
-#define LABEL_SYMBOL ':'                      // Symbol for labels
+#define COMMENT_CHR ';'                       // Character for commentaries
+#define LABEL_CHR ':'                         // Character for labels
+#define FRBD_LBL_CHR "0123456789+-*/()"       // Characters banned for symbols to start with
 

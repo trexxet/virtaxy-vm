@@ -60,6 +60,8 @@ void assembleFile(char *filename)
 	char errStr[SOURCE_STRING_LENGTH + ERR_STR_LEN] = {0};
 	#define STRING_NOT_EMPTY (sourceString[0] != 0) && (sourceString[0] != '\n')
 	extern program P;
+	// At first pass, we only fill symbol table
+	// Actual assembling is done at the second pass
 	for (int pass = 1; pass <= 2; pass++)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&

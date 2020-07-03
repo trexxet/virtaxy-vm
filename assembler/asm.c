@@ -44,16 +44,16 @@ __attribute__((hot))
 errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
 	char *instrStr = strtok(sourceStr, DELIM);
-	if (!instrStr || instrStr[0] == COMMENT_SYMBOL)
+	if (!instrStr || instrStr[0] == COMMENT_CHR)
 		return SUCCESS;
-	
+
 	// If label
 	if (IS_LABEL(instrStr))
 	{
 		char labelStr[SOURCE_STRING_LENGTH] = {0};
 		strncpy(labelStr, instrStr, strlen(instrStr) - 1);
 		if (symGetValue(&S, labelStr, NULL) < 0)
-			symAdd(&S, labelStr, P.size); 
+			symAdd(&S, labelStr, P.size);
 		return SUCCESS;
 	}
 
@@ -65,7 +65,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		LOAD_ARG(arg3);
 
 	// If keyword (constant, variable or reserved memory)
-	if (arg1.type == KEYWORD && IS_NUM(arg2.str, &S))
+	if (arg1.type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_NUM(arg2.str, &S))
 	{
 		enum {CONST = 1, VAR = 2, RESMEM = 3};
 		uint8_t symType = 0;
@@ -103,14 +103,15 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		assembled:
 
 		if (asm_err == UNKNOWN_COMMAND)
-			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s", instrStr, arg1.str, arg2.str, arg3.str);
+			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s, %s",
+			        instrStr, arg1.str, arg2.str, arg3.str);
 
 		if (asm_err == INVALID_ARGS)
 		{
 			#define errStrWords instrStr, arg1.str, arg2.str, arg3.str, \
 			                    argTypeStr[arg1.type], argTypeStr[arg2.type], argTypeStr[arg3.type]
-				sprintf(errStr, 
-					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s", 
+				sprintf(errStr,
+					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s",
 					errStrWords);
 			#undef errStrWords
 		}

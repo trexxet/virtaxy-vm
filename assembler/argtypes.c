@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 #include "config.h"
 #include "argtypes.h"
@@ -11,7 +12,7 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 	int64_t fake_num;
 	int64_t *dest = num ? num : &fake_num;
 	// Check if arg exists in symbol table
-	if (symGetValue(S, arg, num ? num : NULL) >= 0)
+	if (IS_CORRECT_SYMBOL_NAME(arg) && symGetValue(S, arg, num) >= 0)
 		return EXPR;
 	// Check if arg is correct decimal / octal / hexadecimal beginning with '0x'
 	char *endptr = arg;
@@ -37,15 +38,15 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 __attribute__((hot))
 int isArgLabel(char *arg)
 {
-	if (!arg)
+	if (!arg || !IS_CORRECT_SYMBOL_NAME(arg))
 		return 0;
-	char *labelSymPtr = strrchr(arg, LABEL_SYMBOL);
+	char *labelSymPtr = strrchr(arg, LABEL_CHR);
 	if (labelSymPtr && labelSymPtr == (strrchr(arg, 0) - 1))
 		return 1;
 	return 0;
 }
 
-	
+
 __attribute__((hot))
 int isArgKeyword(char *arg)
 {

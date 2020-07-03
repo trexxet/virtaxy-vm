@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
@@ -19,7 +18,7 @@ typedef enum {
 
 #define argtypestr(arg) [arg] = #arg
 const static char* argTypeStr[] = {
-	argtypestr(NONE), 
+	argtypestr(NONE),
 	argtypestr(EXPR),
 	argtypestr(REG),
 	argtypestr(KEYWORD)
@@ -34,8 +33,10 @@ typedef struct {
 
 #define LOAD_ARG(arg) {                                           \
 	arg.str = strtok(NULL, DELIM);                            \
-	if (arg.str && arg.str[0] != COMMENT_SYMBOL)              \
+	if (arg.str && arg.str[0] != COMMENT_CHR)                 \
 		arg.type = IS_NUM(arg.str, &S) | IS_REG(arg.str) | IS_KEYWORD(arg.str); }
+
+#define IS_CORRECT_SYMBOL_NAME(arg) (strpbrk(arg, FRBD_LBL_CHR) == NULL)
 
 int isArgNum(char *arg, int64_t *num, symTable *S);
 int isArgLabel(char *arg);
