@@ -31,27 +31,27 @@ asm = open(genPath + '/assembler-gen.c', 'w')
 for instr, args in OPtree.items():
     code = 'IF_INSTR(%s)\n{\n' % instr.lower()
     for arg1, args2 in args.items():
-        code += '\tif (arg1.type == %s)\n\t{\n' % arg1
+        code += '\tif (arg[1].type == %s)\n\t{\n' % arg1
         for arg2, args3 in args2.items():
-            code += '\t\tif (arg2.type == %s)\n\t\t{\n' % arg2
+            code += '\t\tif (arg[2].type == %s)\n\t\t{\n' % arg2
             for arg3 in args3:
-                code += '\t\t\tif (arg3.type == %s)\n\t\t\t{\n' % arg3
+                code += '\t\t\tif (arg[3].type == %s)\n\t\t\t{\n' % arg3
                 code += '\t\t\t\tCHECK_PROGRAM_SIZE(OPSIZE);\n'
                 code += '\t\t\t\tOPCODE = %s_%s_%s_%s;\n' % (instr, arg1, arg2, arg3)
                 for i, arg in enumerate([arg1, arg2, arg3]):
                     if arg == 'REG':
-                        code += '\t\t\t\tARG%d = REG_NUM(arg%d.str);\n' % (i + 1, i + 1)
+                        code += '\t\t\t\tARG(%d) = REG_NUM(arg[%d].str);\n' % (i + 1, i + 1)
                     if arg == 'EXPR':
-                        code += '\t\t\t\tARG_TO_NUM(arg%d.str, &ARG%d, &S);\n' % (i + 1, i + 1)
+                        code += '\t\t\t\tARG_TO_NUM(arg[%d].str, &ARG(%d), &S);\n' % (i + 1, i + 1)
                     if arg == 'NONE':
-                        code += '\t\t\t\tARG%d = 0;\n' % (i + 1)
+                        code += '\t\t\t\tARG(%d) = 0;\n' % (i + 1)
                 code += '\t\t\t\tASSEMBLED;\n'
                 code += '\t\t\t}\n'
-            code += '\t\t\tINVALID_ARG3;\n';
+            code += '\t\t\tINVALID_ARG(3);\n';
             code += '\t\t}\n'
-        code += '\t\tINVALID_ARG2;\n'
+        code += '\t\tINVALID_ARG(2);\n'
         code += '\t}\n'
-    code += '\tINVALID_ARG1;\n'
+    code += '\tINVALID_ARG(1);\n'
     code += '}\n\n'
     asm.write(code)
 asm.close()

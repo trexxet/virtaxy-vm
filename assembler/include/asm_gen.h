@@ -9,15 +9,11 @@
 
 #define IF_INSTR(instr) if (strcmp(instrStr, #instr) == 0)
 
-#define OPCODE P.bytes[P.size+0]
-#define ARG1   P.bytes[P.size+1]
-#define ARG2   P.bytes[P.size+2]
-#define ARG3   P.bytes[P.size+3]
+#define OPCODE   P.bytes[P.size+0]
+#define ARG(x)   P.bytes[P.size+x]
 
-#define ASSEMBLED asm_err = 0; goto assembled;
-#define INVALID_ARG1 asm_err = INVALID_ARGS; invalArg = 1; goto assembled;
-#define INVALID_ARG2 asm_err = INVALID_ARGS; invalArg = 2; goto assembled;
-#define INVALID_ARG3 asm_err = INVALID_ARGS; invalArg = 3; goto assembled;
+#define ASSEMBLED { asm_err = 0; goto assembled; }
+#define INVALID_ARG(x) { asm_err = INVALID_ARGS; invalArg = x; goto assembled; }
 
 #define IS_REG(arg) ((arg && regNumber(arg) >= 0) ? REG : NONE)
 #define REG_NUM(arg) regNumber(arg)

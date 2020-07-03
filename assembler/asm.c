@@ -40,10 +40,12 @@ errcode_t asmInit()
 }
 
 
+// TODO: split function
 __attribute__((hot))
 errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
-	char *instrStr = strtok(sourceStr, DELIM);
+	arg_t arg[4] = { {.str = NULL, .type = NONE} };
+	char *instrStr = arg[0].str = strtok(sourceStr, DELIM);
 	if (!instrStr || instrStr[0] == COMMENT_CHR)
 		return SUCCESS;
 
@@ -57,28 +59,27 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	arg_t arg1 = {NULL, NONE}, arg2 = {NULL, NONE}, arg3 = {NULL, NONE};
-	LOAD_ARG(arg1);
-	if (arg1.type != NONE)
-		LOAD_ARG(arg2);
-	if (arg2.type != NONE)
-		LOAD_ARG(arg3);
+	LOAD_ARG(arg[1]);
+	if (arg[1].type != NONE)
+		LOAD_ARG(arg[2]);
+	if (arg[2].type != NONE)
+		LOAD_ARG(arg[3]);
 
 	// If keyword (constant, variable or reserved memory)
-	if (arg1.type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_NUM(arg2.str, &S))
+	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_NUM(arg[2].str, &S))
 	{
 		enum {CONST = 1, VAR = 2, RESMEM = 3};
 		uint8_t symType = 0;
-		if (strcmp(arg1.str, CONST_KEYWORD) == 0)
+		if (strcmp(arg[1].str, CONST_KEYWORD) == 0)
 			symType = CONST;
-		else if (strcmp(arg1.str, VAR_KEYWORD) == 0)
+		else if (strcmp(arg[1].str, VAR_KEYWORD) == 0)
 			symType = VAR;
-		else if (strcmp(arg1.str, RES_KEYWORD) == 0)
+		else if (strcmp(arg[1].str, RES_KEYWORD) == 0)
 			symType = RESMEM;
 		else goto notSymbol;
 
 		int64_t value = 0;
-		ARG_TO_NUM(arg2.str, &value, &S);
+		ARG_TO_NUM(arg[2].str, &value, &S);
 		if (symGetValue(&S, instrStr, NULL) < 0)
 			symAdd(&S, instrStr, (symType == CONST) ? value : P.size);
 		if (symType != CONST)
@@ -104,16 +105,15 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 
 		if (asm_err == UNKNOWN_COMMAND)
 			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s, %s",
-			        instrStr, arg1.str, arg2.str, arg3.str);
+			        instrStr, arg[1].str, arg[2].str, arg[3].str);
 
 		if (asm_err == INVALID_ARGS)
 		{
-			#define errStrWords instrStr, arg1.str, arg2.str, arg3.str, \
-			                    argTypeStr[arg1.type], argTypeStr[arg2.type], argTypeStr[arg3.type]
-				sprintf(errStr,
-					"%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s",
-					errStrWords);
-			#undef errStrWords
+			// TODO: make use of invalArg
+			// TODO: add expected types
+			sprintf(errStr, "%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s",
+			        instrStr, arg[1].str, arg[2].str, arg[3].str,
+		                argTypeStr[arg[1].type], argTypeStr[arg[2].type], argTypeStr[arg[3].type]);
 		}
 	}
 
