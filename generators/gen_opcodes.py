@@ -30,8 +30,8 @@ for line in instr:
     for i in range(2, 5):
         if words[i].startswith('reg'):
             string += '_REG'
-        elif words[i].startswith('num'):
-            string += '_NUM'
+        elif words[i].startswith('expr'):
+            string += '_EXPR'
         else:
             string += '_NONE'
     opcodes.write('%-32s' % string + '0x' + words[0] + '\n')

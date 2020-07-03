@@ -12,7 +12,7 @@
 
 typedef enum {
 	NONE    = 0b000,
-	NUM     = 0b001,
+	EXPR    = 0b001,
 	REG     = 0b010,
 	KEYWORD = 0b100
 } argType;
@@ -20,7 +20,7 @@ typedef enum {
 #define argtypestr(arg) [arg] = #arg
 const static char* argTypeStr[] = {
 	argtypestr(NONE), 
-	argtypestr(NUM), 
+	argtypestr(EXPR),
 	argtypestr(REG),
 	argtypestr(KEYWORD)
 };

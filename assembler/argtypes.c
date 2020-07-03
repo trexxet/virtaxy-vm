@@ -12,12 +12,12 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 	int64_t *dest = num ? num : &fake_num;
 	// Check if arg exists in symbol table
 	if (symGetValue(S, arg, num ? num : NULL) >= 0)
-		return NUM;
+		return EXPR;
 	// Check if arg is correct decimal / octal / hexadecimal beginning with '0x'
 	char *endptr = arg;
 	*dest = strtoll(arg, &endptr, 0);
 	if (*endptr == 0)
-		return NUM;
+		return EXPR;
 	// Check if arg ends with 'h'
 	char argStrBuf[SOURCE_STRING_LENGTH] = {0};
 	strcpy(argStrBuf, arg);
@@ -29,7 +29,7 @@ int isArgNum(char *arg, int64_t *num, symTable *S)
 	endptr = argStrBuf;
 	*dest = strtoll(argStrBuf, &endptr, 16);
 	if (*endptr == 0)
-		return NUM;
+		return EXPR;
 	return NONE;
 }
 

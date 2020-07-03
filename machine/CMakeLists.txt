@@ -18,6 +18,7 @@ foreach(ARCH ${ARCH_LIST})
 	target_compile_definitions(${TGT} PRIVATE
 		ARCH="${ARCH}"
 		VERSION="${VERSION}")
+	#target_compile_options(${TGT} PRIVATE -g)
 	install(TARGETS ${TGT})
 endforeach()
 
