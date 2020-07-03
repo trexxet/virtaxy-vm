@@ -53,7 +53,6 @@ Expr: T_NUM { $$ = $1; }
 // we may use it to report special error cases, such as division by 0 etc.
 int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	int pos = yypcontext_location(ctx)->first_column;
-	const char* token = yysymbol_name(yypcontext_token(ctx));
 	extern char* orig_expr;
 
 	int i = 0;
@@ -68,9 +67,10 @@ int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	fprintf(stderr, C_BOLD_RED"^"C_RESET"\n");
 
 	if (*err == ERR_DIV_BY_ZERO)
-		fprintf (stderr, "Error in expression: division by 0\n");
+		fprintf (stderr, C_BOLD_RED"error:"C_RESET" division by 0 in expression\n");
 	else
-		fprintf (stderr, "Syntax error in expression: unexpected token %s\n", token);
+		fprintf (stderr, C_BOLD_RED"error:"C_RESET" unexpected '%c' in expression\n",
+		         orig_expr[pos-1]);
 	return 0;
 }
 
