@@ -10,6 +10,7 @@
 #include "asm.h"
 #include "errors.h"
 #include "config.h"
+#include "eval/eval.h"
 
 // Symbol table types & functions
 #include "symtable.h"
@@ -127,6 +128,7 @@ void asmFinal()
 	if (printSymtableAtFinal)
 		symPrint(&S);
 	symDestroy(&S);
+	evalDie();
 	free(P.bytes);
 }
 

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "eval_err.h"
 
 extern int evalSilentParser;
 

@@ -9,6 +9,11 @@ set(SOURCE_FILES
 	symtable.c
 )
 
+set(EVAL_TYPEDEFS
+	YYSTYPE=int64_t
+	YYSTYPE_PR=PRId64
+)
+
 add_subdirectory(eval)
 
 foreach(ARCH ${ARCH_LIST})
@@ -21,7 +26,8 @@ foreach(ARCH ${ARCH_LIST})
 	target_link_libraries(${TGT} m eval)
 	target_compile_definitions(${TGT} PRIVATE
 		ARCH="${ARCH}"
-		VERSION="${VERSION}")
+		VERSION="${VERSION}"
+		${EVAL_TYPEDEFS})
 	#target_compile_options(${TGT} PRIVATE -g)
 	install(TARGETS ${TGT})
 endforeach()

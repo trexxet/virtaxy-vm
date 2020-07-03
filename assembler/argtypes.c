@@ -2,6 +2,7 @@
 #include <string.h>
 #include "config.h"
 #include "argtypes.h"
+#include "eval/eval.h"
 
 
 __attribute__((hot))
@@ -9,29 +10,24 @@ int isArgExpr(char *arg, int64_t *num, symTable *S)
 {
 	if (!arg)
 		return NONE;
-	int64_t fake_num;
-	int64_t *dest = num ? num : &fake_num;
-	// Check if arg exists in symbol table
+	// Check if arg exists in symbol table and fetch if needed
 	if (IS_CORRECT_SYMBOL_NAME(arg) && symGetValue(S, arg, num) >= 0)
 		return EXPR;
-	// Check if arg is correct decimal / octal / hexadecimal beginning with '0x'
-	char *endptr = arg;
-	*dest = strtoll(arg, &endptr, 0);
-	if (*endptr == 0)
+
+	int parseErr = 0;
+	// To check only, run parser in silent mode
+	if (!num) {
+		evalSilentParser = 1;
+		YYSTYPE result = evalExpr(arg, &parseErr);
+		if (parseErr && result != EVAL_ERR_DIV_BY_ZERO)
+			return NONE;
 		return EXPR;
-	// Check if arg ends with 'h'
-	char argStrBuf[SOURCE_STRING_LENGTH] = {0};
-	strcpy(argStrBuf, arg);
-	int argStrBufLen = strlen(argStrBuf) - 1;
-	if (argStrBuf[argStrBufLen] != 'h')
+	}
+	evalSilentParser = 0;
+	*num = evalExpr(arg, &parseErr);
+	if (parseErr && *num != EVAL_ERR_DIV_BY_ZERO)
 		return NONE;
-	// Check if arg is correct hexadecimal ending with 'h'
-	argStrBuf[argStrBufLen] = 0;
-	endptr = argStrBuf;
-	*dest = strtoll(argStrBuf, &endptr, 16);
-	if (*endptr == 0)
-		return EXPR;
-	return NONE;
+	return EXPR;
 }
 
 

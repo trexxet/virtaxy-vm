@@ -1,12 +1,11 @@
 %{
 #include <stdio.h>
 #include <stdint.h>
+#include "eval_err.h"
 
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
 int evalSilentParser = 0;
-
-#define ERR_DIV_BY_ZERO -1
 %}
 
 %define parse.error custom
@@ -33,7 +32,7 @@ Expr: T_NUM { $$ = $1; }
     | Expr T_MUL Expr { $$ = $1 * $3; }
     | Expr T_DIV Expr {
           if ($3 == 0) {
-              YYSTYPE err = *result = ERR_DIV_BY_ZERO;
+              YYSTYPE err = *result = EVAL_ERR_DIV_BY_ZERO;
               yypcontext_t ctx = {yyssp, yytoken, &@2};
               yyreport_syntax_error(&ctx, &err);
               YYABORT;
@@ -68,7 +67,7 @@ int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	for (i = 1; i < pos; i++) fputc(' ', stderr);
 	fprintf(stderr, C_BOLD_RED"^"C_RESET"\n");
 
-	if (*err == ERR_DIV_BY_ZERO)
+	if (*err == EVAL_ERR_DIV_BY_ZERO)
 		fprintf (stderr, C_BOLD_RED"error:"C_RESET" division by 0 in expression\n");
 	else
 		fprintf (stderr, C_BOLD_RED"error:"C_RESET" unexpected '%c' in expression\n",
