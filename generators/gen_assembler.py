@@ -25,9 +25,9 @@ OPtree = OrderedDict(sorted(OPtree.items()))
 opcodes.close()
 
 
-# Generate encoder
+# Generate assembler code
 asm = open(genPath + '/assembler-encoder-gen.c', 'w')
-
+# Generate instruction encoders
 for instr, args in OPtree.items():
     code = 'DEF_INSTR_ENCODER(%s)\n{\n' % instr.lower()
     for arg1, args2 in args.items():
@@ -54,6 +54,14 @@ for instr, args in OPtree.items():
     code += '\tINVALID_ARG(1);\n'
     code += '}\n\n'
     asm.write(code)
+# Generate instruction table
+asm.write('const static instr_t instrTable[] = {\n')
+for instr, args in OPtree.items():
+    code = '%-30s' % ('\t{ .str = "%s", ' % instr.lower())
+    code += '%-43s' % ('.encoder = INSTR_ENCODER(%s)' % instr.lower())
+    code += '}\n'
+    asm.write(code)
+asm.write('};\n\n')
 asm.close()
 
 
