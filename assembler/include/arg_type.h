@@ -31,6 +31,8 @@ typedef struct {
 	argType type;
 } arg_t;
 
+#define MAX_ARGS 3+1
+
 
 void loadArg(arg_t *arg, symTable *S);
 int isArgExpr(char *arg, int64_t *num, symTable *S);

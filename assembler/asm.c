@@ -16,6 +16,8 @@
 #include "symtable.h"
 // Argument types & functions
 #include "arg_type.h"
+// Instruction type
+#include "instr.h"
 // Functions & macros for generated assembler code
 #include "asm_gen.h"
 
@@ -48,7 +50,7 @@ errcode_t asmInit()
 __attribute__((hot))
 errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
-	arg_t arg[4] = { {.str = NULL, .type = NONE} };
+	arg_t arg[MAX_ARGS] = { {.str = NULL, .type = NONE} };
 	char *instrStr = arg[0].str = strtok(sourceStr, DELIM);
 	if (!instrStr || instrStr[0] == COMMENT_CHR)
 		return SUCCESS;
