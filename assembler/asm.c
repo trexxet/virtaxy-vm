@@ -28,7 +28,7 @@ program P;
 symTable S;
 
 
-#include "assembler-encoder-gen.c" // Generated
+#include "asm_instr-gen.c" // Generated
 
 
 int printSymtableAtFinal = 0;
@@ -105,7 +105,9 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 	{
 		asm_err = UNKNOWN_COMMAND;
 		int invalArg = 0;
-		#include "assembler-picker-gen.c" // Generated
+		instr_t *currInstr = getInstr(instrStr, instrTable, sizeof(instrTable) / sizeof(instr_t));
+		if (currInstr)
+			invalArg = currInstr->encoder(arg, &asm_err);
 
 		if (asm_err == UNKNOWN_COMMAND)
 			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s, %s",

@@ -26,7 +26,7 @@ opcodes.close()
 
 
 # Generate assembler code
-asm = open(genPath + '/assembler-encoder-gen.c', 'w')
+asm = open(genPath + '/asm_instr-gen.c', 'w')
 # Generate instruction encoders
 for instr, args in OPtree.items():
     code = 'DEF_INSTR_ENCODER(%s)\n{\n' % instr.lower()
@@ -55,23 +55,12 @@ for instr, args in OPtree.items():
     code += '}\n\n'
     asm.write(code)
 # Generate instruction table
-asm.write('const static instr_t instrTable[] = {\n')
+asm.write('const static instr_t instrTable[] = {\n\n')
 for instr, args in OPtree.items():
-    code = '%-30s' % ('\t{ .str = "%s", ' % instr.lower())
+    code = '%-30s' % ('{ .str = "%s", ' % instr.lower())
     code += '%-43s' % ('.encoder = INSTR_ENCODER(%s)' % instr.lower())
-    code += '}\n'
+    code += '},\n'
     asm.write(code)
-asm.write('};\n\n')
-asm.close()
-
-
-# Generate instruction picker
-asm = open(genPath + '/assembler-picker-gen.c', 'w')
-asm.write('if (0); // IF_INSTR -> else if\n')
-for instr, _ in OPtree.items():
-    code = 'IF_INSTR(%s)\n{\n' % instr.lower()
-    code += '\tCALL_INSTR_ENCODER(%s);\n' % instr.lower()
-    code += '}\n\n'
-    asm.write(code)
+asm.write('\n};\n\n')
 asm.close()
 

@@ -9,8 +9,6 @@
 
 #define INSTR_ENCODER(instr) _INSTR_##instr
 #define DEF_INSTR_ENCODER(instr) int INSTR_ENCODER(instr) (arg_t arg[], errcode_t* asm_err)
-#define CALL_INSTR_ENCODER(instr) invalArg = INSTR_ENCODER(instr) (arg, &asm_err)
-#define IF_INSTR(instr) else if (strcmp(instrStr, #instr) == 0)
 
 #define OPCODE   P.bytes[P.size+0]
 #define ARG(x)   P.bytes[P.size+x]

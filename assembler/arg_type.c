@@ -6,7 +6,8 @@
 
 
 __attribute__((hot))
-void loadArg(arg_t *arg, symTable *S) {
+void loadArg(arg_t *arg, symTable *S)
+{
 	arg->str = strtok(NULL, DELIM);
 	if (arg->str && arg->str[0] != COMMENT_CHR)
 		arg->type = isArgExpr(arg->str, NULL, S)

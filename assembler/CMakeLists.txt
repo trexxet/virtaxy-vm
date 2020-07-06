@@ -6,6 +6,7 @@ set(SOURCE_FILES
 	main.c
 	asm.c
 	arg_type.c
+	instr.c
 	symtable.c
 )
 
