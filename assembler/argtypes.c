@@ -6,6 +6,16 @@
 
 
 __attribute__((hot))
+void loadArg(arg_t *arg, symTable *S) {
+	arg->str = strtok(NULL, DELIM);
+	if (arg->str && arg->str[0] != COMMENT_CHR)
+		arg->type = isArgExpr(arg->str, NULL, S)
+			  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
+			  | isArgKeyword(arg->str);
+}
+
+
+__attribute__((hot))
 int isArgExpr(char *arg, int64_t *num, symTable *S)
 {
 	if (!arg)

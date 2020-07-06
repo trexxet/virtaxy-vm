@@ -51,7 +51,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 
 	// If label
-	if (IS_LABEL(instrStr))
+	if (isArgLabel(instrStr))
 	{
 		char labelStr[SOURCE_STRING_LENGTH] = {0};
 		strncpy(labelStr, instrStr, strlen(instrStr) - 1);
@@ -60,14 +60,14 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	LOAD_ARG(arg[1]);
+	loadArg(&arg[1], &S);
 	if (arg[1].type != NONE)
-		LOAD_ARG(arg[2]);
+		loadArg(&arg[2], &S);
 	if (arg[2].type != NONE)
-		LOAD_ARG(arg[3]);
+		loadArg(&arg[3], &S);
 
 	// If keyword (constant, variable or reserved memory)
-	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && IS_EXPR(arg[2].str, &S))
+	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && arg[2].type == EXPR)
 	{
 		enum {CONST = 1, VAR = 2, RESMEM = 3};
 		uint8_t symType = 0;

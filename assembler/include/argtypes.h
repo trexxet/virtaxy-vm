@@ -30,16 +30,12 @@ typedef struct {
 	argType type;
 } arg_t;
 
-
-#define LOAD_ARG(arg) {                                           \
-	arg.str = strtok(NULL, DELIM);                            \
-	if (arg.str && arg.str[0] != COMMENT_CHR)                 \
-		arg.type = IS_EXPR(arg.str, &S) | IS_REG(arg.str) | IS_KEYWORD(arg.str); }
-
-#define IS_CORRECT_SYMBOL_NAME(arg) (strpbrk(arg, FRBD_SYM_CHR) == NULL)
-
+void loadArg(arg_t *arg, symTable *S);
 int isArgExpr(char *arg, int64_t *num, symTable *S);
 int isArgLabel(char *arg);
 int isArgKeyword(char *arg);
 int regNumber(char* arg);
+
+#define IS_CORRECT_SYMBOL_NAME(arg) (strpbrk(arg, FRBD_SYM_CHR) == NULL)
+#define EVAL_EXPR(arg, pnum, symtab) isArgExpr(arg, pnum, symtab)
 

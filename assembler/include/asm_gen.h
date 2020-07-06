@@ -15,10 +15,5 @@
 #define ASSEMBLED { asm_err = 0; goto assembled; }
 #define INVALID_ARG(x) { asm_err = INVALID_ARGS; invalArg = x; goto assembled; }
 
-#define IS_REG(arg) ((arg && regNumber(arg) >= 0) ? REG : NONE)
 #define REG_NUM(arg) regNumber(arg)
-#define IS_EXPR(arg, symtab) isArgExpr(arg, NULL, symtab)
-#define EVAL_EXPR(arg, pnum, symtab) isArgExpr(arg, pnum, symtab)
-#define IS_LABEL(arg) isArgLabel(arg)
-#define IS_KEYWORD(arg) isArgKeyword(arg)
 
