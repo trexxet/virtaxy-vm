@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 set(SOURCE_FILES
 	main.c
 	asm.c
-	argtypes.c
+	arg_type.c
 	symtable.c
 )
 

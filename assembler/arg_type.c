@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
-#include "argtypes.h"
+#include "arg_type.h"
 #include "eval/eval.h"
 
 

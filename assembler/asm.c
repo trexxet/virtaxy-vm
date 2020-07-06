@@ -15,7 +15,7 @@
 // Symbol table types & functions
 #include "symtable.h"
 // Argument types & functions
-#include "argtypes.h"
+#include "arg_type.h"
 // Functions & macros for generated assembler code
 #include "asm_gen.h"
 
