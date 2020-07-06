@@ -5,7 +5,8 @@ set(GENERATED_PATH "${CMAKE_SOURCE_DIR}/generated/${ARCH}")
 
 set(OPCODES_H "${GENERATED_PATH}/opcodes.h")
 set(REGISTERS_H "${GENERATED_PATH}/registers.h")
-set(ASSEMBLER_C "${GENERATED_PATH}/assembler-gen.c")
+set(ASSEMBLER_PICKER_C "${GENERATED_PATH}/assembler-picker-gen.c")
+set(ASSEMBLER_ENCODER_C "${GENERATED_PATH}/assembler-encoder-gen.c")
 set(MACHINE_C "${GENERATED_PATH}/machine-gen.c")
 
 set(OPCODES_GEN "${GENERATOR_PATH}/gen_opcodes.py")
@@ -31,7 +32,7 @@ add_custom_command(
 
 # Generate assembler code
 add_custom_command(
-	OUTPUT ${ASSEMBLER_C}
+	OUTPUT ${ASSEMBLER_PICKER_C} ${ASSEMBLER_ENCODER_C}
 	DEPENDS ${OPCODES_H} ${ASSEMBLER_GEN}
 	WORKING_DIRECTORY ${GENERATOR_PATH}
 	COMMAND $<TARGET_FILE:Python3::Interpreter> ${ASSEMBLER_GEN} ${ARCH}
@@ -45,7 +46,11 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:Python3::Interpreter> ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
-add_custom_target(isa-${ARCH}
-	DEPENDS ${OPCODES_H} ${REGISTERS_H} ${ASSEMBLER_C} ${MACHINE_C}
+add_custom_target(isa-${ARCH} DEPENDS
+	${OPCODES_H}
+	${REGISTERS_H}
+	${ASSEMBLER_PICKER_C}
+	${ASSEMBLER_ENCODER_C}
+	${MACHINE_C}
 )
 

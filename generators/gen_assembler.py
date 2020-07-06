@@ -25,11 +25,11 @@ OPtree = OrderedDict(sorted(OPtree.items()))
 opcodes.close()
 
 
-# Generate code
-asm = open(genPath + '/assembler-gen.c', 'w')
+# Generate encoder
+asm = open(genPath + '/assembler-encoder-gen.c', 'w')
 
 for instr, args in OPtree.items():
-    code = 'IF_INSTR(%s)\n{\n' % instr.lower()
+    code = 'DEF_INSTR_ENCODER(%s)\n{\n' % instr.lower()
     for arg1, args2 in args.items():
         code += '\tif (arg[1].type == %s)\n\t{\n' % arg1
         for arg2, args3 in args2.items():
@@ -52,6 +52,17 @@ for instr, args in OPtree.items():
         code += '\t\tINVALID_ARG(2);\n'
         code += '\t}\n'
     code += '\tINVALID_ARG(1);\n'
+    code += '}\n\n'
+    asm.write(code)
+asm.close()
+
+
+# Generate instruction picker
+asm = open(genPath + '/assembler-picker-gen.c', 'w')
+asm.write('if (0); // IF_INSTR -> else if\n')
+for instr, _ in OPtree.items():
+    code = 'IF_INSTR(%s)\n{\n' % instr.lower()
+    code += '\tCALL_INSTR_ENCODER(%s);\n' % instr.lower()
     code += '}\n\n'
     asm.write(code)
 asm.close()
