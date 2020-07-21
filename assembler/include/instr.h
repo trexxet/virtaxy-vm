@@ -16,5 +16,3 @@ typedef struct {
 
 instr_t* getInstr(const char* str, const instr_t* instrTable, size_t instrTableSize);
 
-#define IS_INSTR(str) (getInstr(str, instrTable, sizeof(instrTable)/sizeof(instr_t)))
-

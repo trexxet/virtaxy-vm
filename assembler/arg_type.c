@@ -1,18 +1,29 @@
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
 #include "config.h"
 #include "arg_type.h"
 #include "eval/eval.h"
 
 
 __attribute__((hot))
-void loadArg(arg_t *arg, symTable *S)
+void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S)
 {
-	arg->str = strtok(NULL, DELIM);
-	if (arg->str && arg->str[0] != COMMENT_CHR)
-		arg->type = isArgExpr(arg->str, NULL, S)
-			  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
-			  | isArgKeyword(arg->str);
+	arg->str = strtok(NULL, delimWithoutWhitespace ? DELIM_IGN_WHSPC : DELIM);
+	if (arg->str)
+	{
+		// Strip whitespaces
+		while (isspace(*arg->str)) arg->str++;
+		char* end = strrchr(arg->str, '\0');
+		while (isspace(*--end));
+		end[1] = '\0';
+		// Set arg type
+		if (arg->str[0] != COMMENT_CHR)
+			arg->type = isArgExpr(arg->str, NULL, S)
+				  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
+				  | isArgKeyword(arg->str);
+	}
 }
 
 

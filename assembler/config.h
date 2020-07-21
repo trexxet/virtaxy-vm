@@ -3,13 +3,14 @@
 #define SOURCE_STRING_LENGTH 127              // Max length of text string in source file
 #define INIT_PROGRAM_SIZE 256                 // Initial program size in bytes
 
-//Assembling configuration
-#define DELIM " ,\t\n"                        // Delim for strtok()
+//Assembler configuration
+#define DELIM " ,\t\n"                        // Delimiter with whitespaces
+#define DELIM_IGN_WHSPC ",\n"                 // Delimiter without whitespaces
 #define ERR_STR_LEN 128                       // Error explaining string length
 #define CONST_KEYWORD "equ"                   // Keyword for defining constants
 #define VAR_KEYWORD "var"                     // Keyword for initialized variables
 #define RES_KEYWORD "res"                     // Keyword for reserved memory
 #define COMMENT_CHR ';'                       // Character for commentaries
 #define LABEL_CHR ':'                         // Character for labels
-#define FRBD_SYM_CHR "0123456789+-*/()"       // Characters labels are forbidden to start with
+#define SYM_BLACKLIST_CHR "0123456789+-*/()"  // Characters symbol are forbidden to start with
 

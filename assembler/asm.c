@@ -29,6 +29,7 @@ symTable S;
 
 
 #include "asm_instr-gen.c" // Generated
+const size_t instrCount = sizeof(instrTable) / sizeof(instr_t);
 
 
 int printSymtableAtFinal = 0;
@@ -65,11 +66,15 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 		return SUCCESS;
 	}
 
-	loadArg(&arg[1], &S);
+	int delimNoWhitespace = (int) (getInstr(instrStr, instrTable, instrCount) != NULL);
+	loadArg(&arg[1], delimNoWhitespace, &S);
 	if (arg[1].type != NONE)
-		loadArg(&arg[2], &S);
+	{
+		if (arg[1].type == KEYWORD) delimNoWhitespace = 1;
+		loadArg(&arg[2], delimNoWhitespace, &S);
+	}
 	if (arg[2].type != NONE)
-		loadArg(&arg[3], &S);
+		loadArg(&arg[3], delimNoWhitespace, &S);
 
 	// If keyword (constant, variable or reserved memory)
 	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && arg[2].type == EXPR)
@@ -105,7 +110,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 	{
 		asm_err = UNKNOWN_COMMAND;
 		int invalArg = 0;
-		instr_t *currInstr = getInstr(instrStr, instrTable, sizeof(instrTable) / sizeof(instr_t));
+		instr_t *currInstr = getInstr(instrStr, instrTable, instrCount);
 		if (currInstr)
 			invalArg = currInstr->encoder(arg, &asm_err);
 

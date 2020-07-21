@@ -34,12 +34,12 @@ typedef struct {
 #define MAX_ARGS 3+1
 
 
-void loadArg(arg_t *arg, symTable *S);
+void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S);
 int isArgExpr(char *arg, int64_t *num, symTable *S);
 int isArgLabel(char *arg);
 int isArgKeyword(char *arg);
 int regNumber(char* arg);
 
 
-#define IS_CORRECT_SYMBOL_NAME(arg) (strpbrk(arg, FRBD_SYM_CHR) == NULL)
+#define IS_CORRECT_SYMBOL_NAME(arg) (strpbrk(arg, SYM_BLACKLIST_CHR) != arg)
 
