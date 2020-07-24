@@ -12,9 +12,6 @@
 #include "asm.h"
 
 
-errcode_t errcode = SUCCESS;
-
-
 typedef struct {
 	char *inputFilename;
 	char *outputFilename;
@@ -33,7 +30,7 @@ void finalization();
 
 void main(int argc, char *argv[])
 {
-	errcode = asmInit();
+	errcode_t errcode = asmInit();
 	if (errcode)
 		parseError(errcode, NULL, 0, NULL);
 
@@ -43,7 +40,7 @@ void main(int argc, char *argv[])
 	assembleFile(conf.inputFilename);
 	writeProgram(conf.outputFilename);
 
-	finalization();
+	finalization(errcode);
 }
 
 
@@ -62,10 +59,11 @@ void assembleFile(char *filename)
 	extern program P;
 	// At first pass, we only fill symbol table
 	// Actual assembling is done at the second pass
+	errcode_t errcode = SUCCESS;
 	for (int pass = 1; pass <= 2; pass++)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
-		       ((pass == 2) ? (errcode == 0) : 1))
+		       ((pass == 2) ? (errcode == SUCCESS) : 1))
 		{
 			if (STRING_NOT_EMPTY)
 				errcode = assembleString(sourceString, pass, errStr);
@@ -141,7 +139,7 @@ void parseError(errcode_t errcode, char *file, size_t line, char *errStr)
 	if (errStr)
 		fprintf(stderr, "%s\n", errStr);
 	if (errcode != SUCCESS)
-		finalization();
+		finalization(errcode);
 }
 
 
@@ -163,8 +161,7 @@ void printHelp()
 }
 
 
-//Here we free all dynamically allocated memory, pray the Valgrind
-_Noreturn void finalization()
+_Noreturn void finalization(errcode_t errcode)
 {
 	asmFinal();
 	exit(errcode);
