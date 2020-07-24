@@ -47,7 +47,82 @@ errcode_t asmInit()
 }
 
 
-// TODO: split function
+void loadArgs(arg_t arg[]) {
+	// Expressions can have whitespaces, so we should avoid splitting them
+	// Split w/o whitespaces if we have instruction line
+	int delimNoWhitespace = (int) (getInstr(arg[0].str, instrTable, instrCount) != NULL);
+	loadArg(&arg[1], delimNoWhitespace, &S);
+	if (arg[1].type != NONE)
+	{
+		// Split w/o whitespaces if we have keyword
+		if (arg[1].type == KEYWORD) delimNoWhitespace = 1;
+		loadArg(&arg[2], delimNoWhitespace, &S);
+	}
+	if (arg[2].type != NONE)
+		loadArg(&arg[3], delimNoWhitespace, &S);
+}
+
+
+void addSymLabel(const char* str) {
+	char labelStr[SOURCE_STRING_LENGTH] = {0};
+	// Cut label char
+	strncpy(labelStr, str, strlen(str) - 1);
+	if (symGetValue(&S, labelStr, NULL) < 0)
+		symAdd(&S, labelStr, P.size);
+}
+
+
+int addSymKeyword(arg_t arg[])
+{
+	enum {CONST = 1, VAR = 2, RESMEM = 3};
+	uint8_t symType = 0;
+	if (strcmp(arg[1].str, CONST_KEYWORD) == 0)
+		symType = CONST;
+	else if (strcmp(arg[1].str, VAR_KEYWORD) == 0)
+		symType = VAR;
+	else if (strcmp(arg[1].str, RES_KEYWORD) == 0)
+		symType = RESMEM;
+	else return 0;
+
+	int64_t value = 0;
+	EVAL_EXPR(arg[2].str, &value, &S);
+	if (symGetValue(&S, arg[0].str, NULL) < 0)
+		symAdd(&S, arg[0].str, (symType == CONST) ? value : P.size);
+	if (symType != CONST)
+	{
+		CHECK_PROGRAM_SIZE((symType == RESMEM) ? value : 1);
+		if (symType == VAR)
+			OPCODE = value;
+		P.size += (symType == RESMEM) ? value : 1;
+	}
+	return 1;
+}
+
+
+errcode_t assembleInstruction(arg_t arg[], char* errStr)
+{
+	errcode_t asm_err = UNKNOWN_COMMAND;
+	int invalArg = 0;
+	instr_t *currInstr = getInstr(arg[0].str, instrTable, instrCount);
+	if (currInstr)
+		invalArg = currInstr->encoder(arg, &asm_err);
+
+	if (asm_err == UNKNOWN_COMMAND)
+		sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s, %s",
+			arg[0].str, arg[1].str, arg[2].str, arg[3].str);
+
+	if (asm_err == INVALID_ARGS)
+	{
+		// TODO: make use of invalArg
+		// TODO: add expected types
+		sprintf(errStr, "%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s",
+			arg[0].str, arg[1].str, arg[2].str, arg[3].str,
+			argTypeStr[arg[1].type], argTypeStr[arg[2].type], argTypeStr[arg[3].type]);
+	}
+	return asm_err;
+}
+
+
 __attribute__((hot))
 errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
@@ -59,74 +134,21 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 	// If label
 	if (isArgLabel(instrStr))
 	{
-		char labelStr[SOURCE_STRING_LENGTH] = {0};
-		strncpy(labelStr, instrStr, strlen(instrStr) - 1);
-		if (symGetValue(&S, labelStr, NULL) < 0)
-			symAdd(&S, labelStr, P.size);
+		addSymLabel(instrStr);
 		return SUCCESS;
 	}
 
-	int delimNoWhitespace = (int) (getInstr(instrStr, instrTable, instrCount) != NULL);
-	loadArg(&arg[1], delimNoWhitespace, &S);
-	if (arg[1].type != NONE)
-	{
-		if (arg[1].type == KEYWORD) delimNoWhitespace = 1;
-		loadArg(&arg[2], delimNoWhitespace, &S);
-	}
-	if (arg[2].type != NONE)
-		loadArg(&arg[3], delimNoWhitespace, &S);
+	loadArgs(arg);
 
 	// If keyword (constant, variable or reserved memory)
 	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && arg[2].type == EXPR)
-	{
-		enum {CONST = 1, VAR = 2, RESMEM = 3};
-		uint8_t symType = 0;
-		if (strcmp(arg[1].str, CONST_KEYWORD) == 0)
-			symType = CONST;
-		else if (strcmp(arg[1].str, VAR_KEYWORD) == 0)
-			symType = VAR;
-		else if (strcmp(arg[1].str, RES_KEYWORD) == 0)
-			symType = RESMEM;
-		else goto notSymbol;
+		if (addSymKeyword(arg))
+			return SUCCESS;
 
-		int64_t value = 0;
-		EVAL_EXPR(arg[2].str, &value, &S);
-		if (symGetValue(&S, instrStr, NULL) < 0)
-			symAdd(&S, instrStr, (symType == CONST) ? value : P.size);
-		if (symType != CONST)
-		{
-			CHECK_PROGRAM_SIZE((symType == RESMEM) ? value : 1);
-			if (symType == VAR)
-				OPCODE = value;
-			P.size += (symType == RESMEM) ? value : 1;
-		}
-		return SUCCESS;
-	}
-	notSymbol: ;
-
-	// Try to assemble command on second pass
+	// Try to assemble instruction on second pass
 	errcode_t asm_err = 0;
 	if (pass == 2)
-	{
-		asm_err = UNKNOWN_COMMAND;
-		int invalArg = 0;
-		instr_t *currInstr = getInstr(instrStr, instrTable, instrCount);
-		if (currInstr)
-			invalArg = currInstr->encoder(arg, &asm_err);
-
-		if (asm_err == UNKNOWN_COMMAND)
-			sprintf(errStr, C_BOLD_RED"%s"C_RESET" %s, %s, %s",
-			        instrStr, arg[1].str, arg[2].str, arg[3].str);
-
-		if (asm_err == INVALID_ARGS)
-		{
-			// TODO: make use of invalArg
-			// TODO: add expected types
-			sprintf(errStr, "%s %s, %s, %s\n arg1: %s\n arg2: %s\n arg3: %s",
-			        instrStr, arg[1].str, arg[2].str, arg[3].str,
-		                argTypeStr[arg[1].type], argTypeStr[arg[2].type], argTypeStr[arg[3].type]);
-		}
-	}
+		asm_err = assembleInstruction(arg, errStr);
 
 	P.size += OPSIZE;
 	return asm_err;
