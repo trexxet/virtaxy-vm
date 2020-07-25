@@ -1,4 +1,5 @@
 ; Print factorial of input number
+; If input < 0, print 1
 
 main:
 	in rax

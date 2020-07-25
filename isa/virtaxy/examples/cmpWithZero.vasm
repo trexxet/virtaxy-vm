@@ -1,5 +1,4 @@
-; Print 1 if input is greater than zero,
-;   otherwise print 0
+; Print 1 if input > 0, otherwise print 0
 
 in rax
 bg rax, 0, greaterThanZero

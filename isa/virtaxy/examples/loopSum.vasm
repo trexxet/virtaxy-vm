@@ -1,4 +1,5 @@
 ; Sum N integers
+; Print 0 if N <= 0
 
 mov rax, 0
 in rcx

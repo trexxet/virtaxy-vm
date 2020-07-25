@@ -1,0 +1,4 @@
+main:
+	mov 10, rax
+	hlt
+
