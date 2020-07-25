@@ -4,4 +4,5 @@ set(ARCH "virtaxy")
 set(ISA_SRC "ISA.txt")
 set(REGISTERS_SRC "Registers.txt")
 include("../isa_target.cmake")
+include("test/tests.cmake")
 

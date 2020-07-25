@@ -1,4 +1,4 @@
-# Add target to run ISA code generators
+# Add target to run ISA code generators & tests functions
 
 set(GENERATOR_PATH "${CMAKE_SOURCE_DIR}/generators")
 set(GENERATED_PATH "${CMAKE_SOURCE_DIR}/generated/${ARCH}")
@@ -45,10 +45,26 @@ add_custom_command(
 	COMMAND $<TARGET_FILE:Python3::Interpreter> ${MACHINE_GEN} ${ARCH} ${ISA_SRC}
 )
 
+# Add ISA target
 add_custom_target(isa-${ARCH} DEPENDS
 	${OPCODES_H}
 	${REGISTERS_H}
 	${ASM_INSTR_C}
 	${MACHINE_C}
 )
+
+# Tests
+function(add_asm_test TEST_NAME TEST_SRC TEST_OUT TEST_SUCCESS)
+	add_test(NAME ${TEST_NAME}
+		COMMAND sh -c "$<TARGET_FILE:vasm-${ARCH}> -o ${TEST_OUT} ${TEST_SRC}")
+	set_tests_properties(${TEST_NAME} PROPERTIES
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+	if(TEST_SUCCESS)
+		set_tests_properties(${TEST_NAME} PROPERTIES
+			PASS_REGULAR_EXPRESSION "Assembly successful")
+	else()
+		set_tests_properties(${TEST_NAME} PROPERTIES
+			WILL_FAIL TRUE)
+	endif()
+endfunction()
 
