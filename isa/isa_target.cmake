@@ -54,17 +54,22 @@ add_custom_target(isa-${ARCH} DEPENDS
 )
 
 # Tests
-function(add_asm_test TEST_NAME TEST_SRC TEST_OUT TEST_SUCCESS)
-	add_test(NAME ${TEST_NAME}
-		COMMAND sh -c "$<TARGET_FILE:vasm-${ARCH}> -o ${TEST_OUT} ${TEST_SRC}")
-	set_tests_properties(${TEST_NAME} PROPERTIES
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-	if(TEST_SUCCESS)
-		set_tests_properties(${TEST_NAME} PROPERTIES
-			PASS_REGULAR_EXPRESSION "Assembly successful")
-	else()
-		set_tests_properties(${TEST_NAME} PROPERTIES
-			WILL_FAIL TRUE)
+function(add_asm_test)
+	cmake_parse_arguments(TEST "WILL_FAIL" "NAME;SRC;OUT" "" ${ARGN})
+	add_test(
+		NAME ${TEST_NAME}
+		COMMAND sh -c "$<TARGET_FILE:vasm-${ARCH}> -o ${TEST_OUT} ${TEST_SRC}"
+	)
+	set_tests_properties(
+		${TEST_NAME} PROPERTIES
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		WILL_FAIL ${TEST_WILL_FAIL}
+	)
+	if(NOT ${TEST_WILL_FAIL})
+		set_tests_properties(
+			${TEST_NAME} PROPERTIES
+			PASS_REGULAR_EXPRESSION "Assembly successful"
+		)
 	endif()
 endfunction()
 
