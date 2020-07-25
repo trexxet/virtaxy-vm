@@ -73,3 +73,21 @@ function(add_asm_test)
 	endif()
 endfunction()
 
+function(add_vm_test)
+	cmake_parse_arguments(TEST "WILL_FAIL" "NAME;FILE;INPUT;OUTPUT" "" ${ARGN})
+	add_test(
+		NAME ${TEST_NAME}
+		COMMAND sh -c "echo ${TEST_INPUT} | $<TARGET_FILE:vvm-${ARCH}> ${TEST_FILE}"
+	)
+	set_tests_properties(
+		${TEST_NAME} PROPERTIES
+		WILL_FAIL ${TEST_WILL_FAIL}
+	)
+	if(NOT ${TEST_WILL_FAIL})
+		set_tests_properties(
+			${TEST_NAME} PROPERTIES
+			PASS_REGULAR_EXPRESSION "${TEST_OUTPUT}\n.*Execution successful"
+		)
+	endif()
+endfunction()
+
