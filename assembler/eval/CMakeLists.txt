@@ -25,9 +25,3 @@ add_library(eval
 target_compile_definitions(eval PRIVATE ${EVAL_TYPEDEFS})
 target_include_directories(eval PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
-
-add_executable(eval-test test.c)
-target_compile_definitions(eval-test PRIVATE ${EVAL_TYPEDEFS})
-target_include_directories(eval-test PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(eval-test eval)
-
