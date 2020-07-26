@@ -19,10 +19,9 @@ void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S)
 		while (isspace(*--end));
 		end[1] = '\0';
 		// Set arg type
-		if (arg->str[0] != COMMENT_CHR)
-			arg->type = isArgExpr(arg->str, NULL, S)
-				  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
-				  | isArgKeyword(arg->str);
+		arg->type = isArgExpr(arg->str, NULL, S)
+			  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
+			  | isArgKeyword(arg->str);
 	}
 }
 

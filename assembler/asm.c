@@ -126,10 +126,14 @@ errcode_t assembleInstruction(arg_t arg[], char* errStr)
 __attribute__((hot))
 errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 {
+	// Truncate commentary
+	char* commentChar = strchr(sourceStr, COMMENT_CHR);
+	if (commentChar) *commentChar = '\0';
+
+	// Load first token
 	arg_t arg[MAX_ARGS] = { {.str = NULL, .type = NONE} };
 	char *instrStr = arg[0].str = strtok(sourceStr, DELIM);
-	if (!instrStr || instrStr[0] == COMMENT_CHR)
-		return SUCCESS;
+	if (!instrStr) return SUCCESS;
 
 	// If label
 	if (isArgLabel(instrStr))

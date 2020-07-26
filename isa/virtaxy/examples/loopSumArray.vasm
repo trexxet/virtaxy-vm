@@ -36,6 +36,5 @@ main:
 	out rex
 hlt
 
-; Reserved memory for integers
-ints res maxN
+ints res maxN ; Reserved memory for integers
 
