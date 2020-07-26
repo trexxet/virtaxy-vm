@@ -1,13 +1,19 @@
 %{
 #include "eval.tab.h"
+#include "symtable.h"
+
 #define YY_USER_ACTION {lex_update_yylloc();}
 void lex_update_yylloc();
 void lex_reset_state();
+
+extern symTable S;
 %}
 
 %option noyywrap
 %option noinput
 %option nounput
+
+symbol [a-zA-Z_\.][a-zA-Z0-9_\.]*
 
 %%
 
@@ -23,6 +29,11 @@ void lex_reset_state();
 "/"                 { return T_DIV; }
 "("                 { return T_LPAR; }
 ")"                 { return T_RPAR; }
+{symbol}            {
+                      YYSTYPE val = 0;
+                      if (symGetValue(&S, yytext, &val) >= 0) { yylval = val; return T_NUM; }
+                      else return *yytext;
+                    }
 .                   { return *yytext; }
 
 %%

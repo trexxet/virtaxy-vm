@@ -1,7 +1,7 @@
 set(ASM_OUTPUT ${CMAKE_BINARY_DIR}/test.vo)
 
 add_asm_test(NAME asm::asmExpressions FILE examples/asmExpressions.vasm OUTPUT ${ASM_OUTPUT})
-add_vm_test(NAME vm::asmExpressions FILE ${ASM_OUTPUT} OUTPUT "1\n3\n3\n7")
+add_vm_test(NAME vm::asmExpressions FILE ${ASM_OUTPUT} OUTPUT "1\n3\n3\n7\n42")
 
 add_asm_test(NAME asm::cmpWithZero FILE examples/cmpWithZero.vasm OUTPUT ${ASM_OUTPUT})
 add_vm_test(NAME vm::cmpWithZero_-1 FILE ${ASM_OUTPUT} INPUT "-1" OUTPUT "0")

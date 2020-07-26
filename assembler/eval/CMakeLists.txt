@@ -23,5 +23,12 @@ add_library(eval
 	${FLEX_eval-lex_OUTPUTS}
 )
 target_compile_definitions(eval PRIVATE ${EVAL_TYPEDEFS})
-target_include_directories(eval PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(eval PRIVATE
+	${CMAKE_CURRENT_BINARY_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
+	"../include"
+)
+if(DEBUG)
+	target_compile_options(eval PRIVATE -g)
+endif()
 

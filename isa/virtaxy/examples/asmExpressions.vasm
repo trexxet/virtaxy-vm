@@ -8,5 +8,11 @@ mov rax, 1 * 3
 out rax
 mov rax, (-2 + 4*4) / 2
 out rax
+
+foo equ 15
+bar equ foo*2
+mov rax, bar + foo - 3 ; 42
+out rax
+
 hlt
 
