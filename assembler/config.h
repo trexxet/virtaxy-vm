@@ -12,5 +12,5 @@
 #define RES_KEYWORD "res"                     // Keyword for reserved memory
 #define COMMENT_CHR ';'                       // Character for commentaries
 #define LABEL_CHR ':'                         // Character for labels
-#define SYM_BLACKLIST_CHR "0123456789+-*/()"  // Characters symbol are forbidden to start with
+#define SYM_BLACKLIST_CHR "+-*/()"            // Characters symbol are forbidden to have
 

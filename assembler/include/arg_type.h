@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <ctype.h>
 
 #include "symtable.h"
 #include "registers.h" // Generated
@@ -41,5 +42,5 @@ int isArgKeyword(char *arg);
 int regNumber(char* arg);
 
 
-#define IS_CORRECT_SYMBOL_NAME(arg) (strchr(SYM_BLACKLIST_CHR, arg[0]) == NULL)
+#define IS_CORRECT_SYMBOL_NAME(arg) (!isdigit(arg[0]) && !strpbrk(arg, SYM_BLACKLIST_CHR))
 
