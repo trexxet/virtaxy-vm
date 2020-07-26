@@ -8,7 +8,7 @@
 
 
 __attribute__((hot))
-void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S)
+void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 {
 	arg->str = strtok(NULL, delimWithoutWhitespace ? DELIM_IGN_WHSPC : DELIM);
 	if (arg->str)
@@ -27,7 +27,7 @@ void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S)
 
 
 __attribute__((hot))
-int isArgExpr(char *arg, int64_t *num, symTable *S)
+int isArgExpr(char* arg, YYSTYPE* num, symTable* S)
 {
 	if (!arg)
 		return NONE;
@@ -53,7 +53,7 @@ int isArgExpr(char *arg, int64_t *num, symTable *S)
 
 
 __attribute__((hot))
-int isArgLabel(char *arg)
+int isArgLabel(char* arg)
 {
 	if (!arg || !IS_CORRECT_SYMBOL_NAME(arg))
 		return 0;
@@ -65,7 +65,7 @@ int isArgLabel(char *arg)
 
 
 __attribute__((hot))
-int isArgKeyword(char *arg)
+int isArgKeyword(char* arg)
 {
 	if (!arg)
 		return 0;

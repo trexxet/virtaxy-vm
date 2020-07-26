@@ -84,7 +84,7 @@ int addSymKeyword(arg_t arg[])
 		symType = RESMEM;
 	else return 0;
 
-	int64_t value = 0;
+	YYSTYPE value = 0;
 	EVAL_EXPR(arg[2].str, &value, &S);
 	if (symGetValue(&S, arg[0].str, NULL) < 0)
 		symAdd(&S, arg[0].str, (symType == CONST) ? value : P.size);
@@ -103,7 +103,7 @@ errcode_t assembleInstruction(arg_t arg[], char* errStr)
 {
 	errcode_t asm_err = UNKNOWN_COMMAND;
 	int invalArg = 0;
-	instr_t *currInstr = getInstr(arg[0].str, instrTable, instrCount);
+	instr_t* currInstr = getInstr(arg[0].str, instrTable, instrCount);
 	if (currInstr)
 		invalArg = currInstr->encoder(arg, &asm_err);
 
@@ -124,7 +124,7 @@ errcode_t assembleInstruction(arg_t arg[], char* errStr)
 
 
 __attribute__((hot))
-errcode_t assembleString(char *sourceStr, int pass, char *errStr)
+errcode_t assembleString(char* sourceStr, int pass, char* errStr)
 {
 	// Truncate commentary
 	char* commentChar = strchr(sourceStr, COMMENT_CHR);
@@ -132,7 +132,7 @@ errcode_t assembleString(char *sourceStr, int pass, char *errStr)
 
 	// Load first token
 	arg_t arg[MAX_ARGS] = { {.str = NULL, .type = NONE} };
-	char *instrStr = arg[0].str = strtok(sourceStr, DELIM);
+	char* instrStr = arg[0].str = strtok(sourceStr, DELIM);
 	if (!instrStr) return SUCCESS;
 
 	// If label

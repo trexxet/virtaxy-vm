@@ -13,6 +13,6 @@ typedef struct {
 
 
 errcode_t asmInit();
-errcode_t assembleString(char *sourceStr, int pass, char *errStr);
+errcode_t assembleString(char* sourceStr, int pass, char* errStr);
 void asmFinal();
 

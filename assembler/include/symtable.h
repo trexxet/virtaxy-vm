@@ -9,7 +9,7 @@
 
 typedef struct {
 	char name[SOURCE_STRING_LENGTH];
-	int64_t value;
+	YYSTYPE value;
 } symbol;
 
 typedef struct {
@@ -19,11 +19,11 @@ typedef struct {
 } symTable;
 
 
-errcode_t symInit(symTable *S);
-void symAdd(symTable *S, char *name, int64_t value);
-int symGetValue(symTable *S, char *name, int64_t *value);
-void symDestroy(symTable *S);
+errcode_t symInit(symTable* S);
+void symAdd(symTable* S, char* name, YYSTYPE value);
+int symGetValue(symTable* S, char* name, YYSTYPE* value);
+void symDestroy(symTable* S);
 
 // Debug:
-void symPrint(symTable *S);
+void symPrint(symTable* S);
 

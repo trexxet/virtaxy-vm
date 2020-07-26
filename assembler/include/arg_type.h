@@ -35,10 +35,10 @@ typedef struct {
 #define MAX_ARGS 3+1
 
 
-void loadArg(arg_t *arg, int delimWithoutWhitespace, symTable *S);
-int isArgExpr(char *arg, int64_t *num, symTable *S);
-int isArgLabel(char *arg);
-int isArgKeyword(char *arg);
+void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S);
+int isArgExpr(char* arg, YYSTYPE* num, symTable* S);
+int isArgLabel(char* arg);
+int isArgKeyword(char* arg);
 int regNumber(char* arg);
 
 
