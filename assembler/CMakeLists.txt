@@ -29,7 +29,9 @@ foreach(ARCH ${ARCH_LIST})
 		ARCH="${ARCH}"
 		VERSION="${VERSION}"
 		${EVAL_TYPEDEFS})
-	#target_compile_options(${TGT} PRIVATE -g)
+	if(DEBUG)
+		target_compile_options(${TGT} PRIVATE -g)
+	endif()
 	install(TARGETS ${TGT})
 endforeach()
 
