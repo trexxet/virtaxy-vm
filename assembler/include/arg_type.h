@@ -36,7 +36,7 @@ typedef struct {
 
 
 void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S);
-int isArgExpr(char* arg, YYSTYPE* num, symTable* S, int *err);
+int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int *err);
 int isArgLabel(char* arg);
 int isArgKeyword(char* arg);
 int regNumber(char* arg);

@@ -17,5 +17,5 @@
 #define INVALID_ARG(n) { *asm_err = INVALID_ARGS; return n; }
 
 #define REG_NUM(arg) regNumber(arg)
-#define EVAL_EXPR(arg, pnum, symtab) isArgExpr(arg, pnum, symtab, NULL)
+#define EVAL_EXPR(arg, pnum, symtab) argEvalExpr(arg, pnum, symtab, NULL)
 

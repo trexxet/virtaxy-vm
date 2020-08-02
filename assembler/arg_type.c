@@ -21,15 +21,17 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 
 		int parseErr = 0;
 		// Set arg type
-		arg->type = isArgExpr(arg->str, NULL, S, &parseErr)
-			  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
-			  | isArgKeyword(arg->str);
+		// Expression check should be done last, as everything that
+		// is not instruction, register or keyword is an expression
+		arg->type = ((regNumber(arg->str) >= 0) ? REG : NONE) | isArgKeyword(arg->str);
+		if (!arg->type)
+			arg->type = argEvalExpr(arg->str, NULL, S, &parseErr);
 	}
 }
 
 
 __attribute__((hot))
-int isArgExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
+int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
 {
 	if (!arg)
 		return NONE;
@@ -41,8 +43,6 @@ int isArgExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
 	*pr = evalExpr(arg, &parseErr);
 	if (err && parseErr)
 		*err = *pr;
-	if (parseErr && *pr != EVAL_ERR_DIV_BY_ZERO)
-		return NONE;
 	return EXPR;
 }
 
