@@ -17,3 +17,8 @@ instr_t* getInstr(const char* str, const instr_t* instrTable, size_t instrTableS
 	return bsearch(&key, instrTable, instrTableSize, sizeof(instr_t), instr_compar);
 }
 
+int isInstr(const char* str, const instr_t* instrTable, size_t instrCount)
+{
+	return (int) (getInstr(str, instrTable, instrCount) != NULL);
+}
+

@@ -15,4 +15,5 @@ typedef struct {
 
 
 instr_t* getInstr(const char* str, const instr_t* instrTable, size_t instrTableSize);
+int isInstr(const char* str, const instr_t* instrTable, size_t instrCount);
 

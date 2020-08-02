@@ -50,7 +50,7 @@ errcode_t asmInit()
 void loadArgs(arg_t arg[]) {
 	// Expressions can have whitespaces, so we should avoid splitting them
 	// Split w/o whitespaces if we have instruction line
-	int delimNoWhitespace = (int) (getInstr(arg[0].str, instrTable, instrCount) != NULL);
+	int delimNoWhitespace = isInstr(arg[0].str, instrTable, instrCount);
 	loadArg(&arg[1], delimNoWhitespace, &S);
 	if (arg[1].type != NONE)
 	{

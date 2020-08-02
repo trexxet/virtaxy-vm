@@ -8,9 +8,10 @@
 
 
 __attribute__((hot))
-void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
+int loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 {
 	arg->str = strtok(NULL, delimWithoutWhitespace ? DELIM_IGN_WHSPC : DELIM);
+	int parseErr = 0;
 	if (arg->str)
 	{
 		// Strip whitespaces
@@ -19,7 +20,6 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 		while (isspace(*--end));
 		end[1] = '\0';
 
-		int parseErr = 0;
 		// Set arg type
 		// Expression check should be done last, as everything that
 		// is not instruction, register or keyword is an expression
@@ -27,6 +27,7 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 		if (!arg->type)
 			arg->type = argEvalExpr(arg->str, NULL, S, &parseErr);
 	}
+	return parseErr;
 }
 
 
@@ -48,7 +49,7 @@ int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
 
 
 __attribute__((hot))
-int isArgLabel(char* arg)
+int isArgLabel(const char* arg)
 {
 	if (!arg || !IS_CORRECT_SYMBOL_NAME(arg))
 		return 0;
@@ -60,7 +61,7 @@ int isArgLabel(char* arg)
 
 
 __attribute__((hot))
-int isArgKeyword(char* arg)
+int isArgKeyword(const char* arg)
 {
 	if (!arg)
 		return 0;
@@ -73,7 +74,7 @@ int isArgKeyword(char* arg)
 
 
 __attribute__((hot))
-int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exists
+int regNumber(const char* arg) // Returns number of register arg or -1 if doesn't exists
 {
 	for (int64_t i = 0; i < NUM_OF_REGNAMES; i++)
 		if ((strcmp(regTable[i].name, arg) == 0) && !regTable[i].private)
@@ -83,7 +84,7 @@ int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exis
 
 
 __attribute__((hot))
-int isArgRegister(char* arg)
+int isArgRegister(const char* arg)
 {
 	return (regNumber(arg) >= 0) ? REG : NONE;
 }
