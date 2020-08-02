@@ -66,7 +66,7 @@ void assembleFile(char *filename)
 		{
 			if (STRING_NOT_EMPTY)
 				errcode = assembleString(sourceString, pass, errStr);
-			if (pass == 1 & errcode == UNKNOWN_SYMBOL)
+			if (pass == 1 & errcode == EVAL_UNKNOWN_SYMBOL)
 				errcode = SUCCESS; // Ignore unknown symbols on first pass
 			lineCounter++;
 		}

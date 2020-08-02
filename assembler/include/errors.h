@@ -14,7 +14,8 @@ typedef enum {
 	UNKNOWN_COMMAND,
 	INVALID_ARGS,
 	INVALID_EXPRESSION,
-	UNKNOWN_SYMBOL
+	EVAL_UNKNOWN_SYMBOL,
+	EVAL_DIV_BY_ZERO
 } errcode_t;
 
 
@@ -43,7 +44,9 @@ const static char* errmsg[] = {
 		C_BOLD_RED"error:"C_RESET" invalid combination of command and arguments",
 	[INVALID_EXPRESSION] =
 		C_BOLD_RED"error:"C_RESET" invalid expression",
-	[UNKNOWN_SYMBOL] =
-		C_BOLD_RED"error:"C_RESET" unknown symbol"
+	[EVAL_UNKNOWN_SYMBOL] =
+		C_BOLD_RED"error:"C_RESET" unknown symbol",
+	[EVAL_DIV_BY_ZERO] =
+		C_BOLD_RED"error:"C_RESET" division by zero in expression"
 };
 

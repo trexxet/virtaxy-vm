@@ -7,11 +7,11 @@
 char* orig_expr = NULL;
 
 
-YYSTYPE evalExpr(char *expr, int* err) {
+YYSTYPE evalExpr(char *expr, errcode_t* err) {
 	yy_scan_string(expr);
 	orig_expr = expr;
 	YYSTYPE result = 0;
-	*err = yyparse(&result);
+	*err = (errcode_t) yyparse(&result);
 	orig_expr = NULL;
 	extern void lex_reset_state();
 	lex_reset_state();

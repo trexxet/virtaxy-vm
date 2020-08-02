@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdint.h>
-#include "eval_err.h"
+#include "errors.h"
 
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
@@ -14,6 +14,7 @@ void yyerror(YYSTYPE*, const char*);
 %token T_NUM
 %token T_ADD T_SUB T_MUL T_DIV
 %token T_LPAR T_RPAR
+%token T_UNKNOWN_SYMBOL
 
 %left T_ADD T_SUB
 %left T_MUL T_DIV
@@ -31,7 +32,7 @@ Expr: T_NUM { $$ = $1; }
     | Expr T_MUL Expr { $$ = $1 * $3; }
     | Expr T_DIV Expr {
           if ($3 == 0) {
-              YYSTYPE err = *result = EVAL_ERR_DIV_BY_ZERO;
+              YYSTYPE err = *result = EVAL_DIV_BY_ZERO;
               yypcontext_t ctx = {yyssp, yytoken, &@2};
               yyreport_syntax_error(&ctx, &err);
               YYABORT;
@@ -40,6 +41,12 @@ Expr: T_NUM { $$ = $1; }
       }
     | T_SUB Expr %prec NEG { $$ = -$2; }
     | T_LPAR Expr T_RPAR { $$ = $2; }
+    | T_ERROR {
+              YYSTYPE err = *result = EVAL_UNKNOWN_SYMBOL;
+              yypcontext_t ctx = {yyssp, yytoken, &@1};
+              yyreport_syntax_error(&ctx, &err);
+              YYABORT;
+      }
 
 %%
 
@@ -64,12 +71,6 @@ int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 	// Print cool arrow
 	for (i = 1; i < pos; i++) fputc(' ', stderr);
 	fprintf(stderr, C_BOLD_RED"^"C_RESET"\n");
-
-	if (*err == EVAL_ERR_DIV_BY_ZERO)
-		fprintf (stderr, C_BOLD_RED"error:"C_RESET" division by 0 in expression\n");
-	else
-		fprintf (stderr, C_BOLD_RED"error:"C_RESET" unexpected '%c' in expression\n",
-		         orig_expr[pos-1]);
 	return 0;
 }
 

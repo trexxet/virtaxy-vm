@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "eval_err.h"
+#include "errors.h"
 
-YYSTYPE evalExpr(char *expr, int* err);
+YYSTYPE evalExpr(char *expr, errcode_t* err);
 void evalDie();
 

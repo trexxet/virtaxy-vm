@@ -47,11 +47,11 @@ errcode_t asmInit()
 }
 
 
-int loadArgs(arg_t arg[]) {
+errcode_t loadArgs(arg_t arg[]) {
 	// Expressions can have whitespaces, so we should avoid splitting them
 	// Split w/o whitespaces if we have instruction line
 	int delimNoWhitespace = isInstr(arg[0].str, instrTable, instrCount);
-	int err = loadArg(&arg[1], delimNoWhitespace, &S);
+	errcode_t err = loadArg(&arg[1], delimNoWhitespace, &S);
 	if (arg[1].type != NONE && !err)
 	{
 		// Split w/o whitespaces if we have keyword
@@ -143,9 +143,9 @@ errcode_t assembleString(char* sourceStr, int pass, char* errStr)
 		return SUCCESS;
 	}
 
-	int arg_err = loadArgs(arg);
-	if (arg_err)
-		return INVALID_EXPRESSION;
+	errcode_t asm_err = loadArgs(arg);
+	if (asm_err)
+		return asm_err;
 
 	// If keyword (constant, variable or reserved memory)
 	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && arg[2].type == EXPR)
@@ -153,7 +153,6 @@ errcode_t assembleString(char* sourceStr, int pass, char* errStr)
 			return SUCCESS;
 
 	// Try to assemble instruction on second pass
-	errcode_t asm_err = 0;
 	if (pass == 2)
 		asm_err = assembleInstruction(arg, errStr);
 

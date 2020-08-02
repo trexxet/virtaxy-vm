@@ -8,10 +8,10 @@
 
 
 __attribute__((hot))
-int loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
+errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 {
 	arg->str = strtok(NULL, delimWithoutWhitespace ? DELIM_IGN_WHSPC : DELIM);
-	int parseErr = 0;
+	errcode_t parseErr = 0;
 	if (arg->str)
 	{
 		// Strip whitespaces
@@ -32,11 +32,11 @@ int loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 
 
 __attribute__((hot))
-int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
+int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, errcode_t* err)
 {
 	if (!arg)
 		return NONE;
-	int parseErr = 0;
+	errcode_t parseErr = 0;
 	YYSTYPE result = 0;
 	YYSTYPE* pr = num ? num : &result;
 	*pr = evalExpr(arg, &parseErr);

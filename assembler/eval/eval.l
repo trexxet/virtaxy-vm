@@ -32,7 +32,7 @@ symbol [a-zA-Z_\.][a-zA-Z0-9_\.]*
 {symbol}            {
                       YYSTYPE val = 0;
                       if (symGetValue(&S, yytext, &val) >= 0) { yylval = val; return T_NUM; }
-                      else return *yytext;
+                      else return T_UNKNOWN_SYMBOL;
                     }
 .                   { return *yytext; }
 
