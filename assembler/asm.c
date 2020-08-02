@@ -85,7 +85,7 @@ int addSymKeyword(arg_t arg[])
 	else return 0;
 
 	YYSTYPE value = 0;
-	EVAL_EXPR(arg[2].str, &value, &S);
+	isArgExpr(arg[2].str, &value, &S, NULL);
 	if (symGetValue(&S, arg[0].str, NULL) < 0)
 		symAdd(&S, arg[0].str, (symType == CONST) ? value : P.size);
 	if (symType != CONST)

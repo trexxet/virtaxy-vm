@@ -18,8 +18,10 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 		char* end = strrchr(arg->str, '\0');
 		while (isspace(*--end));
 		end[1] = '\0';
+
+		int parseErr = 0;
 		// Set arg type
-		arg->type = isArgExpr(arg->str, NULL, S)
+		arg->type = isArgExpr(arg->str, NULL, S, &parseErr)
 			  | ((arg && regNumber(arg->str) >= 0) ? REG : NONE)
 			  | isArgKeyword(arg->str);
 	}
@@ -27,26 +29,19 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 
 
 __attribute__((hot))
-int isArgExpr(char* arg, YYSTYPE* num, symTable* S)
+int isArgExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
 {
 	if (!arg)
 		return NONE;
-	// Check if arg exists in symbol table and fetch if needed
-	if (IS_CORRECT_SYMBOL_NAME(arg) && symGetValue(S, arg, num) >= 0)
-		return EXPR;
-
 	int parseErr = 0;
+	YYSTYPE result = 0;
+	YYSTYPE* pr = num ? num : &result;
 	// To check only, run parser in silent mode
-	if (!num) {
-		evalSilentParser = 1;
-		YYSTYPE result = evalExpr(arg, &parseErr);
-		if (parseErr && result != EVAL_ERR_DIV_BY_ZERO)
-			return NONE;
-		return EXPR;
-	}
-	evalSilentParser = 0;
-	*num = evalExpr(arg, &parseErr);
-	if (parseErr && *num != EVAL_ERR_DIV_BY_ZERO)
+	evalSilentParser = (int) (num == NULL);
+	*pr = evalExpr(arg, &parseErr);
+	if (err && parseErr)
+		*err = *pr;
+	if (parseErr && *pr != EVAL_ERR_DIV_BY_ZERO)
 		return NONE;
 	return EXPR;
 }
