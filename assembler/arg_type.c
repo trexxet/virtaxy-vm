@@ -39,8 +39,6 @@ int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int* err)
 	int parseErr = 0;
 	YYSTYPE result = 0;
 	YYSTYPE* pr = num ? num : &result;
-	// To check only, run parser in silent mode
-	evalSilentParser = (int) (num == NULL);
 	*pr = evalExpr(arg, &parseErr);
 	if (err && parseErr)
 		*err = *pr;

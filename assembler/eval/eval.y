@@ -5,7 +5,6 @@
 
 extern int yylex();
 void yyerror(YYSTYPE*, const char*);
-int evalSilentParser = 0;
 %}
 
 %define parse.error custom
@@ -52,7 +51,6 @@ Expr: T_NUM { $$ = $1; }
 // As we're not interested in evaluation result in case of error, we
 // may use it to report special error cases, such as division by 0 etc.
 int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
-	if (evalSilentParser) return 0;
 	int pos = yypcontext_location(ctx)->first_column;
 	extern char* orig_expr;
 
