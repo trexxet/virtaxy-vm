@@ -45,6 +45,7 @@ void symDestroy(symTable* S)
 
 // Debug
 #include <stdio.h>
+#include <inttypes.h>
 void symPrint(symTable* S)
 {
 	fprintf(stderr, "===SYMBOL TABLE===\n");
