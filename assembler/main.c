@@ -62,17 +62,18 @@ void assembleFile(char *filename)
 	errcode_t errcode = SUCCESS;
 	for (int pass = 1; pass <= 2; pass++)
 	{
-		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) &&
-		       ((pass == 2) ? (errcode == SUCCESS) : 1))
+		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && errcode == SUCCESS)
 		{
 			if (STRING_NOT_EMPTY)
 				errcode = assembleString(sourceString, pass, errStr);
-			if (pass == 2)
-				lineCounter++;
+			if (pass == 1 & errcode == UNKNOWN_SYMBOL)
+				errcode = SUCCESS; // Ignore unknown symbols on first pass
+			lineCounter++;
 		}
-		if (pass == 1)
+		if (pass == 1 && errcode == SUCCESS)
 		{
 			P.size = 0;
+			lineCounter = 0;
 			rewind(openedFileHandle);
 		}
 	}
