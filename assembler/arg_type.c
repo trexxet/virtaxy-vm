@@ -23,7 +23,7 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 		// Set arg type
 		// Expression check should be done last, as everything that
 		// is not instruction, register or keyword is an expression
-		arg->type = ((regNumber(arg->str) >= 0) ? REG : NONE) | isArgKeyword(arg->str);
+		arg->type = isArgRegister(arg->str) | isArgKeyword(arg->str);
 		if (!arg->type)
 			arg->type = argEvalExpr(arg->str, NULL, S, &parseErr);
 	}
@@ -79,5 +79,12 @@ int regNumber(char* arg) // Returns number of register arg or -1 if doesn't exis
 		if ((strcmp(regTable[i].name, arg) == 0) && !regTable[i].private)
 			return i;
 	return -1;
+}
+
+
+__attribute__((hot))
+int isArgRegister(char* arg)
+{
+	return (regNumber(arg) >= 0) ? REG : NONE;
 }
 

@@ -39,8 +39,6 @@ void loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S);
 int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, int *err);
 int isArgLabel(char* arg);
 int isArgKeyword(char* arg);
+int isArgRegister(char* arg);
 int regNumber(char* arg);
-
-
-#define IS_CORRECT_SYMBOL_NAME(arg) (!isdigit(arg[0]) && !strpbrk(arg, SYM_BLACKLIST_CHR))
 

@@ -19,6 +19,9 @@ typedef struct {
 } symTable;
 
 
+#define IS_CORRECT_SYMBOL_NAME(arg) (!isdigit(arg[0]) && !strpbrk(arg, SYM_BLACKLIST_CHR))
+
+
 errcode_t symInit(symTable* S);
 void symAdd(symTable* S, char* name, YYSTYPE value);
 int symGetValue(symTable* S, char* name, YYSTYPE* value);
