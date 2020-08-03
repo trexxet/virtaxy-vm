@@ -35,8 +35,8 @@ typedef struct {
 #define MAX_ARGS 3+1
 
 
-errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S);
-int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, errcode_t *err);
+errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S, char* errStr);
+int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, errcode_t *err, char* errStr);
 int isArgLabel(const char* arg);
 int isArgKeyword(const char* arg);
 int isArgRegister(const char* arg);

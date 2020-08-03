@@ -4,11 +4,11 @@
 #include "errors.h"
 
 extern int yylex();
-void yyerror(YYSTYPE*, const char*);
+void yyerror(YYSTYPE*, char*, const char*);
 %}
 
 %define parse.error custom
-%parse-param {YYSTYPE* result}
+%parse-param {YYSTYPE* result} {char* errStr}
 %locations
 
 %token T_NUM
@@ -34,17 +34,17 @@ Expr: T_NUM { $$ = $1; }
           if ($3 == 0) {
               YYSTYPE err = *result = EVAL_DIV_BY_ZERO;
               yypcontext_t ctx = {yyssp, yytoken, &@2};
-              yyreport_syntax_error(&ctx, &err);
+              yyreport_syntax_error(&ctx, &err, errStr);
               YYABORT;
           }
           $$ = $1 / $3;
       }
     | T_SUB Expr %prec NEG { $$ = -$2; }
     | T_LPAR Expr T_RPAR { $$ = $2; }
-    | T_ERROR {
+    | T_UNKNOWN_SYMBOL {
               YYSTYPE err = *result = EVAL_UNKNOWN_SYMBOL;
               yypcontext_t ctx = {yyssp, yytoken, &@1};
-              yyreport_syntax_error(&ctx, &err);
+              yyreport_syntax_error(&ctx, &err, errStr);
               YYABORT;
       }
 
@@ -57,7 +57,7 @@ Expr: T_NUM { $$ = $1; }
 
 // As we're not interested in evaluation result in case of error, we
 // may use it to report special error cases, such as division by 0 etc.
-int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
+int yyreport_syntax_error(const yypcontext_t* ctx, YYSTYPE* err, char* errStr) {
 	int pos = yypcontext_location(ctx)->first_column;
 	extern char* orig_expr;
 
@@ -75,7 +75,7 @@ int yyreport_syntax_error(const yypcontext_t *ctx, YYSTYPE* err) {
 }
 
 
-void yyerror(YYSTYPE* res, char const *s) {
+void yyerror(YYSTYPE* res, char* errStr, char const *s) {
 	fprintf(stderr, "Expression parse error: %s\n", s);
 }
 

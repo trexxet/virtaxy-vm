@@ -8,7 +8,7 @@
 
 
 __attribute__((hot))
-errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
+errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S, char* errStr)
 {
 	arg->str = strtok(NULL, delimWithoutWhitespace ? DELIM_IGN_WHSPC : DELIM);
 	errcode_t parseErr = 0;
@@ -25,21 +25,21 @@ errcode_t loadArg(arg_t* arg, int delimWithoutWhitespace, symTable* S)
 		// is not instruction, register or keyword is an expression
 		arg->type = isArgRegister(arg->str) | isArgKeyword(arg->str);
 		if (!arg->type)
-			arg->type = argEvalExpr(arg->str, NULL, S, &parseErr);
+			arg->type = argEvalExpr(arg->str, NULL, S, &parseErr, errStr);
 	}
 	return parseErr;
 }
 
 
 __attribute__((hot))
-int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, errcode_t* err)
+int argEvalExpr(char* arg, YYSTYPE* num, symTable* S, errcode_t* err, char* errStr)
 {
 	if (!arg)
 		return NONE;
 	errcode_t parseErr = 0;
 	YYSTYPE result = 0;
 	YYSTYPE* pr = num ? num : &result;
-	*pr = evalExpr(arg, &parseErr);
+	*pr = evalExpr(arg, &parseErr, errStr);
 	if (err && parseErr)
 		*err = *pr;
 	return EXPR;

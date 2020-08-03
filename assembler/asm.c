@@ -47,19 +47,19 @@ errcode_t asmInit()
 }
 
 
-errcode_t loadArgs(arg_t arg[]) {
+errcode_t loadArgs(arg_t arg[], char* errStr) {
 	// Expressions can have whitespaces, so we should avoid splitting them
 	// Split w/o whitespaces if we have instruction line
 	int delimNoWhitespace = isInstr(arg[0].str, instrTable, instrCount);
-	errcode_t err = loadArg(&arg[1], delimNoWhitespace, &S);
+	errcode_t err = loadArg(&arg[1], delimNoWhitespace, &S, errStr);
 	if (arg[1].type != NONE && !err)
 	{
 		// Split w/o whitespaces if we have keyword
 		if (arg[1].type == KEYWORD) delimNoWhitespace = 1;
-		err = loadArg(&arg[2], delimNoWhitespace, &S);
+		err = loadArg(&arg[2], delimNoWhitespace, &S, errStr);
 	}
 	if (arg[2].type != NONE && !err)
-		err = loadArg(&arg[3], delimNoWhitespace, &S);
+		err = loadArg(&arg[3], delimNoWhitespace, &S, errStr);
 	return err;
 }
 
@@ -73,7 +73,7 @@ void addSymLabel(const char* str) {
 }
 
 
-int addSymKeyword(arg_t arg[])
+int addSymKeyword(arg_t arg[], char* errStr)
 {
 	enum {CONST = 1, VAR = 2, RESMEM = 3};
 	uint8_t symType = 0;
@@ -86,7 +86,7 @@ int addSymKeyword(arg_t arg[])
 	else return 0;
 
 	YYSTYPE value = 0;
-	argEvalExpr(arg[2].str, &value, &S, NULL);
+	argEvalExpr(arg[2].str, &value, &S, NULL, errStr);
 	if (symGetValue(&S, arg[0].str, NULL) < 0)
 		symAdd(&S, arg[0].str, (symType == CONST) ? value : P.size);
 	if (symType != CONST)
@@ -143,13 +143,13 @@ errcode_t assembleString(char* sourceStr, int pass, char* errStr)
 		return SUCCESS;
 	}
 
-	errcode_t asm_err = loadArgs(arg);
+	errcode_t asm_err = loadArgs(arg, errStr);
 	if (asm_err)
 		return asm_err;
 
 	// If keyword (constant, variable or reserved memory)
 	if (arg[1].type == KEYWORD && IS_CORRECT_SYMBOL_NAME(instrStr) && arg[2].type == EXPR)
-		if (addSymKeyword(arg))
+		if (addSymKeyword(arg, errStr))
 			return SUCCESS;
 
 	// Try to assemble instruction on second pass
