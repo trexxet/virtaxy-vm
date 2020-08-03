@@ -55,7 +55,6 @@ void assembleFile(char *filename)
 	char sourceString[SOURCE_STRING_LENGTH + 1] = {0};
 	size_t lineCounter = 0;
 	char errStr[SOURCE_STRING_LENGTH + ERR_STR_LEN] = {0};
-	#define STRING_NOT_EMPTY (sourceString[0] != 0) && (sourceString[0] != '\n')
 	extern program P;
 	// At first pass, we only fill symbol table
 	// Actual assembling is done at the second pass
@@ -64,10 +63,8 @@ void assembleFile(char *filename)
 	{
 		while (fgets(sourceString, SOURCE_STRING_LENGTH, openedFileHandle) && errcode == SUCCESS)
 		{
-			if (STRING_NOT_EMPTY)
+			if ((sourceString[0] != 0) && (sourceString[0] != '\n'))
 				errcode = assembleString(sourceString, pass, errStr);
-			if (pass == 1 & errcode == EVAL_UNKNOWN_SYMBOL)
-				errcode = SUCCESS; // Ignore unknown symbols on first pass
 			lineCounter++;
 		}
 		if (pass == 1 && errcode == SUCCESS)
@@ -77,7 +74,6 @@ void assembleFile(char *filename)
 			rewind(openedFileHandle);
 		}
 	}
-	#undef STRING_NOT_EMPTY
 
 	if (fclose(openedFileHandle) == EOF)
 		parseError(CANNOT_CLOSE_FILE, filename, lineCounter, NULL);

@@ -144,6 +144,9 @@ errcode_t assembleString(char* sourceStr, int pass, char* errStr)
 	}
 
 	errcode_t asm_err = loadArgs(arg, errStr);
+	// Ignore unknown symbols on first pass
+	if (pass == 1 && asm_err == EVAL_UNKNOWN_SYMBOL)
+		asm_err = SUCCESS;
 	if (asm_err)
 		return asm_err;
 
