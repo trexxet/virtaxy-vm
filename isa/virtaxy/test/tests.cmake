@@ -30,3 +30,6 @@ add_asm_test(NAME asm::invalidInstr FILE test/invalidInstr.vasm OUTPUT ${ASM_OUT
 add_asm_test(NAME asm::invalidArgs FILE test/invalidArgs.vasm OUTPUT ${ASM_OUTPUT} WILL_FAIL)
 add_asm_test(NAME asm::invalidSymbol FILE test/invalidSymbol.vasm OUTPUT ${ASM_OUTPUT} WILL_FAIL)
 
+add_asm_test(NAME asm::invalidExpr_badToken FILE test/invalidExpr_badToken.vasm OUTPUT ${ASM_OUTPUT} WILL_FAIL)
+add_asm_test(NAME asm::invalidExpr_divBy0 FILE test/invalidExpr_divBy0.vasm OUTPUT ${ASM_OUTPUT} WILL_FAIL)
+
