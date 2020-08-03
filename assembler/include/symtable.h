@@ -3,6 +3,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <string.h>
 #include "errors.h"
 #include "../config.h"
 

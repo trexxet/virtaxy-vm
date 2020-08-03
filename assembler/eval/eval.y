@@ -5,6 +5,12 @@
 
 extern int yylex();
 void yyerror(YYSTYPE*, char*, const char*);
+
+#define THROW_ERROR(errcode, arg) { \
+	YYSTYPE err = *result = errcode; \
+	yypcontext_t ctx = {yyssp, yytoken, &arg}; \
+	yyreport_syntax_error(&ctx, &err, errStr); \
+	YYABORT; }
 %}
 
 %define parse.error custom
@@ -31,22 +37,13 @@ Expr: T_NUM { $$ = $1; }
     | Expr T_SUB Expr { $$ = $1 - $3; }
     | Expr T_MUL Expr { $$ = $1 * $3; }
     | Expr T_DIV Expr {
-          if ($3 == 0) {
-              YYSTYPE err = *result = EVAL_DIV_BY_ZERO;
-              yypcontext_t ctx = {yyssp, yytoken, &@2};
-              yyreport_syntax_error(&ctx, &err, errStr);
-              YYABORT;
-          }
+          if ($3 == 0) THROW_ERROR(EVAL_DIV_BY_ZERO, @2);
           $$ = $1 / $3;
       }
     | T_SUB Expr %prec NEG { $$ = -$2; }
     | T_LPAR Expr T_RPAR { $$ = $2; }
-    | T_UNKNOWN_SYMBOL {
-              YYSTYPE err = *result = EVAL_UNKNOWN_SYMBOL;
-              yypcontext_t ctx = {yyssp, yytoken, &@1};
-              yyreport_syntax_error(&ctx, &err, errStr);
-              YYABORT;
-      }
+    | T_UNKNOWN_SYMBOL { THROW_ERROR(EVAL_UNKNOWN_SYMBOL, @1); }
+    | error { THROW_ERROR(EVAL_INVALID_EXPRESSION, @1); }
 
 %%
 
@@ -55,27 +52,29 @@ Expr: T_NUM { $$ = $1; }
 #define C_RESET "\033[0m"
 
 
-// As we're not interested in evaluation result in case of error, we
-// may use it to report special error cases, such as division by 0 etc.
-int yyreport_syntax_error(const yypcontext_t* ctx, YYSTYPE* err, char* errStr) {
+int yyreport_syntax_error(const yypcontext_t* ctx, YYSTYPE* r, char* errStr) {
+	if (!errStr) return 0;
+	char* es = errStr;
 	int pos = yypcontext_location(ctx)->first_column;
 	extern char* orig_expr;
-
+	// Print expression with bad token highlighted
 	int i = 0;
 	while (orig_expr[i]) {
-		if (i == pos - 1) fprintf(stderr, C_BOLD_RED"%c"C_RESET, orig_expr[i]);
-		else fputc(orig_expr[i], stderr);
+		if (i == pos - 1)
+			es += sprintf(es, C_BOLD_RED"%c"C_RESET, orig_expr[i]);
+		else
+			es += sprintf(es, "%c", orig_expr[i]);
 		i++;
 	}
-	fputc('\n', stderr);
+	es += sprintf(es, "\n");
 	// Print cool arrow
-	for (i = 1; i < pos; i++) fputc(' ', stderr);
-	fprintf(stderr, C_BOLD_RED"^"C_RESET"\n");
+	for (i = 1; i < pos; i++) es += sprintf(es, " ");
+	sprintf(es, C_BOLD_RED"^"C_RESET);
 	return 0;
 }
 
 
-void yyerror(YYSTYPE* res, char* errStr, char const *s) {
-	fprintf(stderr, "Expression parse error: %s\n", s);
+void yyerror(YYSTYPE* r, char* errStr, char const *s) {
+	sprintf(errStr, "Expression parse error: %s", s);
 }
 

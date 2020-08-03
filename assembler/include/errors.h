@@ -13,7 +13,7 @@ typedef enum {
 	CANNOT_ALLOCATE_MEMORY,
 	UNKNOWN_COMMAND,
 	INVALID_ARGS,
-	INVALID_EXPRESSION,
+	EVAL_INVALID_EXPRESSION,
 	EVAL_UNKNOWN_SYMBOL,
 	EVAL_DIV_BY_ZERO
 } errcode_t;
@@ -42,7 +42,7 @@ const static char* errmsg[] = {
 		C_BOLD_RED"error:"C_RESET" unknown command",
 	[INVALID_ARGS] =
 		C_BOLD_RED"error:"C_RESET" invalid combination of command and arguments",
-	[INVALID_EXPRESSION] =
+	[EVAL_INVALID_EXPRESSION] =
 		C_BOLD_RED"error:"C_RESET" invalid expression",
 	[EVAL_UNKNOWN_SYMBOL] =
 		C_BOLD_RED"error:"C_RESET" unknown symbol",
