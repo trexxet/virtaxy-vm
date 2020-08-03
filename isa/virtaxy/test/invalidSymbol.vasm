@@ -1,4 +1,4 @@
 main:
-	jmp somewhere
+	jmp somewhere + 5
 	hlt
 

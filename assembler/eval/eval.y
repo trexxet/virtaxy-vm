@@ -55,21 +55,27 @@ Expr: T_NUM { $$ = $1; }
 int yyreport_syntax_error(const yypcontext_t* ctx, YYSTYPE* r, char* errStr) {
 	if (!errStr) return 0;
 	char* es = errStr;
-	int pos = yypcontext_location(ctx)->first_column;
-	extern char* orig_expr;
+	int hlStart = yypcontext_location(ctx)->first_column - 1;
+	int hlEnd = yypcontext_location(ctx)->last_column - 1;
 	// Print expression with bad token highlighted
 	int i = 0;
+	extern char* orig_expr;
 	while (orig_expr[i]) {
-		if (i == pos - 1)
-			es += sprintf(es, C_BOLD_RED"%c"C_RESET, orig_expr[i]);
-		else
-			es += sprintf(es, "%c", orig_expr[i]);
+		if (i == hlStart)
+			es += sprintf(es, C_BOLD_RED);
+		if (i == hlEnd)
+			es += sprintf(es, C_RESET);
+		es += sprintf(es, "%c", orig_expr[i]);
 		i++;
 	}
 	es += sprintf(es, "\n");
 	// Print cool arrow
-	for (i = 1; i < pos; i++) es += sprintf(es, " ");
-	sprintf(es, C_BOLD_RED"^"C_RESET);
+	for (i = 1; i < hlStart + 1; i++)
+		es += sprintf(es, " ");
+	es += sprintf(es, C_BOLD_RED);
+	for (i; i < hlEnd + 1; i++)
+		es += sprintf(es, "^");
+	sprintf(es, C_RESET);
 	return 0;
 }
 
