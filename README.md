@@ -1,5 +1,7 @@
 # virtaxy-vm
 
+[MIGRATED](https://gitlab.com/trexxet/virtaxy-vm)
+
 Virtaxy-vm is an easy-configured and flexible functional simulator and assembler for user-defined architectures.
 
 Check [project wiki](https://github.com/trexxet/virtaxy-vm/wiki) for more information.
